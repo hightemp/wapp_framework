@@ -1,0 +1,1 @@
+<h1>Test categories content</h1>

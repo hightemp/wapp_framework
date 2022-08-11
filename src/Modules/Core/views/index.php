@@ -1,0 +1,1 @@
+<h1>Test core content</h1>

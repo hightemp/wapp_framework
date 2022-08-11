@@ -1,0 +1,16 @@
+{
+    "name": "hightemp/wapp_test_snotes",
+    "autoload": {
+        "psr-4": {
+            "Hightemp\\WappTestSnotes\\": "src/"
+            "RedBeanPHP\\": "src/lib/RedBeanPHP"
+        }
+    },
+    "authors": [
+        {
+            "name": "Антон Панов",
+            "email": "a.panov@avtoexpress.org"
+        }
+    ],
+    "require": {}
+}
