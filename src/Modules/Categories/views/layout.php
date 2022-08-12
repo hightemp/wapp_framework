@@ -15,3 +15,6 @@ use Hightemp\WappTestSnotes\Modules\Categories\View;
     <?php echo View::fnRenderContent(); ?>
 </body>
 </html>
+
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css">
+<script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>

@@ -14,6 +14,11 @@ use Request;
 class BaseController
 {
     const METHOD_KEY = "method";
+    const CONTROLLER_KEY = "controller";
+    const MODULE_KEY = "module";
+    const ALIAS_KEY = "alias";
+
+    const DEFAULT_MODULE = "Core";
 
     public static $oGlobalRequest = null;
     public $oRequest = null;
@@ -26,6 +31,10 @@ class BaseController
 
     public static function fnGetControllersByModules()
     {
+        static $aControllers = [];
+
+        if ($aControllers) return $aControllers;
+
         $aModules = Modules::$aModules;
         $aControllers = [];
         foreach ($aModules as $sModule) {
@@ -61,27 +70,87 @@ class BaseController
         return $oResponse;
     }
 
+    public static function fnExtractModuleName($sPath)
+    {
+        $aP = explode("\\", $sPath);
+        array_pop($aP);
+        return array_pop($aP);
+    }
+
+    public static function fnFindMethodByPathAlias($sPath, $aControllers=null)
+    {
+        if (is_null($aControllers)) {
+            $aControllers = static::fnGetControllersByModules();
+
+            $aModuleAliases = \Hightemp\WappTestSnotes\Modules::$aAliases;
+
+            foreach ($aModuleAliases as $sAliasClass) {
+                $aMethods = $sAliasClass::$aMethods;
+                if (isset($aMethods[$sPath])) {
+                    return $aMethods[$sPath];
+                }
+
+                $sPath = trim($sPath, "/");
+
+                if (isset($aMethods[$sPath])) {
+                    return $aMethods[$sPath];
+                }
+            }
+        }
+    }
+
     public static function fnFindAndExecuteMethod($oRequest, $aControllers=null)
     {
         static::$oGlobalRequest = $oRequest;
-        $oResponse = null;
-        $sMethod = $oRequest->aGet[static::METHOD_KEY] ?? '';
 
-        if (is_null($aControllers)) {
-            $aControllers = static::fnGetControllersByModules();
+        View::$aVars['oRequest'] = $oRequest;
+
+        $oResponse = null;
+        $sCurrentMethod = $oRequest->aGet[static::METHOD_KEY] ?? '';
+        $sCurrentController = $oRequest->aGet[static::CONTROLLER_KEY] ?? '';
+        $sCurrentModule = $oRequest->aGet[static::MODULE_KEY] ?? static::DEFAULT_MODULE;
+
+        $aURI = parse_url($oRequest->aServer['REQUEST_URI']);
+        $sCurrentAlias = $oRequest->aGet[static::ALIAS_KEY] ?? $aURI['path'];
+
+        if ($sCurrentAlias) {
+            $aFound = static::fnFindMethodByPathAlias($sCurrentAlias, $aControllers);
+            if ($aFound) {
+                if (method_exists($aFound[0], $aFound[1])) {
+                    $oResponse = static::fnGetResponseFromController($aFound[0], $aFound[1], $oRequest);
+                }
+            }
         }
 
-        foreach ($aControllers as $sModuleClass => $aControllers) {
-            foreach ($aControllers as $sController) {
-                // NOTE: Метод и контроллер по умолчанию первый попавшийся
-                if (!$sMethod)  {
-                    $sController = $sModuleClass::$sDefaultController;
-                    $sMethod = $sModuleClass::$sDefaultMethod;
+        if (!$oResponse) {
+            if (is_null($aControllers)) {
+                $aControllers = static::fnGetControllersByModules();
+            }
+
+            foreach ($aControllers as $sModuleClass => $aControllers) {
+                if (!$sCurrentModule) {
+                    $sCurrentModule = static::DEFAULT_MODULE;
                 }
 
-                if (method_exists($sController, $sMethod)) {
-                    $oResponse = static::fnGetResponseFromController($sController, $sMethod, $oRequest);
-                    break 2;
+                $sModuleClassName = static::fnExtractModuleName($sModuleClass);
+
+                if ($sCurrentModule == $sModuleClassName) {
+                    foreach ($aControllers as $sController) {
+                        $sControllerName = array_pop(explode("\\", $sController));
+
+                        // NOTE: Метод и контроллер по умолчанию первый попавшийся
+                        if (!$sCurrentController && !$sCurrentMethod)  {
+                            $sCurrentController = $sModuleClass::$sDefaultController;
+                            $sCurrentMethod = $sModuleClass::$sDefaultMethod;
+                        }
+
+                        if ($sControllerName == $sCurrentController) {
+                            if (method_exists($sController, $sCurrentMethod)) {
+                                $oResponse = static::fnGetResponseFromController($sController, $sCurrentMethod, $oRequest);
+                                break 2;
+                            }
+                        }
+                    }
                 }
             }
         }
