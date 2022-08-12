@@ -76,7 +76,14 @@ class BaseController
         array_pop($aP);
         return array_pop($aP);
     }
-
+    
+    /**
+     * fnFindMethodByPathAlias
+     *
+     * @param  string $sPath альяс
+     * @param  array $aControllers массив сгруппированный по назв. модулей
+     * @return void|array|Controller[][]|string[][]
+     */
     public static function fnFindMethodByPathAlias($sPath, $aControllers=null)
     {
         if (is_null($aControllers)) {

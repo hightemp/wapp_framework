@@ -2,8 +2,13 @@
 
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
 
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagA;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagAliasA;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagTable;
+
 class View
 {
+    const STATIC_PATH = "";
     const TEMPLATES_PATH = "";
     public static $sLayoutTemplate = "layout.php";
     public static $sContentTemplate = "index.php";
@@ -15,6 +20,14 @@ class View
         self::$aVars = [];
     }
 
+    public static function fnPrepareVars()
+    {
+        self::$aVars['sStaticPath'] = static::STATIC_PATH;
+        self::$aVars['oTagA'] = new TagA();
+        self::$aVars['oTagAliasA'] = new TagAliasA();
+        self::$aVars['oTagTable'] = new TagTable();
+    }
+
     public static function fnAddVars($aVars)
     {
         self::$aVars = array_merge(self::$aVars, $aVars);
@@ -22,7 +35,6 @@ class View
 
     public static function fnSetParams($aVars=[], $sContentTemplate=null, $sLayoutTemplate=null)
     {
-        // $oSelf = static::fnGetInstance();
         static::fnAddVars($aVars);
         if ($sLayoutTemplate) static::$sLayoutTemplate = $sLayoutTemplate;
         if ($sContentTemplate) static::$sContentTemplate = $sContentTemplate;
@@ -30,6 +42,7 @@ class View
 
     public static function fnRender()
     {
+        static::fnPrepareVars();
         return static::fnRenderLayout();
     }
 

@@ -13,4 +13,9 @@ class Modules
         \Hightemp\WappTestSnotes\Modules\Core\Aliases::class,
         \Hightemp\WappTestSnotes\Modules\Categories\Aliases::class,
     ];
+
+    public static $aCommands = [
+        \Hightemp\WappTestSnotes\Modules\Core\Commands::class,
+        \Hightemp\WappTestSnotes\Modules\Categories\Commands::class,
+    ];
 }
