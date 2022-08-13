@@ -1,7 +1,3 @@
-<h1>Test core content</h1>
+<h1>Index page of Core module</h1>
 
-<?php $oTagBootstrapTable(
-    [ [1, 2] ], 
-    [ 'test', 'test2' ], 
-    [ "data-click-to-select" =>"true" ]
-); ?>
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla laudantium omnis amet non eaque iste expedita eveniet distinctio dolorum laborum asperiores doloribus eum, ad, repellendus aspernatur rem. Accusantium, dolor odio?</p>

@@ -30,6 +30,11 @@ class Command
         $sScriptPath = array_shift($aArgs);
         $sCommand = array_shift($aArgs);
 
+        if (!$sCommand && Modules::$sDefaultCommand) {
+            $sClass = "\\".Modules::$sDefaultCommand;
+            $sCommand = $sClass::FULL_COMMAND;
+        }
+
         $oCommand = static::fnFindCommand($sCommand);
 
         echo "\n";

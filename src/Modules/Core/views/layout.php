@@ -1,8 +1,3 @@
-<?php
-
-use Hightemp\WappTestSnotes\Modules\Core\View;
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +10,6 @@ use Hightemp\WappTestSnotes\Modules\Core\View;
     <?php echo $sHTMLHeader ?>
 </head>
 <body>
-    <?php echo View::fnRenderContent() ?>
+    <?php echo $sContent ?>
 </body>
 </html>

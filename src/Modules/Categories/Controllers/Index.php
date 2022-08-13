@@ -7,7 +7,7 @@ use Hightemp\WappTestSnotes\Modules\Categories\View;
 
 class Index extends BaseController
 {
-    public $sViewClass = View::class;
+    public static $sDefaultViewClass = View::class;
 
     public function fnIndexHTML()
     {

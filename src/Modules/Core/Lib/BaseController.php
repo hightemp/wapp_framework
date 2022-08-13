@@ -22,11 +22,13 @@ class BaseController
 
     public static $oGlobalRequest = null;
     public $oRequest = null;
-    public $sViewClass = View::class;
+    public $sViewClass = null;
+    public static $sDefaultViewClass = View::class;
 
-    public function __construct($oRequest=new LibRequest())
+    public function __construct($oRequest=new LibRequest(), $sViewClass=null)
     {
         $this->oRequest = $oRequest;
+        $this->sViewClass = is_null($sViewClass) ? static::$sDefaultViewClass : $sViewClass;
     }
 
     public static function fnGetControllersByModules()
@@ -48,8 +50,32 @@ class BaseController
         return $aControllers;
     }
 
-    public static function fnGetResponseFromController($sController, $sMethod, $oRequest)
+    public static function fnPrepareAllViewsForController($oController, $sContentTemplate=null, $aControllers=null)
     {
+        if (is_null($aControllers)) {
+            $aControllers = static::fnGetControllersByModules();
+        }
+
+        foreach ($aControllers as $sModuleClass => $aControllers) {
+            foreach ($sModuleClass::$aPreloadViews as $sView) {
+                $sView::fnPrepareHTMLHeader();
+                $sView::fnPrepareVars();
+            }
+        }
+        
+        $sView = $oController->sViewClass;
+        
+        if ($sContentTemplate) {
+
+        }
+
+        $sView::fnPrepareContentVar();
+    }
+
+    public static function fnGetResponseFromController($aAlias, $oRequest)
+    {
+        $aAlias = array_merge(['', '', ''], $aAlias);
+        list($sController, $sMethod, $sContentTemplate) = $aAlias;
         $oResponse = null;
         $sController = "\\".$sController;
         $oController = new $sController($oRequest);
@@ -57,7 +83,8 @@ class BaseController
         $mResult = $oController->$sMethod();
 
         if (preg_match('/html$/i', $sMethod)) {
-            static::fnPrepareViews();
+            // NOTE: Подготовка $sContent и переменных для текущего контроллера
+            static::fnPrepareAllViewsForController($oController, $sContentTemplate);
 
             $sViewClass = $oController->sViewClass;
             $mResult = $sViewClass::fnRender();
@@ -84,7 +111,7 @@ class BaseController
      *
      * @param  string $sPath альяс
      * @param  array $aControllers массив сгруппированный по назв. модулей
-     * @return void|array|Controller[][]|string[][]
+     * @return void|array|Controller[][]|string[][]|string[][]
      */
     public static function fnFindMethodByPathAlias($sPath, $aControllers=null)
     {
@@ -120,19 +147,6 @@ class BaseController
         return $aResult;
     }
 
-    public static function fnPrepareViews($aControllers=null)
-    {
-        if (is_null($aControllers)) {
-            $aControllers = static::fnGetControllersByModules();
-        }
-
-        foreach ($aControllers as $sModuleClass => $aControllers) {
-            foreach ($sModuleClass::$aPreloadViews as $sView) {
-                $sView::fnPrepareView();
-            }
-        }
-    }
-
     public static function fnFindAndExecuteMethod($oRequest, $aControllers=null)
     {
         static::$oGlobalRequest = $oRequest;
@@ -148,10 +162,10 @@ class BaseController
         $sCurrentAlias = $oRequest->aGet[static::ALIAS_KEY] ?? $aURI['path'];
 
         if ($sCurrentAlias) {
-            $aFound = static::fnFindMethodByPathAlias($sCurrentAlias, $aControllers);
-            if ($aFound) {
-                if (method_exists($aFound[0], $aFound[1])) {
-                    $oResponse = static::fnGetResponseFromController($aFound[0], $aFound[1], $oRequest);
+            $aAlias = static::fnFindMethodByPathAlias($sCurrentAlias, $aControllers);
+            if ($aAlias) {
+                if (method_exists($aAlias[0], $aAlias[1])) {
+                    $oResponse = static::fnGetResponseFromController($aAlias, $oRequest);
                 }
             }
         }

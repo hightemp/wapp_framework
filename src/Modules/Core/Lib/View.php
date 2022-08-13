@@ -8,8 +8,12 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagTable;
 
 class View
 {
-    const STATIC_PATH = "";
+    const STATIC_PATH = "static";
+    const STATIC_CSS_PATH = "static/css";
+    const STATIC_JS_PATH = "static/js";
+
     const TEMPLATES_PATH = "";
+
     public static $sLayoutTemplate = "layout.php";
     public static $sContentTemplate = "index.php";
     public static $sHeaderTemplate = "header.php";
@@ -33,6 +37,11 @@ class View
         self::$aVars['oTagTable'] = new TagTable();
     }
 
+    public static function fnPrepareContentVar($sContentTemplate=null)
+    {
+        self::$aVars['sContent'] ?? self::$aVars['sContent'] = static::fnRenderContent($sContentTemplate);
+    }
+
     public static function fnAddVars($aVars)
     {
         self::$aVars = array_merge(self::$aVars, $aVars);
@@ -51,17 +60,29 @@ class View
         self::$sHTMLHeader += $sHTML;
     }
 
-    public static function fnPrepareView()
-    {
-        static::fnPrepareHTMLHeader();
-        static::fnPrepareVars();
-    }
-
     public static function fnSetParams($aVars=[], $sContentTemplate=null, $sLayoutTemplate=null)
     {
         static::fnAddVars($aVars);
         if ($sLayoutTemplate) static::$sLayoutTemplate = $sLayoutTemplate;
         if ($sContentTemplate) static::$sContentTemplate = $sContentTemplate;
+    }
+
+    public static function fnAddHeaderCSS($sRelFilePath)
+    {
+        $sRelFilePath = static::STATIC_CSS_PATH."/".$sRelFilePath;
+        $sHTML = <<<EOF
+<link rel="stylesheet" href="{$sRelFilePath}">\n
+EOF;
+        static::fnAddHTMLHeader($sHTML);
+    }
+
+    public static function fnAddHeaderJS($sRelFilePath)
+    {
+        $sRelFilePath = static::STATIC_JS_PATH."/".$sRelFilePath;
+        $sHTML = <<<EOF
+<script src="{$sRelFilePath}"></script>\n
+EOF;
+        static::fnAddHTMLHeader($sHTML);
     }
 
     public static function fnRender()
@@ -75,9 +96,17 @@ class View
         return static::fnRenderTemplate(static::$sLayoutTemplate, $aVars);
     }
 
-    public static function fnRenderContent($aVars=[])
+    public static function fnRenderContent($sContentTemplate=null, $aVars=[])
     {
-        return static::fnRenderTemplate(static::$sContentTemplate, $aVars);
+        if (is_null($sContentTemplate)) {
+            if (static::fnIsTemplate(static::$sContentTemplate)) {
+                return static::fnRenderTemplate(static::$sContentTemplate, $aVars);
+            }
+        } else {
+            if (static::fnIsTemplate($sContentTemplate)) {
+                return static::fnRenderTemplate($sContentTemplate, $aVars);
+            }
+        }
     }
 
     public static function fnIsTemplate($sTemplatePath)
@@ -87,7 +116,6 @@ class View
 
     public static function fnRenderTemplate($sTemplatePath, $aVars=[])
     {
-        // $oSelf = static::fnGetInstance();
         if ($aVars) static::fnAddVars($aVars);
         ob_start();
         {

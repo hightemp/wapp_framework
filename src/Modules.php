@@ -4,6 +4,8 @@ namespace Hightemp\WappTestSnotes;
 
 class Modules 
 {
+    public static $sDefaultCommand = \Hightemp\WappTestSnotes\Modules\Core\Commands\ListCommands::class;
+
     public static $aModules = [
         \Hightemp\WappTestSnotes\Modules\Core\Module::class,
         \Hightemp\WappTestSnotes\Modules\Categories\Module::class,
