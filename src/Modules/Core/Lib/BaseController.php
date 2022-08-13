@@ -106,6 +106,18 @@ class BaseController
         }
     }
 
+    public static function fnGetAllAliases()
+    {
+        $aResult = [];
+        $aModuleAliases = \Hightemp\WappTestSnotes\Modules::$aAliases;
+
+        foreach ($aModuleAliases as $sAliasClass) {
+            $aResult = array_merge($aResult, $sAliasClass::$aMethods);
+        }
+
+        return $aResult;
+    }
+
     public static function fnFindAndExecuteMethod($oRequest, $aControllers=null)
     {
         static::$oGlobalRequest = $oRequest;
