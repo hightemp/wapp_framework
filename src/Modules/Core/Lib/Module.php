@@ -10,4 +10,6 @@ class Module
     public static $sDefaultMethod = null;
 
     public static $aControllers = [];
+
+    public static $aPreloadViews = [];
 }

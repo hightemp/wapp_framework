@@ -57,6 +57,8 @@ class BaseController
         $mResult = $oController->$sMethod();
 
         if (preg_match('/html$/i', $sMethod)) {
+            static::fnPrepareViews();
+
             $sViewClass = $oController->sViewClass;
             $mResult = $sViewClass::fnRender();
 
@@ -118,6 +120,19 @@ class BaseController
         return $aResult;
     }
 
+    public static function fnPrepareViews($aControllers=null)
+    {
+        if (is_null($aControllers)) {
+            $aControllers = static::fnGetControllersByModules();
+        }
+
+        foreach ($aControllers as $sModuleClass => $aControllers) {
+            foreach ($sModuleClass::$aPreloadViews as $sView) {
+                $sView::fnPrepareView();
+            }
+        }
+    }
+
     public static function fnFindAndExecuteMethod($oRequest, $aControllers=null)
     {
         static::$oGlobalRequest = $oRequest;
@@ -155,7 +170,8 @@ class BaseController
 
                 if ($sCurrentModule == $sModuleClassName) {
                     foreach ($aControllers as $sController) {
-                        $sControllerName = array_pop(explode("\\", $sController));
+                        $aController = explode("\\", $sController);
+                        $sControllerName = array_pop($aController);
 
                         // NOTE: Метод и контроллер по умолчанию первый попавшийся
                         if (!$sCurrentController && !$sCurrentMethod)  {
@@ -163,7 +179,7 @@ class BaseController
                             $sCurrentMethod = $sModuleClass::$sDefaultMethod;
                         }
 
-                        if ($sControllerName == $sCurrentController) {
+                        if ($sController == $sCurrentController || $sControllerName == $sCurrentController) {
                             if (method_exists($sController, $sCurrentMethod)) {
                                 $oResponse = static::fnGetResponseFromController($sController, $sCurrentMethod, $oRequest);
                                 break 2;

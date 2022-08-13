@@ -2,13 +2,14 @@
 
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Tags;
 
+use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
 use \Hightemp\WappTestSnotes\Modules\Core\Lib\Link;
 
-class TagAliasA
+class TagAliasA extends BaseTag
 {
-    public function __invoke($sContent, $sAlias, $aParams=[], $sTitle="", $sClass="", $sName="", $sID="")
+    public function __invoke($sContent, $sAlias, $aArgs=[], $aAttr=[])
     {
-        $sURL = Link::fnGetAliasLink($sAlias, $aParams);
-        (new TagA)($sContent, $sURL);
+        $sURL = Link::fnGetAliasLink($sAlias, $aArgs);
+        (new TagA)($sContent, $sURL, $aAttr);
     }
 }

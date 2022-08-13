@@ -2,12 +2,27 @@
 
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Tags;
 
-class TagTable
+use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
+
+class TagTable extends BaseTag
 {
-    public function __invoke($aData, $sClass="", $sID="")
+    public function __invoke($aData, $aHeaders=[], $aAttr=[])
     {
         $sHTML = "";
 
+        if ($aHeaders) {
+            $sHTML .= "<thead>";
+            $sHTML .= "<tr>";
+            foreach ($aHeaders as $sCell) {
+                $sHTML .= "<th>";
+                $sHTML .= $sCell;
+                $sHTML .= "</th>";
+            }
+            $sHTML .= "</tr>";
+            $sHTML .= "</thead>";
+        }
+
+        $sHTML .= "<tbody>";
         foreach ($aData as $aRow) {
             $sHTML .= "<tr>";
             foreach ($aRow as $sCell) {
@@ -17,8 +32,11 @@ class TagTable
             }
             $sHTML .= "</tr>";
         }
+        $sHTML .= "</tbody>";
 
-        $sHTML = "<table>{$sHTML}</table>";
+        $sAttr = static::fnPrepareAttr($aAttr);
+
+        $sHTML = "<table {$sAttr}>{$sHTML}</table>";
         
         echo $sHTML;
     }

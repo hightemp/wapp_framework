@@ -7,6 +7,8 @@ class Modules
     public static $aModules = [
         \Hightemp\WappTestSnotes\Modules\Core\Module::class,
         \Hightemp\WappTestSnotes\Modules\Categories\Module::class,
+
+        \Hightemp\WappTestSnotes\Modules\CBootstrapTable\Module::class,
     ];
 
     public static $aAliases = [

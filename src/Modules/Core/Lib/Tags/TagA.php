@@ -2,10 +2,13 @@
 
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Tags;
 
-class TagA
+use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
+
+class TagA extends BaseTag
 {
-    public function __invoke($sContent, $sHref, $sTitle="", $sClass="", $sName="", $sID="")
+    public function __invoke($sContent, $sHref, $aAttr=[])
     {
-        echo "<a href=\"{$sHref}\" title=\"{$sTitle}\" class=\"{$sClass}\" id=\"{$sID}\" name=\"{$sName}\">{$sContent}</a>";
+        $sAttr = static::fnPrepareAttr($aAttr);
+        echo "<a href=\"{$sHref}\" {$sAttr}>{$sContent}</a>";
     }
 }

@@ -12,8 +12,10 @@ class View
     const TEMPLATES_PATH = "";
     public static $sLayoutTemplate = "layout.php";
     public static $sContentTemplate = "index.php";
+    public static $sHeaderTemplate = "header.php";
 
     public static $aVars = [];
+    public static $sHTMLHeader = '';
 
     public static function fnClearVars()
     {
@@ -22,7 +24,10 @@ class View
 
     public static function fnPrepareVars()
     {
+        self::$aVars['sHTMLHeader'] = self::$sHTMLHeader;
         self::$aVars['sStaticPath'] = static::STATIC_PATH;
+        self::$aVars['sTitle'] ?? self::$aVars['sTitle'] = '';
+
         self::$aVars['oTagA'] = new TagA();
         self::$aVars['oTagAliasA'] = new TagAliasA();
         self::$aVars['oTagTable'] = new TagTable();
@@ -31,6 +36,25 @@ class View
     public static function fnAddVars($aVars)
     {
         self::$aVars = array_merge(self::$aVars, $aVars);
+    }
+
+    public static function fnPrepareHTMLHeader()
+    {
+        if (static::fnIsTemplate(static::$sHeaderTemplate)) {
+            $sT = static::fnRenderTemplate(static::$sHeaderTemplate);
+            self::$sHTMLHeader .= $sT;
+        }
+    }
+
+    public static function fnAddHTMLHeader($sHTML)
+    {
+        self::$sHTMLHeader += $sHTML;
+    }
+
+    public static function fnPrepareView()
+    {
+        static::fnPrepareHTMLHeader();
+        static::fnPrepareVars();
     }
 
     public static function fnSetParams($aVars=[], $sContentTemplate=null, $sLayoutTemplate=null)
@@ -56,10 +80,15 @@ class View
         return static::fnRenderTemplate(static::$sContentTemplate, $aVars);
     }
 
+    public static function fnIsTemplate($sTemplatePath)
+    {
+        return is_file(static::TEMPLATES_PATH."/".$sTemplatePath);
+    }
+
     public static function fnRenderTemplate($sTemplatePath, $aVars=[])
     {
         // $oSelf = static::fnGetInstance();
-        static::fnAddVars($aVars);
+        if ($aVars) static::fnAddVars($aVars);
         ob_start();
         {
             extract(self::$aVars);
