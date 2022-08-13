@@ -17,6 +17,16 @@ class TagBootstrapTable extends BaseTag
         $aAttr['data-height'] ?? $aAttr['data-height'] = "460";
         $aAttr['data-show-columns'] = "true";
 
+        if (isset($aAttr['data-click-to-select'])) {
+            array_unshift($aHeaders, [
+                '',
+                [
+                    "data-field" => "state",
+                    "data-checkbox" => "true",
+                ]
+            ]);
+        }
+
         $oTag($aData, $aHeaders, $aAttr);
     }
 }

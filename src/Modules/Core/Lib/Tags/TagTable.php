@@ -13,8 +13,10 @@ class TagTable extends BaseTag
         if ($aHeaders) {
             $sHTML .= "<thead>";
             $sHTML .= "<tr>";
-            foreach ($aHeaders as $sCell) {
-                $sHTML .= "<th>";
+            foreach ($aHeaders as $mHeader) {
+                $sCell = is_string($mHeader) ? $mHeader : $mHeader[0];
+                $sAttr = is_string($mHeader) ? '' : static::fnPrepareAttr($mHeader[1]);
+                $sHTML .= "<th {$sAttr}>";
                 $sHTML .= $sCell;
                 $sHTML .= "</th>";
             }
@@ -25,7 +27,8 @@ class TagTable extends BaseTag
         $sHTML .= "<tbody>";
         foreach ($aData as $aRow) {
             $sHTML .= "<tr>";
-            foreach ($aRow as $sCell) {
+            foreach ($aHeaders as $iI => $mHeader) {
+                $sCell = $aRow[$iI] ?? '';
                 $sHTML .= "<td>";
                 $sHTML .= $sCell;
                 $sHTML .= "</td>";
