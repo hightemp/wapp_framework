@@ -3,7 +3,7 @@
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers;
 
 use Exception;
-use Hightemp\WappTestSnotes\Modules;
+use Hightemp\WappTestSnotes\Project;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Request as LibRequest;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Response;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\HTML as HTMLResponse;
@@ -38,7 +38,7 @@ class BaseController
 
         if ($aControllers) return $aControllers;
 
-        $aModules = Modules::$aModules;
+        $aModules = Project::$aModules;
         $aControllers = [];
         foreach ($aModules as $sModule) {
             $aControllers[$sModule] ?? $aControllers[$sModule] = [];
@@ -125,7 +125,7 @@ class BaseController
         if (is_null($aControllers)) {
             $aControllers = static::fnGetControllersByModules();
 
-            $aModuleAliases = \Hightemp\WappTestSnotes\Modules::$aAliases;
+            $aModuleAliases = \Hightemp\WappTestSnotes\Project::$aAliases;
 
             foreach ($aModuleAliases as $sAliasClass) {
                 $aMethods = $sAliasClass::$aMethods;
@@ -145,7 +145,7 @@ class BaseController
     public static function fnGetAllAliases()
     {
         $aResult = [];
-        $aModuleAliases = \Hightemp\WappTestSnotes\Modules::$aAliases;
+        $aModuleAliases = \Hightemp\WappTestSnotes\Project::$aAliases;
 
         foreach ($aModuleAliases as $sAliasClass) {
             $aResult = array_merge($aResult, $sAliasClass::$aMethods);

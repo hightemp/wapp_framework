@@ -3,7 +3,7 @@
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers;
 
 use Exception;
-use Hightemp\WappTestSnotes\Modules;
+use Hightemp\WappTestSnotes\Project;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Request as LibRequest;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Response;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\HTML as HTMLResponse;

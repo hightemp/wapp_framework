@@ -2,7 +2,7 @@
 
 namespace Hightemp\WappTestSnotes;
 
-class Modules 
+class Project 
 {
     public static $sDefaultCommand = \Hightemp\WappTestSnotes\Modules\Core\Commands\ListCommands::class;
 
@@ -25,5 +25,10 @@ class Modules
 
     public static $aGenerators = [
         \Hightemp\WappTestSnotes\Modules\Core\Generators::class,
+    ];
+
+    public static $aControllers = [
+        Hightemp\WappTestSnotes\Modules\Core\Controllers\Index::class,
+        Hightemp\WappTestSnotes\Modules\Notes\Controllers\Index::class,
     ];
 }

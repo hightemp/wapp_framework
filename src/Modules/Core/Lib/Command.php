@@ -2,7 +2,7 @@
 
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
 
-use Hightemp\WappTestSnotes\Modules;
+use Hightemp\WappTestSnotes\Project;
 
 class Command
 {
@@ -16,7 +16,7 @@ class Command
 
     public static function fnFindCommand($sSearchCommand)
     {
-        foreach (Modules::$aCommands as $sCommandClass) {
+        foreach (Project::$aCommands as $sCommandClass) {
             foreach ($sCommandClass::$aCommands as $sCommand) {
                 if ($sCommand::FULL_COMMAND == $sSearchCommand) {
                     return new $sCommand();
@@ -30,8 +30,8 @@ class Command
         $sScriptPath = array_shift($aArgs);
         $sCommand = array_shift($aArgs);
 
-        if (!$sCommand && Modules::$sDefaultCommand) {
-            $sClass = "\\".Modules::$sDefaultCommand;
+        if (!$sCommand && Project::$sDefaultCommand) {
+            $sClass = "\\".Project::$sDefaultCommand;
             $sCommand = $sClass::FULL_COMMAND;
         }
 
