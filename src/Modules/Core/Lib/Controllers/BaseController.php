@@ -125,10 +125,10 @@ class BaseController
         if (is_null($aControllers)) {
             $aControllers = static::fnGetControllersByModules();
 
-            $aModuleAliases = \Hightemp\WappTestSnotes\Project::$aAliases;
+            $aModuleAliases = static::fnGetProjectAliases();
 
             foreach ($aModuleAliases as $sAliasClass) {
-                $aMethods = $sAliasClass::$aMethods;
+                $aMethods = $sAliasClass::fnPrepareAliases();
                 if (isset($aMethods[$sPath])) {
                     return $aMethods[$sPath];
                 }
@@ -142,13 +142,18 @@ class BaseController
         }
     }
 
+    public static function fnGetProjectAliases()
+    {
+        return \Hightemp\WappTestSnotes\Project::$aAliases;
+    }
+
     public static function fnGetAllAliases()
     {
         $aResult = [];
-        $aModuleAliases = \Hightemp\WappTestSnotes\Project::$aAliases;
+        $aProjectAliases = static::fnGetProjectAliases();
 
-        foreach ($aModuleAliases as $sAliasClass) {
-            $aResult = array_merge($aResult, $sAliasClass::$aMethods);
+        foreach ($aProjectAliases as $sAliasClass) {
+            $aResult = array_merge($aResult, $sAliasClass::fnPrepareAliases());
         }
 
         return $aResult;

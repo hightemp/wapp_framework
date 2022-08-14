@@ -2,8 +2,17 @@
 
 namespace Hightemp\WappTestSnotes\Modules\Core\Helpers;
 
+use Hightemp\WappTestSnotes\Project;
+
 class Utils 
 {
+    public static function fnExtractModuleName($sFullClassPath)
+    {
+        $sFullClassPath = str_replace(Project::$sProjectClassPath."\\Modules\\", "", $sFullClassPath);
+        $aPath = explode("\\", $sFullClassPath);
+        return $aPath[0];
+    }
+
     public static function fnIsCli()
     {
         return php_sapi_name() == "cli";

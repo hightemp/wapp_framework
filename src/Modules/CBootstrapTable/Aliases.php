@@ -3,8 +3,9 @@
 namespace Hightemp\WappTestSnotes\Modules\CBootstrapTable;
 
 use \Hightemp\WappTestSnotes\Modules\CBootstrapTable\Controllers\Demo;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseAliases;
 
-class Aliases 
+class Aliases extends BaseAliases
 {
     public static $aMethods = [
         "demo_table_01" => [Demo::class, 'fnDemoTable01HTML', 'demo_table_01.php'],

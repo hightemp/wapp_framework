@@ -3,6 +3,7 @@
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers;
 
 use Exception;
+use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
 use Hightemp\WappTestSnotes\Project;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Request as LibRequest;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Response;
@@ -16,6 +17,35 @@ use \RedBeanPHP\OODBBean;
 class CRUDController extends BaseController
 {
     public static $sModelClass = '';
+
+    public static function fnGenerateAliases()
+    {
+        $aResult = [];
+
+        $aMethods = get_class_methods(static::class);
+
+        array_map(function ($sMethod) use (&$aResult) {
+            $sReg = '/^fn(.*)(JSON|HTML)$/';
+            
+            if (!preg_match($sReg, $sMethod)) {
+                return;
+            }
+
+            $sAlias = preg_replace($sReg, "$1", $sMethod);
+            $sAlias = preg_replace_callback("/[A-Z]/", function ($aM) {
+                return "_".strtolower($aM[0]);
+            }, $sAlias);
+
+            $sModule = Utils::fnExtractModuleName(static::class);
+            $sModule = strtolower($sModule);
+
+            $sAlias = $sModule.$sAlias;
+
+            $aResult[$sAlias] = [static::class, $sMethod];
+        }, $aMethods);
+
+        return $aResult;
+    }
 
     public function fnListJSON()
     {
@@ -54,11 +84,15 @@ class CRUDController extends BaseController
 
     public function fnCreateJSON()
     {
-
+        $sModelClass = static::$sModelClass;
+        $oItem = $sModelClass::fnCreate($this->oRequest->aPost);
+        return $oItem;
     }
 
     public function fnUpdateJSON()
     {
-
+        $sModelClass = static::$sModelClass;
+        $oItem = $sModelClass::fnUpdate($this->oRequest->aPost);
+        return $oItem;
     }
 }
