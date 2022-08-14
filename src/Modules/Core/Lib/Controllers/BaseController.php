@@ -1,6 +1,6 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
+namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers;
 
 use Exception;
 use Hightemp\WappTestSnotes\Modules;
@@ -9,6 +9,7 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Response;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\HTML as HTMLResponse;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\JSON as JSONResponse;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\NotFound as NotFoundResponse;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\View;
 use Request;
 
 class BaseController
@@ -74,8 +75,14 @@ class BaseController
 
     public static function fnGetResponseFromController($aAlias, $oRequest)
     {
-        $aAlias = array_merge(['', '', ''], $aAlias);
+        if (!$aAlias) return;
+
+        $aAlias[0] ?? $aAlias[0]='';
+        $aAlias[1] ?? $aAlias[1]='';
+        $aAlias[2] ?? $aAlias[2]='';
+
         list($sController, $sMethod, $sContentTemplate) = $aAlias;
+        
         $oResponse = null;
         $sController = "\\".$sController;
         $oController = new $sController($oRequest);
@@ -195,7 +202,8 @@ class BaseController
 
                         if ($sController == $sCurrentController || $sControllerName == $sCurrentController) {
                             if (method_exists($sController, $sCurrentMethod)) {
-                                $oResponse = static::fnGetResponseFromController($sController, $sCurrentMethod, $oRequest);
+                                $aAlias = [$sController, $sCurrentMethod];
+                                $oResponse = static::fnGetResponseFromController($aAlias, $oRequest);
                                 break 2;
                             }
                         }

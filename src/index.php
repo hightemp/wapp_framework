@@ -1,6 +1,6 @@
 <?php
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseController;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Command;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Config;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Request;

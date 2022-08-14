@@ -1,6 +1,6 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Categories;
+namespace Hightemp\WappTestSnotes\Modules\Notes;
 
 class Commands 
 {

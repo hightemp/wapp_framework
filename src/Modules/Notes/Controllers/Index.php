@@ -1,9 +1,9 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Controllers;
+namespace Hightemp\WappTestSnotes\Modules\Notes\Controllers;
 
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
-use Hightemp\WappTestSnotes\Modules\Core\View;
+use Hightemp\WappTestSnotes\Modules\Notes\View;
 
 class Index extends BaseController
 {
@@ -11,10 +11,6 @@ class Index extends BaseController
 
     public function fnIndexHTML()
     {
-        View::fnSetParams(
-            [
-                "test_var" => "test"
-            ]
-        );
+
     }
 }

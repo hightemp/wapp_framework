@@ -7,21 +7,18 @@ use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Command;
 
-class ListCommands extends Command
+class Generate extends Command
 {
-    const FULL_COMMAND = "list_commands";
+    const FULL_COMMAND = "generate";
 
     public function fnExecute($aArgs)
     {
-        $aData = [];
-
-        foreach (Modules::$aCommands as $sCommandClass) {
-            $aCommands = $sCommandClass::$aCommands;
-            foreach ($aCommands as $sCommand) {
-                $aData[] = [$sCommand::FULL_COMMAND, $sCommand];
+        $sType = array_shift($aArgs);
+        foreach (Modules::$aGenerators as $sGenerator) {
+            if ($sType == $sGenerator::GENERATOR_TYPE) {
+                $sGenerator::
+                break;
             }
         }
-
-        Utils::fnPrintTable($aData);
     }
 }

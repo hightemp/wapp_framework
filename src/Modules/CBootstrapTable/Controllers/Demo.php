@@ -1,8 +1,8 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Categories\Controllers;
+namespace Hightemp\WappTestSnotes\Modules\Notes\Controllers;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseController;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
 use Hightemp\WappTestSnotes\Modules\CBootstrapTable\View;
 
 class Demo extends BaseController

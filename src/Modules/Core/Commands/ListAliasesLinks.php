@@ -3,7 +3,7 @@
 namespace Hightemp\WappTestSnotes\Modules\Core\Commands;
 
 use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseController;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Command;
 
 class ListAliasesLinks extends Command
