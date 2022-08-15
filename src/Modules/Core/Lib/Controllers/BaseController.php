@@ -172,6 +172,7 @@ class BaseController
 
         $aURI = parse_url($oRequest->aServer['REQUEST_URI']);
         $sCurrentAlias = $oRequest->aGet[static::ALIAS_KEY] ?? $aURI['path'];
+        $bIsRoot = trim($sCurrentAlias, "/") == "";
 
         if ($sCurrentAlias) {
             $aAlias = static::fnFindMethodByPathAlias($sCurrentAlias, $aControllers);
@@ -188,10 +189,6 @@ class BaseController
             }
 
             foreach ($aControllers as $sModuleClass => $aControllers) {
-                if (!$sCurrentModule) {
-                    $sCurrentModule = static::DEFAULT_MODULE;
-                }
-
                 $sModuleClassName = static::fnExtractModuleName($sModuleClass);
 
                 if ($sCurrentModule == $sModuleClassName) {
@@ -200,7 +197,7 @@ class BaseController
                         $sControllerName = array_pop($aController);
 
                         // NOTE: Метод и контроллер по умолчанию первый попавшийся
-                        if (!$sCurrentController && !$sCurrentMethod)  {
+                        if (!$sCurrentController && !$sCurrentMethod && $bIsRoot)  {
                             $sCurrentController = $sModuleClass::$sDefaultController;
                             $sCurrentMethod = $sModuleClass::$sDefaultMethod;
                         }
