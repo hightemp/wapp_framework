@@ -1,5 +1,7 @@
 <?php
 
+namespace Hightemp\WappTestSnotes;
+
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Command;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Config;
