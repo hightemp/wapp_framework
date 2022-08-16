@@ -2,12 +2,10 @@
 
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Models;
 
-use \RedBeanPHP\Facade as R;
-
 abstract class CRUDModel extends BaseModel
 {
     // NOTE: [!] Additional
-    static function fnGenerateFilterRules($aFilterRules)
+    function fnGenerateFilterRules($aFilterRules)
     {
         $sSQL = "";
 
@@ -21,30 +19,30 @@ abstract class CRUDModel extends BaseModel
         return $sSQL;
     }
 
-    static function fnPagination($iPage, $iRows)
+    function fnPagination($iPage, $iRows)
     {
         $iF = ($iPage-1)*$iRows;
         return " LIMIT {$iF}, {$iRows}";
     }
 
     // NOTE: List with pagination and filter
-    static function fnListWithPagination($aParams=[], $bUseTags=null)
+    function fnListWithPagination($aParams=[], $bUseTags=null)
     {
         $sFilterRules = " 1 = 1";
         if (isset($aParams['filterRules'])) {
             $aParams['filterRules'] = json_decode($aParams['filterRules']);
-            $sFilterRules = static::fnGenerateFilterRules($aParams['filterRules']);
+            $sFilterRules = $this->fnGenerateFilterRules($aParams['filterRules']);
         }
 
-        $sOffset = static::fnPagination($aParams['page'], $aParams['rows']);
+        $sOffset = $this->fnPagination($aParams['page'], $aParams['rows']);
         $aResult = [];
 
-        $aItems = static::findAll("{$sFilterRules} ORDER BY id DESC {$sOffset}", []);
-        $aResult['total'] = static::count("{$sFilterRules}");
+        $aItems = $this->findAll("{$sFilterRules} ORDER BY id DESC {$sOffset}", []);
+        $aResult['total'] = $this->count("{$sFilterRules}");
 
-        // if ((is_null($bUseTags) && static::$bUseTags) || $bUseTags === true) {
+        // if ((is_null($bUseTags) && $this->$bUseTags) || $bUseTags === true) {
         //     foreach ($aItems as $oItem) {
-        //         $oItem->tags = static::fnGetTagsAsStringList($oItem->id, static::$sTableName) ?: '';
+        //         $oItem->tags = $this->fnGetTagsAsStringList($oItem->id, $this->$sTableName) ?: '';
         //     }
         // }
 
@@ -54,40 +52,40 @@ abstract class CRUDModel extends BaseModel
     }
 
     // NOTE: List all
-    static function fnList($aParams=[])
+    function fnList($aParams=[])
     {
-        $aItems = static::findAll("ORDER BY id DESC", []);
+        $aItems = $this->findAll("ORDER BY id DESC", []);
         return $aItems;
     }
 
     // NOTE: List last
-    static function fnListLast($aParams=[])
+    function fnListLast($aParams=[])
     {
-        $aItems = static::findAll("ORDER BY id DESC LIMIT ?", [$aParams['limit'] ?? '10']);
+        $aItems = $this->findAll("ORDER BY id DESC LIMIT ?", [$aParams['limit'] ?? '10']);
         return $aItems;
     }
 
     // NOTE: Get one
-    static function fnGetOne($aParams=[])
+    function fnGetOne($aParams=[])
     {
-        return static::findOneByID($aParams['id']);
+        return $this->findOneByID($aParams['id']);
     }
 
     // NOTE: Delete list
-    static function fnDelete($aIDs)
+    function fnDelete($aIDs)
     {
-        return static::fnDeleteByIDs($aIDs);
+        return $this->fnDeleteByIDs($aIDs);
     }
 
     // NOTE: Create
-    static function fnCreate($aParams)
+    function fnCreate($aParams)
     {
-        return R::create($aParams);
+        return $this->create($aParams);
     }
 
     // NOTE: Update
-    static function fnUpdate($aParams)
+    function fnUpdate($aParams)
     {
-        return R::update($aParams);
+        return $this->update($aParams);
     }
 }

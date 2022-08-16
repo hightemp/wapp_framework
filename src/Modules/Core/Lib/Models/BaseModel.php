@@ -2,95 +2,117 @@
 
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Models;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\ModelExtensions\TraitExportToCSV;
-
-use \RedBeanPHP\Facade as R;
+use \Hightemp\WappTestSnotes\Modules\Core\Lib\ModelExtensions\TraitExportToCSV;
+use \Hightemp\WappTestSnotes\Modules\Core\Lib\Database;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\DatabaseConnection;
 
 abstract class BaseModel
 {
-    use TraitExportToCSV;
+    // use TraitExportToCSV;
 
+    /** @var string $sTableName таблица бд класса */
     public static $sTableName = "";
-
+    /** @var bool $bUseTags соединение к бд */
     public static $bUseTags = false;
 
-    static function count($sql = NULL, $bindings = array())
+    /** @var DatabaseConnection $oDBCon соединение к бд */
+    public $oDBCon = null;
+
+    public static function fnBuild($sConKey=null)
     {
-        return R::count(static::$sTableName, $sql, $bindings);
+        $oDBCon = Database::fnGetConnection($sConKey);
+        return new static($oDBCon);
     }
 
-    static function dispense($num = 1, $alwaysReturnArray = FALSE)
+    function __construct(DatabaseConnection $oDBCon)
     {
-        return R::dispense(static::$sTableName, $num, $alwaysReturnArray);
+        $this->oDBCon = $oDBCon;
     }
 
-    static function findOne($sql = NULL, $bindings = array())
+    function fnGetTableName()
     {
-        return R::findOne(static::$sTableName, $sql, $bindings);
+        return static::$sTableName;
     }
 
-    static function findOneByID($iID, $sql = "1=1", $bindings = array())
+    function count($sql = NULL, $bindings = array())
     {
-        return R::findOne(static::$sTableName, "id = ? AND ".$sql, [$iID, ...$bindings]);
+        return $this->oDBCon->count($this->fnGetTableName(), $sql, $bindings);
     }
 
-    static function findAll($sql = NULL, $bindings = array())
+    function dispense($num = 1, $alwaysReturnArray = FALSE)
     {
-        return R::findAll(static::$sTableName, $sql, $bindings);
+        return $this->oDBCon->dispense($this->fnGetTableName(), $num, $alwaysReturnArray);
     }
 
-    static function findAllByID($aIDs, $sql = "1=1", $bindings = array())
+    function findOne($sql = NULL, $bindings = array())
+    {
+        return $this->oDBCon->findOne($this->fnGetTableName(), $sql, $bindings);
+    }
+
+    function findOneByID($iID, $sql = "1=1", $bindings = array())
+    {
+        return $this->oDBCon->findOne($this->fnGetTableName(), "id = ? AND ".$sql, [$iID, ...$bindings]);
+    }
+
+    function findAll($sql = NULL, $bindings = array())
+    {
+        return $this->oDBCon->findAll($this->fnGetTableName(), $sql, $bindings);
+    }
+
+    function findAllByID($aIDs, $sql = "1=1", $bindings = array())
     {
         $sS = str_repeat('?,', count($aIDs) - 1) . '?';
-        return R::findAll(static::$sTableName, "id IN ($sS) AND ".$sql, [...$aIDs, ...$bindings]);
+        return $this->oDBCon->findAll($this->fnGetTableName(), "id IN ($sS) AND ".$sql, [...$aIDs, ...$bindings]);
     }
 
-    static function findOrCreate($like = array(), $sql = '', &$hasBeenCreated = false)
+    function findOrCreate($like = array(), $sql = '', &$hasBeenCreated = false)
     {
-        return R::findOrCreate(static::$sTableName, $like, $sql, $hasBeenCreated);
+        return $this->oDBCon->findOrCreate($this->fnGetTableName(), $like, $sql, $hasBeenCreated);
     }
 
-    static function fnDeleteByIDs($aIDs)
+    function trashBatch($aIDs)
     {
-        R::trashBatch(static::$sTableName, $aIDs);
+        return $this->oDBCon->trashBatch($this->fnGetTableName(), $aIDs);
     }
 
-    static function fnGetCurrentDateTime()
+    function trashAll($aIDs)
     {
-        return date("Y-m-d H:i:s");
+        return $this->oDBCon->trashAll($aIDs);
     }
 
-    static function fnGetCurrentTimestamp()
+    function create($aData=[])
     {
-        return time();
-    }
-
-    static function create($aData=[])
-    {
-        $oItem = R::dispense(static::$sTableName);
+        $oItem = $this->oDBCon->dispense($this->fnGetTableName());
 
         if ($aData) {
-            static::update($aData, $oItem);
+            $this->update($aData, $oItem);
         }
 
         return $oItem;
     }
 
-    static function update($aData=[], $oItem=null)
+    function update($aData=[], $oItem=null)
     {
         if (!$oItem) {
-            $oItem = R::findForUpdate(static::$sTableName, "id = ?", [$aData["id"]]);
+            $oItem = $this->oDBCon->findForUpdate($this->fnGetTableName(), "id = ?", [$aData["id"]]);
         }
 
         $oItem->import($aData);
-        R::store($oItem);
+        $this->oDBCon->store($oItem);
     }
 
-    // abstract static function fnCreate($aParams=[]);
-    // abstract static function fnUpdate($aParams=[]);
-    // abstract static function fnDelete(array $aIDs);
-    // abstract static function fnDeleteRecursive($aIDs);
-    // abstract static function fnList($aParams=[]);
-    // abstract static function fnListForCategory($aParams=[]);
-    // abstract static function fnGetOne($aParams=[], $bAddAdditionalFields=true);
+    function fnDeleteByIDs($aIDs)
+    {
+        $this->oDBCon->trashBatch($this->fnGetTableName(), $aIDs);
+    }
+
+    function fnGetCurrentDateTime()
+    {
+        return date("Y-m-d H:i:s");
+    }
+
+    function fnGetCurrentTimestamp()
+    {
+        return time();
+    }
 }

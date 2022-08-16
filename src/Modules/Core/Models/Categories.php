@@ -1,7 +1,5 @@
 <?php
 
-require_once("BaseModel.php");
-
 define('T_CATEGORIES', 'tcategories');
 
 class Notes extends BaseModel

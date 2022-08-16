@@ -3,7 +3,6 @@
     "autoload": {
         "psr-4": {
             "Hightemp\\WappTestSnotes\\": "src/"
-            "RedBeanPHP\\": "src/lib/RedBeanPHP"
         }
     },
     "authors": [
@@ -12,5 +11,7 @@
             "email": "a.panov@avtoexpress.org"
         }
     ],
-    "require": {}
+    "require": {
+        "gabordemooij/redbean": "^5.7"
+    }
 }

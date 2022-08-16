@@ -2,10 +2,13 @@
 
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Models;
 
-use \RedBeanPHP\Facade as R;
-
+/**
+ * Модеь для работы с иерархическими данными
+ */
 abstract class HierarchicalBaseModel extends BaseModel
 {
+    // FIXME: Нужно переработать в Nested sets
+    
     public static $sParentTableName = "";
     public static $sParentKey = "";
     public static $sChildKey = "";
@@ -18,51 +21,51 @@ abstract class HierarchicalBaseModel extends BaseModel
      * @param  array $bindings
      * @return OODBBean[]
      */
-    static function findChildrenFor($oNode, $sql = NULL, $bindings = array())
+    function findChildrenFor($oNode, $sql = NULL, $bindings = array())
     {
-        return static::findChildren($oNode->id, $sql, $bindings);
+        return $this->findChildren($oNode->id, $sql, $bindings);
     }
 
-    static function findChildren($iParentID, $sql = NULL, $bindings = array())
+    function findChildren($iParentID, $sql = NULL, $bindings = array())
     {
-        $sParentKey = static::$sParentKey;
+        $sParentKey = $this->sParentKey;
 
-        $aResult = R::findAll(
-            static::$sTableName, 
-            "{$sParentKey} = ?".$sql,
+        $aResult = $this->oDBCon->findAll(
+            static::$sTableName,
+            "{$sParentKey} = ?" . $sql,
             [$iParentID, ...$bindings]
         );
 
         return $aResult;
     }
 
-    static function findOneByRelation($sql = NULL, $bindings = array())
+    function findOneByRelation($sql = NULL, $bindings = array())
     {
-        return R::findOne(static::$sParentTableName, $sql, $bindings);
+        return $this->oDBCon->findOne($this->sParentTableName, $sql, $bindings);
     }
 
-    static function fnDeleteRecursiveByIDs($aIDs)
+    function fnDeleteRecursiveByIDs($aIDs)
     {
         foreach ($aIDs as $iID) {
-            $oNode = static::findOneByID($iID);
-            $aChildren = static::findChildrenFor($oNode);
+            $oNode = $this->findOneByID($iID);
+            $aChildren = $this->findChildrenFor($oNode);
             if ($aChildren) {
-                static::fnDeleteRecursiveByObjects($aChildren);
+                $this->fnDeleteRecursiveByObjects($aChildren);
             }
         }
 
-        R::trashBatch(static::$sTableName, $aIDs);
+        $this->trashBatch($aIDs);
     }
 
-    static function fnDeleteRecursiveByObjects($aNodes)
+    function fnDeleteRecursiveByObjects($aNodes)
     {
         foreach ($aNodes as $oNode) {
-            $aChildren = static::findChildrenFor($oNode);
+            $aChildren = $this->findChildrenFor($oNode);
             if ($aChildren) {
-                static::fnDeleteRecursiveByObjects($aChildren);
+                $this->fnDeleteRecursiveByObjects($aChildren);
             }
         }
 
-        R::trashAll($aNodes);
+        $this->trashAll($aNodes);
     }
 }

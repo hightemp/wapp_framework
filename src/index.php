@@ -1,7 +1,5 @@
 <?php
 
-namespace Hightemp\WappTestSnotes;
-
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Command;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Config;
@@ -14,7 +12,7 @@ if (defined('DEBUG')) {
     error_reporting(E_ALL);
 }
 
-Config::fnLoad();
+Config::fnInit();
 
 if (Utils::fnIsCli()) {
     $iExitCode = (int) Command::fnParseCliArgs($argv);

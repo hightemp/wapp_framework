@@ -3,21 +3,80 @@
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
 
 use Hightemp\WappTestSnotes\Modules\Core\Lib\MigrationLogger;
-use RedBeanPHP\Facade as R;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\DatabaseConnection;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\DatabaseConnectionOptions;
 
 class Database
 {
-    const SQL_MIGRATIONS_PATH = ROOT_PATH."/sql/";
-    const SQL_MIGRATIONS_DATE_FORMAT = 'Y_m_d__H_i_s';
+    /** @var DatabaseConnection[] $aDBConnections NOTE: Коллекция соединений к БД */
+    public static $aDBConnections = [];
 
-    public static function fnPrepareMigration()
+    public static $sDefaultConnectionKey = "default";
+    public static $bInitialized = false;
+
+    public static function fnInit()
     {
-        $sF = sprintf(static::SQL_MIGRATIONS_PATH.'migration_%s.sql', date(static::SQL_MIGRATIONS_DATE_FORMAT));
-        $oMigrationLogger = new MigrationLogger($sF);
+        // NOTE: Создаем БД соделинение из env
+        $oO = new DatabaseConnectionOptions();
+        $oO->sProtocol = getenv("DATABASE_PROTOCOL") ?? "";
+        $oO->sDB = getenv("DATABASE_DB") ?? "";
+        $oO->sHost = getenv("DATABASE_HOST") ?? "";
+        $oO->sPort = getenv("DATABASE_PORT") ?? "";
+        $oO->sSocket = getenv("DATABASE_SOCKET") ?? "";
+        $oO->sCharset = getenv("DATABASE_CHARSET") ?? "";
+        $oO->sUser = getenv("DATABASE_USER") ?? "";
+        $oO->sPassword = getenv("DATABASE_PASSWORD") ?? "";
 
-        R::getDatabaseAdapter()
-            ->getDatabase()
-            ->setLogger($oMigrationLogger)
-            ->setEnableLogging(TRUE);
+        Database::fnCreateDefaultConnection($oO);    
+        
+        static::$bInitialized = true;
+    }
+
+    public static function fnCreateConnection($sKey, DatabaseConnectionOptions $oDBOptions)
+    {
+        $oDBCon = new DatabaseConnection($oDBOptions);
+        static::$aDBConnections[$sKey] = $oDBCon;
+
+        return $oDBCon;
+    }
+
+    public static function fnCreateDefaultConnection(DatabaseConnectionOptions $oDBOptions)
+    {
+        return static::fnCreateConnection(static::$sDefaultConnectionKey, $oDBOptions);
+    }
+
+    public static function fnSetDefaultConnection($sKey)
+    {
+        static::$sDefaultConnectionKey = $sKey;
+    }
+
+    public static function fnGetDefaultConnection()
+    {
+        return static::$aDBConnections[static::$sDefaultConnectionKey];
+    }
+
+    public static function fnGetConnection($sKey=null)
+    {
+        if (!static::$bInitialized) {
+            static::fnInit();
+        }
+
+        return $sKey ? static::$aDBConnections[$sKey] : static::$aDBConnections[static::$sDefaultConnectionKey];
+    }
+
+    public static function fnAddConnection($sKey, DatabaseConnection $oCon)
+    {
+        static::$aDBConnections[$sKey] = $oCon;
+    }
+
+    public static function fnCloseConnection($sKey)
+    {
+        static::$aDBConnections[$sKey]->close();
+    }
+
+    public static function fnRemoveConnection($sKey)
+    {
+        static::fnCloseConnection($sKey);
+        unset(static::$aDBConnections[$sKey]);
     }
 }

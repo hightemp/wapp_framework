@@ -47,52 +47,59 @@ class CRUDController extends BaseController
         return $aResult;
     }
 
+    public function _fnBuildModel()
+    {
+        /** @var CRUDModel $oModel */
+        $oModel = (static::$sModelClass)::fnBuild();
+        return $oModel;
+    }
+
     public function fnListJSON()
     {
-        $sModelClass = static::$sModelClass;
-        $aList = $sModelClass::fnList($this->oRequest->aPost);
+        $oModel = $this->_fnBuildModel();
+        $aList = $oModel->fnList($this->oRequest->aPost);
         return $aList;
     }
 
     public function fnListWithPaginationJSON()
     {
-        $sModelClass = static::$sModelClass;
-        $aList = $sModelClass::fnListWithPagination($this->oRequest->aPost);
+        $oModel = $this->_fnBuildModel();
+        $aList = $oModel->fnListWithPagination($this->oRequest->aPost);
         return $aList;
     }
 
     public function fnListLastJSON()
     {
-        $sModelClass = static::$sModelClass;
-        $aList = $sModelClass::fnListLast($this->oRequest->aPost);
+        $oModel = $this->_fnBuildModel();
+        $aList = $oModel->fnListLast($this->oRequest->aPost);
         return $aList;
     }
 
     public function fnDeleteJSON()
     {
-        $sModelClass = static::$sModelClass;
-        $aList = $sModelClass::fnDelete([$this->oRequest->aPost['id']]);
+        $oModel = $this->_fnBuildModel();
+        $aList = $oModel->fnDelete([$this->oRequest->aPost['id']]);
         return $aList;
     }
 
     public function fnDeleteListJSON()
     {
-        $sModelClass = static::$sModelClass;
-        $aList = $sModelClass::fnDelete($this->oRequest->aPost['ids']);
+        $oModel = $this->_fnBuildModel();
+        $aList = $oModel->fnDelete($this->oRequest->aPost['ids']);
         return $aList;
     }
 
     public function fnCreateJSON()
     {
-        $sModelClass = static::$sModelClass;
-        $oItem = $sModelClass::fnCreate($this->oRequest->aPost);
+        $oModel = $this->_fnBuildModel();
+        $oItem = $oModel->fnCreate($this->oRequest->aPost);
         return $oItem;
     }
 
     public function fnUpdateJSON()
     {
-        $sModelClass = static::$sModelClass;
-        $oItem = $sModelClass::fnUpdate($this->oRequest->aPost);
+        $oModel = $this->_fnBuildModel();
+        $oItem = $oModel->fnUpdate($this->oRequest->aPost);
         return $oItem;
     }
 }
