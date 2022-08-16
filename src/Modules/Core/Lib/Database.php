@@ -18,6 +18,7 @@ class Database
     {
         // NOTE: Создаем БД соделинение из env
         $oO = new DatabaseConnectionOptions();
+
         $oO->sProtocol = getenv("DATABASE_PROTOCOL") ?? "";
         $oO->sDB = getenv("DATABASE_DB") ?? "";
         $oO->sHost = getenv("DATABASE_HOST") ?? "";
@@ -35,6 +36,7 @@ class Database
     public static function fnCreateConnection($sKey, DatabaseConnectionOptions $oDBOptions)
     {
         $oDBCon = new DatabaseConnection($oDBOptions);
+
         static::$aDBConnections[$sKey] = $oDBCon;
 
         return $oDBCon;

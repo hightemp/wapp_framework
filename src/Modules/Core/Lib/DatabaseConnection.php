@@ -34,9 +34,15 @@ class DatabaseConnection
     {
         $this->oDBOptions = $oDBOptions;
 
-        R::setup($oDBOptions->fnPrepareDSN(), $oDBOptions->sUser, $oDBOptions->sPassword, false);
+        $sDSN = $oDBOptions->fnPrepareDSN();
 
-        if(!R::testConnection()) throw new \Exception("no db connection");
+        if (!is_file($oDBOptions->sDB)) {
+            file_put_contents($oDBOptions->sDB, '');
+        }
+
+        R::setup($sDSN, $oDBOptions->sUser, $oDBOptions->sPassword, false);
+
+        if(!R::testConnection()) throw new \Exception("<h1>No db connection</h1>");
     }
 
     public function close()

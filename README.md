@@ -37,11 +37,19 @@
 - start_dev_server.sh - запускает dev-сервер (включает .env)
 - index.php - точка входа
 
-## env
+## Параметры env
 
 - DEBUG=1 - включаем отладку
 - SERVER_PORT=9292 - порт dev сервера
 - SERVER_HOST=0.0.0.0 - хост dev сервера
+- DATABASE_PROTOCOL=sqlite
+- DATABASE_DB=./data/dbfile.db
+- DATABASE_HOST=
+- DATABASE_PORT=
+- DATABASE_SOCKET=
+- DATABASE_CHARSET=
+- DATABASE_USER=
+- DATABASE_PASSWORD=
 
 ### Что нужно прописывать в массивах
 
@@ -63,3 +71,7 @@
         - $aModules - добавить класс модуля
         - $aAliases - добавить яльясы модуля
         - $aCommands - добавить комманды модуля
+
+### Подключение к БД
+
+Подключение происходит при первом использовании модели
