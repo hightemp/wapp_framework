@@ -4,6 +4,7 @@ namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
 
 class Request
 {
+    public $aRequest = [];
     public $aGet = [];
     public $aPost = [];
     public $aFiles = [];
@@ -11,6 +12,7 @@ class Request
     public $aServer = [];
 
     public function __construct(
+        $aRequest=[],
         $aGet=[], 
         $aPost=[], 
         $aFiles=[],
@@ -18,6 +20,7 @@ class Request
         $aServer=[]
     )
     {
+        $this->aRequest = $aRequest;
         $this->aGet = $aGet;
         $this->aPost = $aPost;
         $this->aFiles = $aFiles;
@@ -28,6 +31,7 @@ class Request
     public static function fnCreateRequest()
     {
         return new static(
+            $_REQUEST,
             $_GET, 
             $_POST, 
             $_FILES,
