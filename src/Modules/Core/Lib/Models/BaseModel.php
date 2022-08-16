@@ -10,8 +10,8 @@ abstract class BaseModel
 {
     // use TraitExportToCSV;
 
-    /** @var string $sTableName таблица бд класса */
-    public static $sTableName = "";
+    /** @var string TABLE_NAME таблица бд класса */
+    public const TABLE_NAME = "";
     /** @var bool $bUseTags соединение к бд */
     public static $bUseTags = false;
 
@@ -31,7 +31,7 @@ abstract class BaseModel
 
     function fnGetTableName()
     {
-        return static::$sTableName;
+        return static::TABLE_NAME;
     }
 
     function count($sql = NULL, $bindings = array())
