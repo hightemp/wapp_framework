@@ -18,8 +18,8 @@ class Notes extends BaseModel
         $oCategory->created_at = static::fnGetCurrentDateTime();
         $oCategory->updated_at = static::fnGetCurrentDateTime();
         $oCategory->timestamp = static::fnGetCurrentTimestamp();
-        $oCategory->name = isset($aParams['name']) ?: "";
-        $oCategory->description = isset($aParams['description']) ?: "";
+        $oCategory->name = isset($aParams['name']) ? $aParams['name'] : "";
+        $oCategory->description = isset($aParams['description']) ? $aParams['description'] : "";
     
         if (isset($aParams['category_id']) && !empty($aParams['category_id'])) {
             $oCategory->tcategories = static::findOneCategory("id = ?", [$aParams['category_id']]);

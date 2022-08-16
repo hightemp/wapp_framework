@@ -33,7 +33,7 @@ class View
     {
         self::$aVars['sHTMLHeader'] = self::$sHTMLHeader;
         self::$aVars['sStaticPath'] = static::STATIC_PATH;
-        self::isset($aVars['sTitle']) ?: self::$aVars['sTitle'] = '';
+        isset(self::$aVars['sTitle']) ?: self::$aVars['sTitle'] = '';
 
         self::$aVars['oTagA'] = new TagA();
         self::$aVars['oTagAliasA'] = new TagAliasA();
@@ -44,7 +44,7 @@ class View
 
     public static function fnPrepareContentVar($sContentTemplate=null)
     {
-        self::isset($aVars['sContent']) ?: self::$aVars['sContent'] = static::fnRenderContent($sContentTemplate);
+        isset(self::$aVars['sContent']) ?: self::$aVars['sContent'] = static::fnRenderContent($sContentTemplate);
     }
 
     public static function fnAddVars($aVars)

@@ -43,10 +43,10 @@ class Utils
 
     public static function fnPrintTable($aData, $aOptions=[])
     {
-        $aHeaders = isset($aOptions['headers']) ?: [];
+        $aHeaders = isset($aOptions['headers']) ? $aOptions['headers'] : [];
 
         if (!$aHeaders) {
-            $aDefaultRow = isset($aData[0]) ?: [];
+            $aDefaultRow = isset($aData[0]) ? $aData[0] : [];
             $aMaxLength = array_fill(0, count($aDefaultRow), 0);
 
             foreach ($aData as $iN => $aRow) {
