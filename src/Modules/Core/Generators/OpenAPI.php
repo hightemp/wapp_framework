@@ -6,6 +6,7 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseGenerator;
 
 class OpenAPI extends BaseGenerator
 {
+    const TEMPLATES_PATH = __DIR__."/../templates";
     const GENERATOR_TYPE = "openapi";
 
     public static $aDefaultOptions = [

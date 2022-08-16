@@ -26,7 +26,9 @@ class Project
     ];
 
     public static $aGenerators = [
-        \Hightemp\WappTestSnotes\Modules\Core\Generators::class,
+        \Hightemp\WappTestSnotes\Modules\Core\Generators\Compgen::class,
+        \Hightemp\WappTestSnotes\Modules\Core\Generators\Command::class,
+        \Hightemp\WappTestSnotes\Modules\Core\Generators\OpenAPI::class,
     ];
 
     public static $aControllers = [

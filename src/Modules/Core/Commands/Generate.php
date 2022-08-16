@@ -16,9 +16,12 @@ class Generate extends Command
         $sType = array_shift($aArgs);
         foreach (Project::$aGenerators as $sGenerator) {
             if ($sType == $sGenerator::GENERATOR_TYPE) {
-                $sGenerator::
-                break;
+                /** @var BaseGenerator */
+                $sGenerator::fnGenerate($aArgs);
+                die("\n[+] Сгенерировано\n");
             }
         }
+
+        die("\n[-] Генератор не найден\n");
     }
 }
