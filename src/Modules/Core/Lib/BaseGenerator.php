@@ -68,7 +68,7 @@ class BaseGenerator
         $sOutputContent = preg_replace_callback(
             "/\{\{(.*?)\}\}/", 
             function ($aM) use ($aVars) {
-                return $aVars[$aM[1]] ?? '';
+                return $aVars[$aM[1]] ?: '';
             },
             $sTemplateContent
         );
@@ -76,7 +76,7 @@ class BaseGenerator
         $sOutputPath = preg_replace_callback(
             "/\{\{(.*?)\}\}/", 
             function ($aM) use ($aVars) {
-                return $aVars[$aM[1]] ?? '';
+                return $aVars[$aM[1]] ?: '';
             },
             $sOutputPath
         );

@@ -10,11 +10,11 @@ class TagBootstrapTable extends BaseTag
     public function __invoke($aData, $aHeaders, $aAttr=[])
     {
         $oTag = new TagTable();
-        $aAttr['class'] ?? $aAttr['class'] = '';
+        $aAttr['class'] ?: $aAttr['class'] = '';
         $aAttr['class'] .= ' ';
 
         $aAttr['data-toggle'] = "table";
-        $aAttr['data-height'] ?? $aAttr['data-height'] = "100%";
+        $aAttr['data-height'] ?: $aAttr['data-height'] = "100%";
 
         $aAttr['data-show-refresh'] ="true";
         $aAttr['data-show-toggle'] ="true";

@@ -19,14 +19,14 @@ class Database
         // NOTE: Создаем БД соделинение из env
         $oO = new DatabaseConnectionOptions();
 
-        $oO->sProtocol = getenv("DATABASE_PROTOCOL") ?? "";
-        $oO->sDB = getenv("DATABASE_DB") ?? "";
-        $oO->sHost = getenv("DATABASE_HOST") ?? "";
-        $oO->sPort = getenv("DATABASE_PORT") ?? "";
-        $oO->sSocket = getenv("DATABASE_SOCKET") ?? "";
-        $oO->sCharset = getenv("DATABASE_CHARSET") ?? "";
-        $oO->sUser = getenv("DATABASE_USER") ?? "";
-        $oO->sPassword = getenv("DATABASE_PASSWORD") ?? "";
+        $oO->sProtocol = getenv("DATABASE_PROTOCOL") ?: "";
+        $oO->sDB = getenv("DATABASE_DB") ?: "";
+        $oO->sHost = getenv("DATABASE_HOST") ?: "";
+        $oO->sPort = getenv("DATABASE_PORT") ?: "";
+        $oO->sSocket = getenv("DATABASE_SOCKET") ?: "";
+        $oO->sCharset = getenv("DATABASE_CHARSET") ?: "";
+        $oO->sUser = getenv("DATABASE_USER") ?: "";
+        $oO->sPassword = getenv("DATABASE_PASSWORD") ?: "";
 
         Database::fnCreateDefaultConnection($oO);    
         

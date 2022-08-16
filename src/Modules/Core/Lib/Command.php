@@ -47,7 +47,7 @@ class Command
         try {
             $oCommand->fnExecute($aArgs);
         } catch (\Exception $oException) {
-            $iExitCode = $oException->getCode() ?? 200;
+            $iExitCode = $oException->getCode() ?: 200;
             echo $oException->getTraceAsString();
             echo "\n";
             echo "\n";

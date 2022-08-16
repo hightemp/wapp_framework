@@ -141,9 +141,9 @@ class Bean extends Base
 	 * is supposed to be associated to a Person.
 	 *
 	 * $post = R::findOne('post');
-	 * $a = $post->person ?? null;
+	 * $a = $post->person ?: null;
 	 * $b = $post->person;
-	 * $c = $post->person ?? null;
+	 * $c = $post->person ?: null;
 	 *
 	 * var_dump($a ? 'Person A is named ' . $a->name : 'No person A');
 	 * var_dump($b ? 'Person B is named ' . $b->name : 'No person B');

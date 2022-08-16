@@ -42,7 +42,7 @@ class BaseController
         $aModules = Project::$aModules;
         $aControllers = [];
         foreach ($aModules as $sModule) {
-            $aControllers[$sModule] ?? $aControllers[$sModule] = [];
+            $aControllers[$sModule] ?: $aControllers[$sModule] = [];
             $aControllers[$sModule] = array_merge(
                 $aControllers[$sModule], 
                 $sModule::$aControllers
@@ -94,9 +94,9 @@ class BaseController
     {
         if (!$aAlias) return;
 
-        $aAlias[0] ?? $aAlias[0]='';
-        $aAlias[1] ?? $aAlias[1]='';
-        $aAlias[2] ?? $aAlias[2]='';
+        $aAlias[0] ?: $aAlias[0]='';
+        $aAlias[1] ?: $aAlias[1]='';
+        $aAlias[2] ?: $aAlias[2]='';
 
         list($sController, $sMethod, $sContentTemplate) = $aAlias;
         
@@ -183,12 +183,12 @@ class BaseController
         View::$aVars['oRequest'] = $oRequest;
 
         $oResponse = null;
-        $sCurrentMethod = $oRequest->aGet[static::METHOD_KEY] ?? '';
-        $sCurrentController = $oRequest->aGet[static::CONTROLLER_KEY] ?? '';
-        $sCurrentModule = $oRequest->aGet[static::MODULE_KEY] ?? static::DEFAULT_MODULE;
+        $sCurrentMethod = $oRequest->aGet[static::METHOD_KEY] ?: '';
+        $sCurrentController = $oRequest->aGet[static::CONTROLLER_KEY] ?: '';
+        $sCurrentModule = $oRequest->aGet[static::MODULE_KEY] ?: static::DEFAULT_MODULE;
 
         $aURI = parse_url($oRequest->aServer['REQUEST_URI']);
-        $sCurrentAlias = $oRequest->aGet[static::ALIAS_KEY] ?? $aURI['path'];
+        $sCurrentAlias = $oRequest->aGet[static::ALIAS_KEY] ?: $aURI['path'];
         $bIsRoot = trim($sCurrentAlias, "/") == "";
 
         if ($sCurrentAlias) {
@@ -230,7 +230,7 @@ class BaseController
                                 Request::$sCurrentModuleClass = $sModuleClass;
                                 Request::$sCurrentMethod = $sCurrentMethod;
                                 Request::$sCurrentControllerClass = $sCurrentController;
-                                
+
                                 $oResponse = static::fnGetResponseFromController($aAlias, $oRequest);
                                 break 2;
                             }
