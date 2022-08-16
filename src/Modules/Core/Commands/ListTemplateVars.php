@@ -21,7 +21,7 @@ class ListTemplateVars extends Command
             $sViewClass::fnPrepareVars();
             $aVars[] = array_keys(View::$aVars);
             $iC = count($aVars);
-            $aDiff = array_diff($aVars[$iC-1], $aVars[$iC-2] ?: []);
+            $aDiff = array_diff($aVars[$iC-1], isset($aVars[$iC-2]) ?: []);
 
             foreach ($aDiff as $sVarName) {
                 $aData[] = [$sVarName, $sViewClass];

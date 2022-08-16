@@ -32,9 +32,9 @@ class ImagesCollections extends BaseModel
         $oItem->created_at = static::fnGetCurrentDateTime();
         $oItem->updated_at = static::fnGetCurrentDateTime();
         $oItem->timestamp = static::fnGetCurrentTimestamp();
-        $oItem->name = $aParams['name'] ?: "";
-        $oItem->description = $aParams['description'] ?: "";
-        $oItem->language = $aParams['language'] ?: static::L_RU;
+        $oItem->name = isset($aParams['name']) ?: "";
+        $oItem->description = isset($aParams['description']) ?: "";
+        $oItem->language = isset($aParams['language']) ?: static::L_RU;
     
         $oItem->content = isset($aParams['content']) && $aParams['content'] ? $aParams['content'] : static::$sEmptyValue;
     
@@ -59,9 +59,9 @@ class ImagesCollections extends BaseModel
 
         $oItem->updated_at = static::fnGetCurrentDateTime();
 
-        if (isset($aParams['name'])) $oItem->name = $aParams['name'] ?: "";
-        if (isset($aParams['description'])) $oItem->description = $aParams['description'] ?: "";
-        if (isset($aParams['content'])) $oItem->content = $aParams['content'] ?: static::$sEmptyValue;
+        if (isset($aParams['name'])) $oItem->name = isset($aParams['name']) ?: "";
+        if (isset($aParams['description'])) $oItem->description = isset($aParams['description']) ?: "";
+        if (isset($aParams['content'])) $oItem->content = isset($aParams['content']) ?: static::$sEmptyValue;
     
         if (isset($aParams['category_id']) && !empty($aParams['category_id'])) {
             $oItem->tcategories = static::findOneCategory("id = ?", [$aParams['category_id']]);
@@ -150,7 +150,7 @@ class ImagesCollections extends BaseModel
             $oItem->category = $oItem->tcategories->name;
             $oItem->category_id = $oItem->tcategories_id;
             // NOTE: Для tagcombobox возвращяем null
-            $oItem->tags = static::fnGetTagsAsStringList($aParams['id']) ?: null;
+            $oItem->tags = static::fnGetTagsAsStringList(isset($aParams['id'])) ?: null;
         }
 
         return $oItem;

@@ -124,7 +124,7 @@ class Images extends BaseModel
         $oItem->updated_at = static::fnGetCurrentDateTime();
         $oItem->timestamp = static::fnGetCurrentTimestamp();
 
-        $oItem->description = $aParams['description'] ?: "";
+        $oItem->description = isset($aParams['description']) ?: "";
 
 
         $oItem->name = $aParams['name'];
@@ -161,9 +161,9 @@ class Images extends BaseModel
 
         $oItem->updated_at = static::fnGetCurrentDateTime();
 
-        if (isset($aParams['name'])) $oItem->name = $aParams['name'] ?: "";
-        if (isset($aParams['description'])) $oItem->description = $aParams['description'] ?: "";
-        if (isset($aParams['content'])) $oItem->content = $aParams['content'] ?: static::$sEmptyValue;
+        if (isset($aParams['name'])) $oItem->name = isset($aParams['name']) ?: "";
+        if (isset($aParams['description'])) $oItem->description = isset($aParams['description']) ?: "";
+        if (isset($aParams['content'])) $oItem->content = isset($aParams['content']) ?: static::$sEmptyValue;
     
         if (isset($aParams['images_collections_id']) && !empty($aParams['images_collections_id'])) {
             $oItem->timagescollections = static::findOneCategory("id = ?", [$aParams['images_collections_id']]);
@@ -247,7 +247,7 @@ class Images extends BaseModel
             $oItem->images_collection = $oItem->timagescollections->name;
             $oItem->images_collections_id = $oItem->timagescollections_id;
             // NOTE: Для tagcombobox возвращяем null
-            $oItem->tags = static::fnGetTagsAsStringList($aParams['id']) ?: null;
+            $oItem->tags = static::fnGetTagsAsStringList(isset($aParams['id'])) ?: null;
         }
 
         return $oItem;

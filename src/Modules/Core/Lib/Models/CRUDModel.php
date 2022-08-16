@@ -42,7 +42,7 @@ abstract class CRUDModel extends BaseModel
 
         // if ((is_null($bUseTags) && $this->$bUseTags) || $bUseTags === true) {
         //     foreach ($aItems as $oItem) {
-        //         $oItem->tags = $this->fnGetTagsAsStringList($oItem->id, $this->$sTableName) ?: '';
+        //         $oItem->tags = $this->fnGetTagsAsStringList($oItem->id, $this->isset($sTableName)) ?: '';
         //     }
         // }
 
@@ -61,7 +61,7 @@ abstract class CRUDModel extends BaseModel
     // NOTE: List last
     function fnListLast($aParams=[])
     {
-        $aItems = $this->findAll("ORDER BY id DESC LIMIT ?", [$aParams['limit'] ?: '10']);
+        $aItems = $this->findAll("ORDER BY id DESC LIMIT ?", [isset($aParams['limit']) ?: '10']);
         return $aItems;
     }
 

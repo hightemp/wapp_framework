@@ -28,7 +28,7 @@ class TagTable extends BaseTag
         foreach ($aData as $aRow) {
             $sHTML .= "<tr>";
             foreach ($aHeaders as $iI => $mHeader) {
-                $sCell = $aRow[$iI] ?: '';
+                $sCell = isset($aRow[$iI]) ?: '';
                 $sHTML .= "<td>";
                 $sHTML .= $sCell;
                 $sHTML .= "</td>";

@@ -42,7 +42,7 @@ class BaseController
         $aModules = Project::$aModules;
         $aControllers = [];
         foreach ($aModules as $sModule) {
-            $aControllers[$sModule] ?: $aControllers[$sModule] = [];
+            isset($aControllers[$sModule]) ?: $aControllers[$sModule] = [];
             $aControllers[$sModule] = array_merge(
                 $aControllers[$sModule], 
                 $sModule::$aControllers
@@ -94,9 +94,9 @@ class BaseController
     {
         if (!$aAlias) return;
 
-        $aAlias[0] ?: $aAlias[0]='';
-        $aAlias[1] ?: $aAlias[1]='';
-        $aAlias[2] ?: $aAlias[2]='';
+        isset($aAlias[0]) ?: $aAlias[0]='';
+        isset($aAlias[1]) ?: $aAlias[1]='';
+        isset($aAlias[2]) ?: $aAlias[2]='';
 
         list($sController, $sMethod, $sContentTemplate) = $aAlias;
         

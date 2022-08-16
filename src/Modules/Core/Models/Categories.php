@@ -18,8 +18,8 @@ class Notes extends BaseModel
         $oCategory->created_at = static::fnGetCurrentDateTime();
         $oCategory->updated_at = static::fnGetCurrentDateTime();
         $oCategory->timestamp = static::fnGetCurrentTimestamp();
-        $oCategory->name = $aParams['name'] ?: "";
-        $oCategory->description = $aParams['description'] ?: "";
+        $oCategory->name = isset($aParams['name']) ?: "";
+        $oCategory->description = isset($aParams['description']) ?: "";
     
         if (isset($aParams['category_id']) && !empty($aParams['category_id'])) {
             $oCategory->tcategories = static::findOneCategory("id = ?", [$aParams['category_id']]);
@@ -42,8 +42,8 @@ class Notes extends BaseModel
 
         $oCategory->updated_at = static::fnGetCurrentDateTime();
 
-        if (isset($aParams['name'])) $oCategory->name = $aParams['name'] ?: "";
-        if (isset($aParams['description'])) $oCategory->description = $aParams['description'] ?: "";
+        if (isset($aParams['name'])) $oCategory->name = isset($aParams['name']) ?: "";
+        if (isset($aParams['description'])) $oCategory->description = isset($aParams['description']) ?: "";
     
         if (isset($aParams['category_id']) && !empty($aParams['category_id'])) {
             $oCategory->tcategories = static::findOneCategory("id = ?", [$aParams['category_id']]);
@@ -161,7 +161,7 @@ class Notes extends BaseModel
             $oCategory->category = $oCategory->tcategories->name;
             $oCategory->category_id = $oCategory->tcategories_id;
             // NOTE: Для tagcombobox возвращяем null
-            $oCategory->tags = static::fnGetTagsAsStringList($aParams['id']) ?: null;
+            $oCategory->tags = static::fnGetTagsAsStringList(isset($aParams['id'])) ?: null;
         }
 
         return $oCategory;

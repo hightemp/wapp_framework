@@ -15,14 +15,14 @@ class Groups extends BaseModel
         $oGroup->created_at = static::fnGetCurrentDateTime();
         $oGroup->updated_at = static::fnGetCurrentDateTime();
         $oGroup->timestamp = static::fnGetCurrentTimestamp();
-        $oGroup->name = $aParams['name'] ?: "";
-        $oGroup->description = $aParams['description'] ?: "";
+        $oGroup->name = isset($aParams['name']) ?: "";
+        $oGroup->description = isset($aParams['description']) ?: "";
     
         if (isset($aParams['content'])) {
             if (isset($aParams['option_upload_images'])) {
                 fnUploadFromContent($aParams['content']);
             }
-            $oGroup->content = $aParams['content'] ?: "";
+            $oGroup->content = isset($aParams['content']) ?: "";
         }
     
         if (isset($aParams['category_id']) && !empty($aParams['category_id'])) {
@@ -46,9 +46,9 @@ class Groups extends BaseModel
 
         $oGroup->updated_at = static::fnGetCurrentDateTime();
 
-        if (isset($aParams['name'])) $oGroup->name = $aParams['name'] ?: "";
-        if (isset($aParams['description'])) $oGroup->description = $aParams['description'] ?: "";
-        if (isset($aParams['content'])) $oGroup->content = $aParams['content'] ?: "";
+        if (isset($aParams['name'])) $oGroup->name = isset($aParams['name']) ?: "";
+        if (isset($aParams['description'])) $oGroup->description = isset($aParams['description']) ?: "";
+        if (isset($aParams['content'])) $oGroup->content = isset($aParams['content']) ?: "";
     
         if (isset($aParams['category_id']) && !empty($aParams['category_id'])) {
             $oGroup->tcategories = static::findOneCategory("id = ?", [$aParams['category_id']]);
@@ -128,7 +128,7 @@ class Groups extends BaseModel
             $oGroup->category = $oGroup->tcategories->name;
             $oGroup->category_id = $oGroup->tcategories_id;
             // NOTE: Для tagcombobox возвращяем null
-            $oGroup->tags = static::fnGetTagsAsStringList($aParams['id']) ?: null;
+            $oGroup->tags = static::fnGetTagsAsStringList(isset($aParams['id'])) ?: null;
         }
 
         return $oGroup;
