@@ -1,1 +1,0 @@
-<?php $oTagAliasA('test_link', '', $oRequest->aGet); ?>

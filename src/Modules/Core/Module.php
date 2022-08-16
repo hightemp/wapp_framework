@@ -14,11 +14,4 @@ class Module extends LibModule
     public static $aControllers = [
         \Hightemp\WappTestSnotes\Modules\Core\Controllers\Index::class
     ];
-
-
-    public static $aPreloadViews = [
-        \Hightemp\WappTestSnotes\Modules\Core\View::class,
-        \Hightemp\WappTestSnotes\Modules\Notes\View::class,
-        \Hightemp\WappTestSnotes\Modules\CBootstrapTable\View::class,
-    ];
 }

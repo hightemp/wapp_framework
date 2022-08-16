@@ -11,6 +11,11 @@ class Request
     public $aCookie = [];
     public $aServer = [];
 
+    public static $sCurrentAlias = "";
+    public static $sCurrentModuleClass = "";
+    public static $sCurrentControllerClass = "";
+    public static $sCurrentMethod = "";
+
     public function __construct(
         $aRequest=[],
         $aGet=[], 

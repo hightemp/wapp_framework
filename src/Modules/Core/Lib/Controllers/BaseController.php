@@ -10,7 +10,8 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\HTML as HTMLResponse;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\JSON as JSONResponse;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\NotFound as NotFoundResponse;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\View;
-use Request;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Request;
+use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
 
 class BaseController
 {
@@ -57,20 +58,36 @@ class BaseController
             $aControllers = static::fnGetControllersByModules();
         }
 
+        $aViewsList = [];
+
+        // NOTE: предзагруза из Project
+        $aPreloadViews = (array) Project::$aPreloadViews;
+        foreach ($aPreloadViews as $sViewClass) {
+            $aViewsList[] = $sViewClass;
+        }
+
+        // NOTE: предзагруза из модулей
         foreach ($aControllers as $sModuleClass => $aControllers) {
-            foreach ($sModuleClass::$aPreloadViews as $sView) {
-                $sView::fnPrepareHTMLHeader();
-                $sView::fnPrepareVars();
+            $aPreloadViews = (array) $sModuleClass::$aPreloadViews;
+            foreach ($aPreloadViews as $sViewClass) {
+                $aViewsList[] = $sViewClass;
             }
         }
+
+        $aViewsList = array_unique($aViewsList);
+
+        foreach ($aViewsList as $sViewClass) {
+            $sViewClass::fnPrepareHTMLHeader();
+            $sViewClass::fnPrepareVars();
+        }
         
-        $sView = $oController->sViewClass;
+        $sViewClass = $oController->sViewClass;
         
         if ($sContentTemplate) {
 
         }
 
-        $sView::fnPrepareContentVar();
+        $sViewClass::fnPrepareContentVar();
     }
 
     public static function fnGetResponseFromController($aAlias, $oRequest)
@@ -178,6 +195,10 @@ class BaseController
             $aAlias = static::fnFindMethodByPathAlias($sCurrentAlias, $aControllers);
             if ($aAlias) {
                 if (method_exists($aAlias[0], $aAlias[1])) {
+                    Request::$sCurrentModuleClass = Utils::fnGetModulesClassNamespace(Utils::fnExtractModuleName($aAlias[0]));
+                    Request::$sCurrentMethod = $aAlias[1];
+                    Request::$sCurrentControllerClass = $aAlias[0];
+
                     $oResponse = static::fnGetResponseFromController($aAlias, $oRequest);
                 }
             }
@@ -205,6 +226,11 @@ class BaseController
                         if ($sController == $sCurrentController || $sControllerName == $sCurrentController) {
                             if (method_exists($sController, $sCurrentMethod)) {
                                 $aAlias = [$sController, $sCurrentMethod];
+
+                                Request::$sCurrentModuleClass = $sModuleClass;
+                                Request::$sCurrentMethod = $sCurrentMethod;
+                                Request::$sCurrentControllerClass = $sCurrentController;
+                                
                                 $oResponse = static::fnGetResponseFromController($aAlias, $oRequest);
                                 break 2;
                             }

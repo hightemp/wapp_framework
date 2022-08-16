@@ -2,9 +2,12 @@
 
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
 
+use Hightemp\WappTestSnotes\Project;
+
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagA;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagAliasA;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagTable;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagInclude;
 
 class View
 {
@@ -35,6 +38,8 @@ class View
         self::$aVars['oTagA'] = new TagA();
         self::$aVars['oTagAliasA'] = new TagAliasA();
         self::$aVars['oTagTable'] = new TagTable();
+
+        self::$aVars['oInclude'] = new TagInclude(static::class);
     }
 
     public static function fnPrepareContentVar($sContentTemplate=null)
@@ -123,5 +128,12 @@ EOF;
             require_once(static::TEMPLATES_PATH."/".$sTemplatePath);
         }
         return ob_get_clean();
+    }
+
+    public static function fnFindViewClassByName($sName)
+    {
+        foreach (Project::$aModules as $sModule) {
+            
+        }
     }
 }

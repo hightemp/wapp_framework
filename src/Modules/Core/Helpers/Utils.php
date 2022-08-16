@@ -6,6 +6,11 @@ use Hightemp\WappTestSnotes\Project;
 
 class Utils 
 {
+    public static function fnGetModulesClassNamespace($sModuleName, $sClass="Module")
+    {
+        return Project::$sProjectClassPath."\\Modules\\".$sModuleName."\\{$sClass}";
+    }
+
     public static function fnExtractModuleName($sFullClassPath)
     {
         $sFullClassPath = str_replace(Project::$sProjectClassPath."\\Modules\\", "", $sFullClassPath);
