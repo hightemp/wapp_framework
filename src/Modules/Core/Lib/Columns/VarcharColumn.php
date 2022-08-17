@@ -15,4 +15,9 @@ class VarcharColumn extends BaseColumn
     const P_SIZE = 255;
 
     const P_COMMENT = "";
+
+    public static function fnDefaultValue()
+    {
+        return '';
+    }
 }

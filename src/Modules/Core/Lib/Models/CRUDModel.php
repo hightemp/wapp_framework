@@ -19,8 +19,9 @@ abstract class CRUDModel extends BaseModel
         return $sSQL;
     }
 
-    function fnPagination($iPage, $iRows)
+    function fnPagination($iPage, $iRows, $bUseOffset=false)
     {
+        if ($bUseOffset) return " LIMIT {$iPage}, {$iRows}";
         $iF = ($iPage-1)*$iRows;
         return " LIMIT {$iF}, {$iRows}";
     }
@@ -34,11 +35,16 @@ abstract class CRUDModel extends BaseModel
             $sFilterRules = $this->fnGenerateFilterRules($aParams['filterRules']);
         }
 
-        $sOffset = $this->fnPagination($aParams['page'], $aParams['rows']);
+        if (isset($aParams['offset'])) {
+            $sOffset = $this->fnPagination($aParams['offset'], $aParams['limit'], true);
+        } else {
+            $sOffset = $this->fnPagination($aParams['page'], $aParams['rows'], false);
+        }
         $aResult = [];
 
         $aItems = $this->findAll("{$sFilterRules} ORDER BY id DESC {$sOffset}", []);
         $aResult['total'] = $this->count("{$sFilterRules}");
+        $aResult['totalNotFiltered'] = $this->count("1 = 1");
 
         // if ((is_null($bUseTags) && $this->$bUseTags) || $bUseTags === true) {
         //     foreach ($aItems as $oItem) {
@@ -54,21 +60,24 @@ abstract class CRUDModel extends BaseModel
     // NOTE: List all
     function fnList($aParams=[])
     {
-        $aItems = $this->findAll("ORDER BY id DESC", []);
+        $sID = static::C_INDEX_ID;
+        $aItems = $this->findAll("ORDER BY {$sID} DESC", []);
         return $aItems;
     }
 
     // NOTE: List last
     function fnListLast($aParams=[])
     {
-        $aItems = $this->findAll("ORDER BY id DESC LIMIT ?", [isset($aParams['limit']) ?: '10']);
+        $sID = static::C_INDEX_ID;
+        $aItems = $this->findAll("ORDER BY {$sID} DESC LIMIT ?", [isset($aParams['limit']) ?: '10']);
         return $aItems;
     }
 
     // NOTE: Get one
     function fnGetOne($aParams=[])
     {
-        return $this->findOneByID($aParams['id']);
+        $sID = static::C_INDEX_ID;
+        return $this->findOneByID($aParams[$sID]);
     }
 
     // NOTE: Delete list

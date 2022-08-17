@@ -183,12 +183,12 @@ class BaseController
         View::$aVars['oRequest'] = $oRequest;
 
         $oResponse = null;
-        $sCurrentMethod = $oRequest->aGet[static::METHOD_KEY] ?: '';
-        $sCurrentController = $oRequest->aGet[static::CONTROLLER_KEY] ?: '';
-        $sCurrentModule = $oRequest->aGet[static::MODULE_KEY] ?: static::DEFAULT_MODULE;
+        $sCurrentMethod = isset($oRequest->aGet[static::METHOD_KEY]) ? $oRequest->aGet[static::METHOD_KEY] : '';
+        $sCurrentController = isset($oRequest->aGet[static::CONTROLLER_KEY]) ? $oRequest->aGet[static::CONTROLLER_KEY] : '';
+        $sCurrentModule = isset($oRequest->aGet[static::MODULE_KEY]) ? $oRequest->aGet[static::MODULE_KEY] : static::DEFAULT_MODULE;
 
         $aURI = parse_url($oRequest->aServer['REQUEST_URI']);
-        $sCurrentAlias = $oRequest->aGet[static::ALIAS_KEY] ?: $aURI['path'];
+        $sCurrentAlias = isset($oRequest->aGet[static::ALIAS_KEY]) ? $oRequest->aGet[static::ALIAS_KEY] : $aURI['path'];
         $bIsRoot = trim($sCurrentAlias, "/") == "";
 
         if ($sCurrentAlias) {

@@ -43,9 +43,63 @@ abstract class BaseModel
         return new static($oDBCon);
     }
 
+    public function fnFilterDataByColumns($aData)
+    {
+        $aResult = [];
+
+        foreach ($aData as $sKey => $mValue) {
+            if (isset(static::COLUMNS[$sKey])) {
+                $aResult[$sKey] = $mValue;
+            }
+        }
+
+        return $aResult;
+    }
+
+    public function fnPrepareData($aData)
+    {
+        $aResult = [];
+
+        foreach ($aData as $sKey => $mValue) {
+            if (isset(static::COLUMNS[$sKey])) {
+                $aResult[$sKey] = static::COLUMNS[$sKey]::fnPrepareValue($mValue);
+            }
+        }
+
+        $aDiff = array_diff(array_keys(static::COLUMNS), array_keys($aResult));
+        foreach ($aDiff as $sKey) {
+            $aResult[$sKey] = static::COLUMNS[$sKey]::fnDefaultValue();
+        }
+
+        return $aResult;
+    }
+
+    public function fnExtractData($aData)
+    {
+        $aResult = [];
+
+        foreach ($aData as $sKey => $mValue) {
+            if (isset(static::COLUMNS[$sKey])) {
+                $aResult[$sKey] = static::COLUMNS[$sKey]::fnExtractValue($mValue);
+            }
+        }
+
+        $aDiff = array_diff(array_keys(static::COLUMNS), array_keys($aResult));
+        foreach ($aDiff as $sKey) {
+            $aResult[$sKey] = static::COLUMNS[$sKey]::fnDefaultValue();
+        }
+
+        return $aResult;
+    }   
+
     function __construct(DatabaseConnection $oDBCon)
     {
         $this->oDBCon = $oDBCon;
+    }
+
+    public function fnGetColumns()
+    {
+        return static::COLUMNS;
     }
 
     function fnGetTableName()
@@ -53,6 +107,7 @@ abstract class BaseModel
         return static::TABLE_NAME;
     }
 
+    // NOTE: Базовые методы
     function count($sql = NULL, $bindings = array())
     {
         return $this->oDBCon->count($this->fnGetTableName(), $sql, $bindings);
@@ -70,7 +125,8 @@ abstract class BaseModel
 
     function findOneByID($iID, $sql = "1=1", $bindings = array())
     {
-        return $this->oDBCon->findOne($this->fnGetTableName(), "id = ? AND ".$sql, [$iID, ...$bindings]);
+        $sID = static::C_INDEX_ID;
+        return $this->oDBCon->findOne($this->fnGetTableName(), "{$sID} = ? AND ".$sql, [$iID, ...$bindings]);
     }
 
     function findAll($sql = NULL, $bindings = array())
@@ -80,13 +136,24 @@ abstract class BaseModel
 
     function findAllByID($aIDs, $sql = "1=1", $bindings = array())
     {
+        $sID = static::C_INDEX_ID;
         $sS = str_repeat('?,', count($aIDs) - 1) . '?';
-        return $this->oDBCon->findAll($this->fnGetTableName(), "id IN ($sS) AND ".$sql, [...$aIDs, ...$bindings]);
+        return $this->oDBCon->findAll($this->fnGetTableName(), "{$sID} IN ($sS) AND ".$sql, [...$aIDs, ...$bindings]);
     }
 
     function findOrCreate($like = array(), $sql = '', &$hasBeenCreated = false)
     {
         return $this->oDBCon->findOrCreate($this->fnGetTableName(), $like, $sql, $hasBeenCreated);
+    }
+
+    function findForUpdate($sql = NULL, $bindings = array())
+    {
+        return $this->oDBCon->findForUpdate($this->fnGetTableName(), $sql, $bindings);
+    }
+
+    function store($bean, $unfreezeIfNeeded = FALSE)
+    {
+        return $this->oDBCon->store($bean, $unfreezeIfNeeded);
     }
 
     function trashBatch($aIDs)
@@ -99,32 +166,36 @@ abstract class BaseModel
         return $this->oDBCon->trashAll($aIDs);
     }
 
+    // NOTE: Дополнительные методы - CRUD
     function create($aData=[])
     {
-        $oItem = $this->oDBCon->dispense($this->fnGetTableName());
+        $oItem = $this->dispense();
 
-        if ($aData) {
-            $this->update($aData, $oItem);
-        }
+        $aData = $this->fnPrepareData((array) $aData);
+        $this->update($aData, $oItem);
 
         return $oItem;
     }
 
     function update($aData=[], $oItem=null)
     {
+        $sID = static::C_INDEX_ID;
+
         if (!$oItem) {
-            $oItem = $this->oDBCon->findForUpdate($this->fnGetTableName(), "id = ?", [$aData["id"]]);
+            $oItem = $this->findForUpdate("{$sID} = ?", [$aData[$sID]]);
         }
 
+        $aData = $this->fnPrepareData((array) $aData);
         $oItem->import($aData);
-        $this->oDBCon->store($oItem);
+        $this->store($oItem);
     }
 
     function fnDeleteByIDs($aIDs)
     {
-        $this->oDBCon->trashBatch($this->fnGetTableName(), $aIDs);
+        $this->trashBatch($aIDs);
     }
 
+    // NOTE: Дополнительные методы
     function fnGetCurrentDateTime()
     {
         return date("Y-m-d H:i:s");

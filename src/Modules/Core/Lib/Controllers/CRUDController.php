@@ -18,6 +18,27 @@ class CRUDController extends BaseController
 {
     public static $sModelClass = '';
 
+    public static function fnPrepareMethodNameForAlias($sMethod)
+    {
+        $sReg = '/^fn(.*)(JSON|HTML)$/';
+            
+        if (!preg_match($sReg, $sMethod)) {
+            return false;
+        }
+
+        $sAlias = preg_replace($sReg, "$1", $sMethod);
+        $sAlias = preg_replace_callback("/[A-Z]/", function ($aM) {
+            return "_".strtolower($aM[0]);
+        }, $sAlias);
+
+        $sModule = Utils::fnExtractModuleName(static::class);
+        $sModule = strtolower($sModule);
+
+        $sAlias = $sModule.$sAlias;
+
+        return $sAlias;
+    }
+
     public static function fnGenerateAliases()
     {
         $aResult = [];
@@ -25,21 +46,9 @@ class CRUDController extends BaseController
         $aMethods = get_class_methods(static::class);
 
         array_map(function ($sMethod) use (&$aResult) {
-            $sReg = '/^fn(.*)(JSON|HTML)$/';
-            
-            if (!preg_match($sReg, $sMethod)) {
-                return;
-            }
+            $sAlias = static::fnPrepareMethodNameForAlias($sMethod);
 
-            $sAlias = preg_replace($sReg, "$1", $sMethod);
-            $sAlias = preg_replace_callback("/[A-Z]/", function ($aM) {
-                return "_".strtolower($aM[0]);
-            }, $sAlias);
-
-            $sModule = Utils::fnExtractModuleName(static::class);
-            $sModule = strtolower($sModule);
-
-            $sAlias = $sModule.$sAlias;
+            if (!$sAlias) return;
 
             $aResult[$sAlias] = [static::class, $sMethod];
         }, $aMethods);
@@ -57,49 +66,49 @@ class CRUDController extends BaseController
     public function fnListJSON()
     {
         $oModel = $this->_fnBuildModel();
-        $aList = $oModel->fnList($this->oRequest->aPost);
+        $aList = $oModel->fnList($this->oRequest->aRequest);
         return $aList;
     }
 
     public function fnListWithPaginationJSON()
     {
         $oModel = $this->_fnBuildModel();
-        $aList = $oModel->fnListWithPagination($this->oRequest->aPost);
+        $aList = $oModel->fnListWithPagination($this->oRequest->aRequest);
         return $aList;
     }
 
     public function fnListLastJSON()
     {
         $oModel = $this->_fnBuildModel();
-        $aList = $oModel->fnListLast($this->oRequest->aPost);
+        $aList = $oModel->fnListLast($this->oRequest->aRequest);
         return $aList;
     }
 
     public function fnDeleteJSON()
     {
         $oModel = $this->_fnBuildModel();
-        $aList = $oModel->fnDelete([$this->oRequest->aPost['id']]);
+        $aList = $oModel->fnDelete([$this->oRequest->aRequest['id']]);
         return $aList;
     }
 
     public function fnDeleteListJSON()
     {
         $oModel = $this->_fnBuildModel();
-        $aList = $oModel->fnDelete($this->oRequest->aPost['ids']);
+        $aList = $oModel->fnDelete($this->oRequest->aRequest['ids']);
         return $aList;
     }
 
     public function fnCreateJSON()
     {
         $oModel = $this->_fnBuildModel();
-        $oItem = $oModel->fnCreate($this->oRequest->aPost);
+        $oItem = $oModel->fnCreate($this->oRequest->aRequest);
         return $oItem;
     }
 
     public function fnUpdateJSON()
     {
         $oModel = $this->_fnBuildModel();
-        $oItem = $oModel->fnUpdate($this->oRequest->aPost);
+        $oItem = $oModel->fnUpdate($this->oRequest->aRequest);
         return $oItem;
     }
 }
