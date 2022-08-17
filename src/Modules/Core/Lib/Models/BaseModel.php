@@ -4,7 +4,8 @@ namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Models;
 
 use \Hightemp\WappTestSnotes\Modules\Core\Lib\ModelExtensions\TraitExportToCSV;
 use \Hightemp\WappTestSnotes\Modules\Core\Lib\Database;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\DatabaseConnection;
+use \Hightemp\WappTestSnotes\Modules\Core\Lib\DatabaseConnection;
+use \Hightemp\WappTestSnotes\Modules\Core\Lib\Columns\PrimaryIndexIntColumn;
 
 abstract class BaseModel
 {
@@ -14,6 +15,24 @@ abstract class BaseModel
     public const TABLE_NAME = "";
     /** @var bool $bUseTags соединение к бд */
     public static $bUseTags = false;
+
+    public const C_INDEX_ID = "id";
+
+    public const COLUMNS = [
+        self::C_INDEX_ID => PrimaryIndexIntColumn::class,
+    ];
+
+    public const PRIMARY_INDEXES = [
+        self::C_INDEX_ID
+    ];
+
+    public const UNIQUE_INDEXES = [
+
+    ];
+
+    public const INDEXES = [
+
+    ];
 
     /** @var DatabaseConnection $oDBCon соединение к бд */
     public $oDBCon = null;

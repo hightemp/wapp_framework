@@ -11,7 +11,10 @@ class Project
     public static $aModules = [
         \Hightemp\WappTestSnotes\Modules\Core\Module::class,
         \Hightemp\WappTestSnotes\Modules\Notes\Module::class,
+
         \Hightemp\WappTestSnotes\Modules\CBootstrapTable\Module::class,
+
+        \Hightemp\WappTestSnotes\Modules\TestTables\Module::class,
     ];
 
     public static $aAliases = [

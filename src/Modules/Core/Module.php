@@ -14,4 +14,8 @@ class Module extends LibModule
     public static $aControllers = [
         \Hightemp\WappTestSnotes\Modules\Core\Controllers\Index::class
     ];
+
+    public static $aModels = [
+        
+    ];
 }

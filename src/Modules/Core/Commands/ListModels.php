@@ -7,18 +7,23 @@ use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Command;
 use Hightemp\WappTestSnotes\Project;
+use Hightemp\WappTestSnotes\Modules\Core\Helpers\ClassFinder;
 
-class ListGenerators extends Command
+class ListModels extends Command
 {
-    const FULL_COMMAND = "list_generators";
+    const FULL_COMMAND = "list_models";
 
     public function fnExecute($aArgs)
     {
-        $aModels = [];
+        $aModules = Project::$aModules;
 
         $aData = [];
-        foreach ($aModels as $sClass) {
-            $aData[] = [];
+        foreach ($aModules as $sModuleClass) {
+            $aClasses = Utils::fnGetModuleModels($sModuleClass);
+
+            foreach ($aClasses as $sClass) {
+                $aData[] = [$sClass];
+            }
         }
 
         Utils::fnPrintTable($aData);

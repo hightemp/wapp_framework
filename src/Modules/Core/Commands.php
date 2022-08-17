@@ -11,5 +11,6 @@ class Commands
         \Hightemp\WappTestSnotes\Modules\Core\Commands\ListCommands::class,
         \Hightemp\WappTestSnotes\Modules\Core\Commands\ListGenerators::class,
         \Hightemp\WappTestSnotes\Modules\Core\Commands\ListTemplateVars::class,
+        \Hightemp\WappTestSnotes\Modules\Core\Commands\ListModels::class,
     ];
 }

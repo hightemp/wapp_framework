@@ -6,6 +6,16 @@ use Hightemp\WappTestSnotes\Project;
 
 class Utils 
 {
+    public static function fnGetModuleModels($sModuleClass)
+    {
+        $sModels = Utils::fnGetModulesClassNamespace(Utils::fnExtractModuleName($sModuleClass), "Models");
+        $sModels = "\\".$sModels;
+
+        $aClasses = ClassFinder::getClassesInNamespace($sModels);
+        
+        return $aClasses;
+    }
+
     public static function fnGetModulesClassNamespace($sModuleName, $sClass="Module")
     {
         return Project::$sProjectClassPath."\\Modules\\".$sModuleName."\\{$sClass}";
