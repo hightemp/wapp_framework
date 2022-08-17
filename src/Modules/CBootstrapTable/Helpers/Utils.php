@@ -4,7 +4,7 @@ namespace Hightemp\WappTestSnotes\Modules\CBootstrapTable\Helpers;
 
 use Hightemp\WappTestSnotes\Project;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Models\BaseModel;
-
+use Hightemp\WappTestSnotes\Modules\Core\Lib\View;
 class Utils 
 {
     /**
@@ -43,10 +43,9 @@ class Utils
     public static function fnPrepareVarsForAjaxTable($sControllerClass, $oRequest=null, $aAttrs=[])
     {
         $aTableData = [];
-        $aAliases = $sControllerClass::fnGenerateAliases();
+        // $aAliases = $sControllerClass::fnGenerateAliases();
 
         $sAliasWithPaginationMethod = $sControllerClass::fnPrepareMethodNameForAlias("fnListWithPaginationJSON");
-        // $aListMethod = $aAliases[$sListMethod];
 
         $aAttrs = [
             "data-toolbar" => "#toolbar",
@@ -71,6 +70,8 @@ class Utils
             "data-response-handler" => "responseHandler",
             ...$aAttrs
         ];
+
+        View::fnAddVars([ "bUseDefaultTableResponseHandler" => true ]);
 
         $aTableData["aAttrs"] = $aAttrs;
 

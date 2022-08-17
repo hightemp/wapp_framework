@@ -8,6 +8,7 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagA;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagAliasA;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagTable;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagInclude;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagScript;
 
 class View
 {
@@ -16,6 +17,8 @@ class View
     const STATIC_JS_PATH = "static/js";
 
     const TEMPLATES_PATH = "";
+
+    public static $sCurrentViewClass = null;
 
     public static $sLayoutTemplate = "layout.php";
     public static $sContentTemplate = "index.php";
@@ -39,6 +42,7 @@ class View
         self::$aVars['oTagAliasA'] = new TagAliasA();
         self::$aVars['oTagTable'] = new TagTable();
 
+        self::$aVars['oTagScript'] = new TagScript();
         self::$aVars['oInclude'] = new TagInclude(static::class);
     }
 
@@ -74,20 +78,30 @@ class View
 
     public static function fnAddHeaderCSS($sRelFilePath)
     {
+        static::fnAddHTMLHeader(static::fnRenderLinkStylesheet($sRelFilePath));
+    }
+
+    public static function fnRenderLinkStylesheet($sRelFilePath)
+    {
         $sRelFilePath = static::STATIC_CSS_PATH."/".$sRelFilePath;
         $sHTML = <<<EOF
 <link rel="stylesheet" href="{$sRelFilePath}">\n
 EOF;
-        static::fnAddHTMLHeader($sHTML);
+        return $sHTML;
     }
 
     public static function fnAddHeaderJS($sRelFilePath)
+    {
+        static::fnAddHTMLHeader(static::fnRenderScript($sRelFilePath));
+    }
+
+    public static function fnRenderScript($sRelFilePath)
     {
         $sRelFilePath = static::STATIC_JS_PATH."/".$sRelFilePath;
         $sHTML = <<<EOF
 <script src="{$sRelFilePath}"></script>\n
 EOF;
-        static::fnAddHTMLHeader($sHTML);
+        return $sHTML;
     }
 
     public static function fnRender()
@@ -121,6 +135,9 @@ EOF;
 
     public static function fnRenderTemplate($sTemplatePath, $aVars=[])
     {
+        static::$sCurrentViewClass = static::class;
+        $aVars['sCurrentViewClass'] = static::$sCurrentViewClass;
+        
         if ($aVars) static::fnAddVars($aVars);
         ob_start();
         {

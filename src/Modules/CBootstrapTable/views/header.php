@@ -7,3 +7,7 @@
 <script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table-locale-all.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.20.2/dist/extensions/export/bootstrap-table-export.min.js"></script>
+
+<?php if (isset($bUseDefaultTableResponseHandler) && $bUseDefaultTableResponseHandler): ?>
+<?php $oTagScript("default_table_handler.js"); ?>
+<?php endif ?>
