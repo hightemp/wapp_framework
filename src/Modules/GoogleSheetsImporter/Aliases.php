@@ -9,9 +9,7 @@ use \Hightemp\WappTestSnotes\Modules\GoogleSheetsImporter\Controllers\API;
 class Aliases extends BaseAliases
 {
     public static $aMethods = [
-        "testtables/index" => [Index::class, 'fnIndexHTML'],
-        "testtables/add_random_record" => [Index::class, 'fnGenerateRandomRecordJSON'],
-        "testtables/truncate" => [Index::class, 'fnTruncateTableJSON'],
+        "googlesheetsimporter/index" => [Index::class, 'fnIndexHTML'],
     ];
 
     public static $aAutoloadMethods = [

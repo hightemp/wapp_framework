@@ -19,7 +19,7 @@ if (Utils::fnIsCli()) {
     exit($iExitCode);
 } else {
     try {
-        $oRequest = Request::fnCreateRequest();
+        $oRequest = Request::fnBuild();
         $oResponse = BaseController::fnFindAndExecuteMethod($oRequest);
         $oResponse->fnPrintOutputAndExit();
     } catch (\Exception $oException) {
