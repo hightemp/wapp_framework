@@ -180,6 +180,19 @@ class BaseController
         return $aResult;
     }
 
+    public static function fnGetAllAliasesLinks()
+    {
+        $aResult = [];
+        $aProjectAliases = static::fnGetAllAliases();
+
+        foreach ($aProjectAliases as $sAliasClass => $aMethod) {
+            $sURL = Utils::fnGetBaseURL($sAliasClass);
+            $aResult[] = [$sURL, $sAliasClass, ...$aMethod];
+        }
+
+        return $aResult;
+    }
+
     public static function fnFindAndExecuteMethod($oRequest, $aControllers=null)
     {
         static::$oGlobalRequest = $oRequest;

@@ -11,10 +11,10 @@ class Index extends BaseController
 
     public function fnIndexHTML()
     {
-        View::fnSetParams(
-            [
-                "test_var" => "test"
-            ]
-        );
+        $aAliases = BaseController::fnGetAllAliasesLinks();
+
+        View::fnAddVars([
+            "aAliases" => $aAliases
+        ]);
     }
 }

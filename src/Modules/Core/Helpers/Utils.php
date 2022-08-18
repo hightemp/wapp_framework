@@ -3,9 +3,19 @@
 namespace Hightemp\WappTestSnotes\Modules\Core\Helpers;
 
 use Hightemp\WappTestSnotes\Project;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
 
 class Utils 
 {
+    public static function fnGetBaseURL($sPath="")
+    {
+        $aS = BaseController::$oGlobalRequest->aServer;
+        $sURL = (isset($aS['HTTPS']) && $aS['HTTPS'] === 'on' ? "https" : "http");
+        $sURL .= "://".$aS['HTTP_HOST'];
+
+        return $sURL."/".trim($sPath, "/");
+    }
+
     public static function fnPrepareRelPath($sFullPath)
     {
         return str_replace(ROOT_PATH, "", $sFullPath);
