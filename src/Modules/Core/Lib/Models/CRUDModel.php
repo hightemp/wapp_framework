@@ -19,6 +19,17 @@ abstract class CRUDModel extends BaseModel
         return $sSQL;
     }
 
+    function fnGenerateFilterRulesForSearch($sSearch)
+    {
+        $aSQL = [];
+
+        foreach (static::COLUMNS as $sColumnName => $sColumnClass) {
+            $aSQL[] = "{$sColumnName} LIKE '%{$sSearch}%'";
+        }
+
+        return join(" OR ", $aSQL);
+    }
+
     function fnPagination($iPage, $iRows, $bUseOffset=false)
     {
         if ($bUseOffset) return " LIMIT {$iPage}, {$iRows}";
@@ -39,7 +50,7 @@ abstract class CRUDModel extends BaseModel
         }
 
         if (isset($aParams['search'])) {
-            // TODO:
+            $sFilterRules = $this->fnGenerateFilterRulesForSearch($aParams['search']);
         }
 
         if (isset($aParams['offset'])) {
