@@ -63,7 +63,6 @@ class ClassFinder
         while($namespaceFragments) {
             $possibleNamespace = implode('\\', $namespaceFragments) . '\\';
 
-            print_r([$possibleNamespace, $composerNamespaces]);
             if(array_key_exists($possibleNamespace, $composerNamespaces)){
                 $sPath = realpath(self::appRoot . "/" . $composerNamespaces[$possibleNamespace] . implode('/', $undefinedNamespaceFragments));
                 $aCache[$namespace] = $sPath;
