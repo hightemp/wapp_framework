@@ -16,6 +16,7 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagLink;
 class View
 {
     const STATIC_PATH = "static";
+    const STATIC_IMAGES_PATH = "static/images";
     const STATIC_CSS_PATH = "static/css";
     const STATIC_JS_PATH = "static/js";
 
@@ -90,6 +91,26 @@ class View
         static::fnAddVars($aVars);
         if ($sLayoutTemplate) static::$sLayoutTemplate = $sLayoutTemplate;
         if ($sContentTemplate) static::$sContentTemplate = $sContentTemplate;
+    }
+
+    public static function fnAddHeaderFavicon($sRelFilePath="favicon.png", $sType="png")
+    {
+        static::fnAddHTMLHeader(static::fnRenderLinkFavicon($sRelFilePath, $sType));
+    }
+
+    public static function fnRenderLinkFavicon($sRelFilePath="", $sType=null)
+    {
+        if (is_null($sType)) $sType = "x-icon";
+        $sRelFilePath = static::fnGetImagesPath("/".$sRelFilePath);
+        $sHTML = <<<EOF
+<link rel="icon" type="image/{$sType}" href="{$sRelFilePath}">
+EOF;
+        return $sHTML;
+    }
+
+    public static function fnGetImagesPath($sExtPath="")
+    {
+        return static::fnGetModuleRelPath(static::STATIC_IMAGES_PATH.$sExtPath);
     }
 
     public static function fnGetCSSPath($sExtPath="")

@@ -26,6 +26,7 @@ class Project
         \Hightemp\WappTestSnotes\Modules\Core\Aliases::class,
         \Hightemp\WappTestSnotes\Modules\Notes\Aliases::class,
         \Hightemp\WappTestSnotes\Modules\TestTables\Aliases::class,
+        \Hightemp\WappTestSnotes\Modules\GoogleSheetsImporter\Aliases::class,
     ];
 
     public static $aCommands = [

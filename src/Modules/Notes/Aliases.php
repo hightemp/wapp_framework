@@ -9,7 +9,7 @@ use \Hightemp\WappTestSnotes\Modules\Notes\Controllers\API;
 class Aliases extends BaseAliases
 {
     public static $aMethods = [
-        "notes_index" => [Index::class, 'fnIndexHTML'],
+        "notes/index" => [Index::class, 'fnIndexHTML'],
     ];
 
     public static $aAutoloadMethods = [

@@ -23,6 +23,11 @@ class BaseColumn
         return '';
     }
 
+    public static function fnValidate($mValue)
+    {
+        return true;
+    }
+
     public static function fnPrepareValue($mValue)
     {
         return $mValue;
