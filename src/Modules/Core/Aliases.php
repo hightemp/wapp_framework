@@ -7,6 +7,6 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseAliases;
 class Aliases extends BaseAliases
 {
     public static $aMethods = [
-        "core_index" => [\Hightemp\WappTestSnotes\Modules\Core\Controllers\Index::class, 'fnIndexHTML'],
+        "core/index" => [\Hightemp\WappTestSnotes\Modules\Core\Controllers\Index::class, 'fnIndexHTML'],
     ];
 }

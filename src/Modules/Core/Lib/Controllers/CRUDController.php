@@ -18,7 +18,7 @@ class CRUDController extends BaseController
 {
     public static $sModelClass = '';
 
-    public static function fnPrepareMethodNameForAlias($sMethod)
+    public static function fnPrepareMethodNameForAlias($sMethod, $sSep="/")
     {
         $sReg = '/^fn(.*)(JSON|HTML)$/';
             
@@ -27,8 +27,8 @@ class CRUDController extends BaseController
         }
 
         $sAlias = preg_replace($sReg, "$1", $sMethod);
-        $sAlias = preg_replace_callback("/[A-Z]/", function ($aM) {
-            return "_".strtolower($aM[0]);
+        $sAlias = preg_replace_callback("/[A-Z]/", function ($aM) use ($sSep) {
+            return $sSep.strtolower($aM[0]);
         }, $sAlias);
 
         $sModule = Utils::fnExtractModuleName(static::class);

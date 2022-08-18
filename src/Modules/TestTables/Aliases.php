@@ -9,7 +9,7 @@ use \Hightemp\WappTestSnotes\Modules\TestTables\Controllers\API;
 class Aliases extends BaseAliases
 {
     public static $aMethods = [
-        "testtables_index" => [Index::class, 'fnIndexHTML'],
+        "testtables/index" => [Index::class, 'fnIndexHTML'],
         "testtables/add_random_record" => [Index::class, 'fnGenerateRandomRecordJSON'],
         "testtables/truncate" => [Index::class, 'fnTruncateTableJSON'],
     ];
