@@ -30,13 +30,21 @@ abstract class CRUDModel extends BaseModel
     function fnListWithPagination($aParams=[], $bUseTags=null)
     {
         $sFilterRules = " 1 = 1";
+        $sOffset = "";
+
         if (isset($aParams['filterRules'])) {
             $aParams['filterRules'] = json_decode($aParams['filterRules']);
             $sFilterRules = $this->fnGenerateFilterRules($aParams['filterRules']);
         }
 
+        if (isset($aParams['search'])) {
+            // TODO:
+        }
+
         if (isset($aParams['offset'])) {
-            $sOffset = $this->fnPagination($aParams['offset'], $aParams['limit'], true);
+            if (isset($aParams['limit']) && $aParams['limit'] > 0) {
+                $sOffset = $this->fnPagination($aParams['offset'], $aParams['limit'], true);
+            }
         } else {
             $sOffset = $this->fnPagination($aParams['page'], $aParams['rows'], false);
         }

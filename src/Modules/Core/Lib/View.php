@@ -11,6 +11,7 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagTable;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagInclude;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagScript;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagSelect;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagLink;
 
 class View
 {
@@ -53,9 +54,11 @@ class View
         self::$aVars['oTagA'] = new TagA();
         self::$aVars['oTagAliasA'] = new TagAliasA();
         self::$aVars['oTagTable'] = new TagTable();
+        self::$aVars['oTagSelect'] = new TagSelect();
 
         self::$aVars['oTagScript'] = new TagScript();
-        self::$aVars['oTagSelect'] = new TagSelect();
+        self::$aVars['oTagLink'] = new TagLink();
+        
         self::$aVars['oInclude'] = new TagInclude(static::class);
     }
 

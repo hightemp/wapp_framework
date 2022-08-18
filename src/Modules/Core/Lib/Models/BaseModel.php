@@ -56,7 +56,7 @@ abstract class BaseModel
         return $aResult;
     }
 
-    public function fnPrepareData($aData)
+    public function fnPrepareRowData($aData)
     {
         $aResult = [];
 
@@ -76,6 +76,21 @@ abstract class BaseModel
 
     public function fnExtractData($aData)
     {
+        if (!$aData) return $aData;
+
+        $aResult = [];
+
+        foreach ($aData as $aRow) {
+            $aResult[] = $this->fnExtractRowData($aRow);
+        }
+
+        return $aResult;
+    }
+
+    public function fnExtractRowData($aData)
+    {
+        if (!$aData) return $aData;
+
         $aResult = [];
 
         foreach ($aData as $sKey => $mValue) {
@@ -120,40 +135,50 @@ abstract class BaseModel
 
     function findOne($sql = NULL, $bindings = array())
     {
-        return $this->oDBCon->findOne($this->fnGetTableName(), $sql, $bindings);
+        return $this->fnExtractRowData($this->oDBCon->findOne($this->fnGetTableName(), $sql, $bindings));
     }
 
     function findOneByID($iID, $sql = "1=1", $bindings = array())
     {
         $sID = static::C_INDEX_ID;
-        return $this->oDBCon->findOne($this->fnGetTableName(), "{$sID} = ? AND ".$sql, [$iID, ...$bindings]);
+        return $this->fnExtractRowData($this->oDBCon->findOne($this->fnGetTableName(), "{$sID} = ? AND ".$sql, [$iID, ...$bindings]));
     }
 
     function findAll($sql = NULL, $bindings = array())
     {
-        return $this->oDBCon->findAll($this->fnGetTableName(), $sql, $bindings);
+        return $this->fnExtractData($this->oDBCon->findAll($this->fnGetTableName(), $sql, $bindings));
     }
 
     function findAllByID($aIDs, $sql = "1=1", $bindings = array())
     {
         $sID = static::C_INDEX_ID;
         $sS = str_repeat('?,', count($aIDs) - 1) . '?';
-        return $this->oDBCon->findAll($this->fnGetTableName(), "{$sID} IN ($sS) AND ".$sql, [...$aIDs, ...$bindings]);
+        return $this->findAll("{$sID} IN ($sS) AND ".$sql, [...$aIDs, ...$bindings]);
     }
 
     function findOrCreate($like = array(), $sql = '', &$hasBeenCreated = false)
     {
-        return $this->oDBCon->findOrCreate($this->fnGetTableName(), $like, $sql, $hasBeenCreated);
+        return $this->fnExtractRowData($this->oDBCon->findOrCreate($this->fnGetTableName(), $like, $sql, $hasBeenCreated));
     }
 
     function findForUpdate($sql = NULL, $bindings = array())
     {
-        return $this->oDBCon->findForUpdate($this->fnGetTableName(), $sql, $bindings);
+        return $this->fnExtractRowData($this->oDBCon->findForUpdate($this->fnGetTableName(), $sql, $bindings));
     }
 
     function store($bean, $unfreezeIfNeeded = FALSE)
     {
         return $this->oDBCon->store($bean, $unfreezeIfNeeded);
+    }
+
+    function getAll($sql, $bindings = array())
+    {
+        return $this->fnExtractData($this->oDBCon->getAll($sql, $bindings));
+    }
+
+    function wipe()
+    {
+        return $this->oDBCon->wipe($this->fnGetTableName());
     }
 
     function trashBatch($aIDs)
@@ -171,7 +196,7 @@ abstract class BaseModel
     {
         $oItem = $this->dispense();
 
-        $aData = $this->fnPrepareData((array) $aData);
+        $aData = $this->fnPrepareRowData((array) $aData);
         $this->update($aData, $oItem);
 
         return $oItem;
@@ -185,7 +210,7 @@ abstract class BaseModel
             $oItem = $this->findForUpdate("{$sID} = ?", [$aData[$sID]]);
         }
 
-        $aData = $this->fnPrepareData((array) $aData);
+        $aData = $this->fnPrepareRowData((array) $aData);
         $oItem->import($aData);
         $this->store($oItem);
     }

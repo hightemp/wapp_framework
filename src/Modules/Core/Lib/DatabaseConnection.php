@@ -76,6 +76,16 @@ class DatabaseConnection
         return R::findOrCreate($type, $like, $sql, $hasBeenCreated);
     }
 
+    public function getAll($sql, $bindings = array())
+    {
+        return R::getAll($sql, $bindings);
+    }
+
+    public function wipe($beanType)
+    {
+        return R::wipe($beanType);
+    }
+
     public function trashBatch($type, $ids)
     {
         return R::trashBatch($type, $ids);

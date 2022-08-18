@@ -33,10 +33,17 @@ class Index extends BaseController
 
         $oRecord = $oTestTable->create([
             TestTable::C_TEST_INT => random_int(10, 100000),
-            TestTable::C_TEST_JSON => '{ "a" => "string" }',
+            TestTable::C_TEST_JSON => [ "a" => random_int(10, 100000) ],
             TestTable::C_TEST_VARCHAR => str_repeat("random string ", random_int(10, 100)),
         ]);
 
         return $oRecord;
+    }
+
+    public function fnTruncateTableJSON()
+    {
+        $oTestTable = TestTable::fnBuild();
+
+        $oTestTable->wipe();
     }
 }
