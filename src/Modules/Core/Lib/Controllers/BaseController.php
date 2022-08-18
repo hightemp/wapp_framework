@@ -76,6 +76,7 @@ class BaseController
 
         $aViewsList = array_unique($aViewsList);
 
+        print_r([$sModuleClass, $aViewsList]);
         foreach ($aViewsList as $sViewClass) {
             $sViewClass::fnPrepareHTMLHeader();
             $sViewClass::fnPrepareVars();

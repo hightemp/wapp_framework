@@ -28,4 +28,7 @@ class Module
 
     /** @var BaseModel[] $aModels Список моделей */
     public static $aModels = [];
+
+    /** @var BaseModel[] $aModulesDependencies Зависимости от других модулей */
+    public static $aModulesDependencies = [];
 }

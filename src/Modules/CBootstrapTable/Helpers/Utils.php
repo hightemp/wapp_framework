@@ -41,6 +41,7 @@ class Utils
                 [ 
                     "data-field" => $sK,
                     "data-sortable" => "true",
+                    "data-filter-control" => "input",
                 ],
             ];
         }
