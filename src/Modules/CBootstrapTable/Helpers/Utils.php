@@ -38,7 +38,10 @@ class Utils
         foreach ($aColumns as $sK => $sClass) {
             $aResult[] = [
                 $sClass::P_TITLE ?: $sK,
-                [ "data-field" => $sK ],
+                [ 
+                    "data-field" => $sK,
+                    "data-sortable" => "true",
+                ],
             ];
         }
 

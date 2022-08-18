@@ -30,6 +30,7 @@ abstract class CRUDModel extends BaseModel
     function fnListWithPagination($aParams=[], $bUseTags=null)
     {
         $sFilterRules = " 1 = 1";
+        $sSort = " ORDER BY id DESC";
         $sOffset = "";
 
         if (isset($aParams['filterRules'])) {
@@ -48,9 +49,19 @@ abstract class CRUDModel extends BaseModel
         } else {
             $sOffset = $this->fnPagination($aParams['page'], $aParams['rows'], false);
         }
+
+        if (isset($aParams['sort'])) {
+            $sSort = " ORDER BY ".$aParams['sort'];
+            $sOrder = "DESC";
+
+            if (isset($aParams['order'])) {
+                $sSort = $sSort." ".(strtolower($aParams['order'][0]) == 'd' ? "DESC" : "ASC");
+            }
+        }
+
         $aResult = [];
 
-        $aItems = $this->findAll("{$sFilterRules} ORDER BY id DESC {$sOffset}", []);
+        $aItems = $this->findAll("{$sFilterRules} {$sSort} {$sOffset}", []);
         $aResult['total'] = $this->count("{$sFilterRules}");
         $aResult['totalNotFiltered'] = $this->count("1 = 1");
 
