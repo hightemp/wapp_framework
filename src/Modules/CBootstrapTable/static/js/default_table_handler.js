@@ -1,3 +1,4 @@
+/*
 $(document).ready(() => {
     var $table = $('#table')
     var $remove = $('#remove')
@@ -140,3 +141,4 @@ $(document).ready(() => {
         initTable()
     })
 })
+*/

@@ -10,9 +10,9 @@ class BaseTag
 
         foreach ($aAttr as $sK => $sV) {
             $sV = addslashes($sV);
-            $sResult .= "$sK=\"$sV\" ";
+            $sResult .= "$sK=\"$sV\" \n";
         }
 
-        return $sResult;
+        return "\n".$sResult;
     }
 }

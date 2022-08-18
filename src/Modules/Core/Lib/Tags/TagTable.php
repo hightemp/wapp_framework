@@ -11,35 +11,35 @@ class TagTable extends BaseTag
         $sHTML = "";
 
         if ($aHeaders) {
-            $sHTML .= "<thead>";
-            $sHTML .= "<tr>";
+            $sHTML .= "<thead>\n";
+            $sHTML .= "<tr>\n";
             foreach ($aHeaders as $mHeader) {
                 $sCell = is_string($mHeader) ? $mHeader : $mHeader[0];
                 $sAttr = is_string($mHeader) ? '' : static::fnPrepareAttr($mHeader[1]);
-                $sHTML .= "<th {$sAttr}>";
+                $sHTML .= "<th {$sAttr}>\n";
                 $sHTML .= $sCell;
-                $sHTML .= "</th>";
+                $sHTML .= "\n</th>\n";
             }
-            $sHTML .= "</tr>";
-            $sHTML .= "</thead>";
+            $sHTML .= "</tr>\n";
+            $sHTML .= "</thead>\n";
         }
 
-        $sHTML .= "<tbody>";
+        $sHTML .= "<tbody>\n";
         foreach ($aData as $aRow) {
-            $sHTML .= "<tr>";
+            $sHTML .= "<tr>\n";
             foreach ($aHeaders as $iI => $mHeader) {
                 $sCell = isset($aRow[$iI]) ? $aRow[$iI] : '';
-                $sHTML .= "<td>";
+                $sHTML .= "<td>\n";
                 $sHTML .= $sCell;
-                $sHTML .= "</td>";
+                $sHTML .= "\n</td\n>";
             }
-            $sHTML .= "</tr>";
+            $sHTML .= "</tr>\n";
         }
-        $sHTML .= "</tbody>";
+        $sHTML .= "</tbody>\n";
 
         $sAttr = static::fnPrepareAttr($aAttr);
 
-        $sHTML = "<table {$sAttr}>{$sHTML}</table>";
+        $sHTML = "<table {$sAttr}>\n{$sHTML}</table>\n";
         
         echo $sHTML;
     }

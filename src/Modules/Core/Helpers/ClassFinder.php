@@ -15,9 +15,15 @@ class ClassFinder
 
     public static function getClassesInNamespace($namespace)
     {
+        static $aCache = [];
+        if (isset($aCache[$namespace])) { return $aCache[$namespace]; }
+
         $sPath = self::getNamespaceDirectory($namespace);
 
-        if (!$sPath) return [];
+        if (!$sPath) {
+            $aCache[$namespace] = [];
+            return [];
+        }
 
         $files = scandir($sPath);
         $files = array_filter($files, function($sI) { return !in_array($sI, [".", ".."]); });
@@ -26,12 +32,16 @@ class ClassFinder
             return $namespace . '\\' . str_replace('.php', '', $file);
         }, $files);
 
-        return array_filter($classes, function($possibleClass){
+        $aClasses = array_filter($classes, function($possibleClass){
             return class_exists($possibleClass);
         });
+
+        $aCache[$namespace] = $aClasses;
+
+        return $aClasses;
     }
 
-    private static function getDefinedNamespaces()
+    public static function getDefinedNamespaces()
     {
         $composerJsonPath = self::appRoot . '/composer.json';
         $composerConfig = json_decode(file_get_contents($composerJsonPath));
@@ -39,8 +49,11 @@ class ClassFinder
         return (array) $composerConfig->autoload->{'psr-4'};
     }
 
-    private static function getNamespaceDirectory($namespace)
+    public static function getNamespaceDirectory($namespace)
     {
+        static $aCache  = [];
+        if (isset($aCache[$namespace])) { return $aCache[$namespace]; }
+
         $composerNamespaces = self::getDefinedNamespaces();
 
         $namespace = preg_replace('/^\\\\/', "", $namespace);
@@ -50,8 +63,11 @@ class ClassFinder
         while($namespaceFragments) {
             $possibleNamespace = implode('\\', $namespaceFragments) . '\\';
 
+            print_r([$possibleNamespace, $composerNamespaces]);
             if(array_key_exists($possibleNamespace, $composerNamespaces)){
-                return realpath(self::appRoot . "/" . $composerNamespaces[$possibleNamespace] . implode('/', $undefinedNamespaceFragments));
+                $sPath = realpath(self::appRoot . "/" . $composerNamespaces[$possibleNamespace] . implode('/', $undefinedNamespaceFragments));
+                $aCache[$namespace] = $sPath;
+                return $sPath;
             }
 
             array_unshift($undefinedNamespaceFragments, array_pop($namespaceFragments));            

@@ -14,8 +14,13 @@ class Index extends BaseController
 
     public function fnIndexHTML()
     {
-        $oTestTable = TestTable::fnBuild();
-        $aEntity = Utils::fnPrepareVarsForAjaxTable(API::class, $this->oRequest);
+        // $oTestTable = TestTable::fnBuild();
+
+        $aEntity = Utils::fnPrepareVarsForAjaxTable(
+            API::class,
+            TestTable::class,
+            $this->oRequest
+        );
 
         View::fnAddVars([
             "aTestTableEntity" => $aEntity,

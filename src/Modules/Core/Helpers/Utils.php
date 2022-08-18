@@ -6,6 +6,38 @@ use Hightemp\WappTestSnotes\Project;
 
 class Utils 
 {
+    public static function fnPrepareRelPath($sFullPath)
+    {
+        return str_replace(ROOT_PATH, "", $sFullPath);
+    }
+
+    public static function fnGetProjectRelPath()
+    {
+        static $sPath = null;
+        if (!is_null($sPath)) return $sPath;
+        return $sPath = static::fnPrepareRelPath(Project::$sProjectRootPath);
+    }
+
+    public static function fnGetRelPathForClass($sClass)
+    {
+        $sPath = ClassFinder::getNamespaceDirectory($sClass);
+        return static::fnPrepareRelPath($sPath);
+    }
+
+    public static function fnGetRelPathForClassModule($sClass, $sRelPath="")
+    {
+        $sPath = static::fnGetGlobalPathForClassModule($sClass, $sRelPath);
+        return static::fnPrepareRelPath($sPath);
+    }
+
+    public static function fnGetGlobalPathForClassModule($sClass, $sRelPath="")
+    {
+        $aModuleName = static::fnExtractModuleName($sClass);
+
+        $sPath = Project::$sProjectRootPath."/Modules/".$aModuleName;
+        return $sPath.$sRelPath;
+    }
+
     public static function fnGetModuleModels($sModuleClass)
     {
         $sModels = Utils::fnGetModulesClassNamespace(Utils::fnExtractModuleName($sModuleClass), "Models");

@@ -14,8 +14,6 @@ class IntColumn extends BaseColumn
     const P_CHARSET = "";
     const P_SIZE = 11;
 
-    const P_COMMENT = "";
-
     const B_IS_PRIMARY_INDEX = false;
 
     public static function fnDefaultValue()

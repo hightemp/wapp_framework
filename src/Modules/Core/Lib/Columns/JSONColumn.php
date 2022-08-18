@@ -14,8 +14,6 @@ class JSONColumn extends BaseColumn
     const P_CHARSET = "utf8mb4";
     const P_SIZE = 4000;
 
-    const P_COMMENT = "";
-
     const B_HAS_DEFAULT_VALUE = true;
 
     public static function fnDefaultValue()

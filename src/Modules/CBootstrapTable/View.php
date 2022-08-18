@@ -9,12 +9,6 @@ use Hightemp\WappTestSnotes\Modules\CBootstrapTable\Lib\Tags\TagBootstrapTableAJ
 
 class View extends LibView
 {
-    const STATIC_PATH = "src/Modules/CBootstrapTable/static";
-    const STATIC_CSS_PATH = self::STATIC_PATH."/css";
-    const STATIC_JS_PATH = self::STATIC_PATH."/js";
-
-    const TEMPLATES_PATH = __DIR__."/views";
-    
     public static $sDefaultLayoutTemplate = "layout.php";
 
     public static function fnPrepareVars()

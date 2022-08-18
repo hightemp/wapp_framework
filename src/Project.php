@@ -5,6 +5,7 @@ namespace Hightemp\WappTestSnotes;
 class Project 
 {
     public static $sProjectClassPath = __NAMESPACE__;
+    public static $sProjectRootPath = __DIR__;
 
     public static $sDefaultCommand = \Hightemp\WappTestSnotes\Modules\Core\Commands\ListCommands::class;
 

@@ -30,6 +30,20 @@ class Utils
 
         return $aTableData;
     }
+
+    public static function fnPrepareHeadersByColumns($aColumns)
+    {
+        $aResult = [];
+
+        foreach ($aColumns as $sK => $sClass) {
+            $aResult[] = [
+                $sClass::P_TITLE ?: $sK,
+                [ "data-field" => $sK ],
+            ];
+        }
+
+        return $aResult;
+    }
     
     /**
      * Подготовка опций для AJAX таблицы
@@ -40,7 +54,7 @@ class Utils
      * 
      * @return array
      */
-    public static function fnPrepareVarsForAjaxTable($sControllerClass, $oRequest=null, $aAttrs=[])
+    public static function fnPrepareVarsForAjaxTable($sControllerClass, $sModelClass, $oRequest=null, $aHeaders=[], $aAttrs=[])
     {
         $aTableData = [];
         // $aAliases = $sControllerClass::fnGenerateAliases();
@@ -48,7 +62,8 @@ class Utils
         $sAliasWithPaginationMethod = $sControllerClass::fnPrepareMethodNameForAlias("fnListWithPaginationJSON");
 
         $aAttrs = [
-            "data-toolbar" => "#toolbar",
+            "data-height" => "950",
+            // "data-toolbar" => "#toolbar",
             "data-search" => "true",
             "data-show-refresh" => "true",
             "data-show-toggle" => "true",
@@ -58,22 +73,33 @@ class Utils
             "data-detail-view" => "true",
             "data-show-export" => "true",
             "data-click-to-select" => "true",
-            "data-detail-formatter" => "detailFormatter",
             "data-minimum-count-columns" => "2",
             "data-show-pagination-switch" => "true",
-            "data-pagination" => "true",
+
             "data-id-field" => "id",
+
+            "data-pagination" => "true",
             "data-page-list" => "[10, 25, 50, 100, all]",
-            "data-show-footer" => "true",
             "data-side-pagination" => "server",
+
+            "data-show-footer" => "true",
+
             "data-url" => "/".$sAliasWithPaginationMethod,
-            "data-response-handler" => "responseHandler",
+
+            // "data-detail-formatter" => "detailFormatter",
+            // "data-response-handler" => "responseHandler",
+
             ...$aAttrs
         ];
 
         View::fnAddVars([ "bUseDefaultTableResponseHandler" => true ]);
 
         $aTableData["aAttrs"] = $aAttrs;
+        if ($aHeaders) {
+            $aTableData["aHeaders"] = $aHeaders;
+        } else {
+            $aTableData["aHeaders"] = static::fnPrepareHeadersByColumns($sModelClass::COLUMNS);
+        }
 
         return $aTableData;
     }

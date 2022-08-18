@@ -12,7 +12,7 @@ class TagBootstrapTableAJAX extends BaseTag
     {
         return (new TagBootstrapTable())(
             [],
-            [],
+            $aEntity["aHeaders"],
             $aEntity["aAttrs"]
         );
     }
