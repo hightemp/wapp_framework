@@ -80,6 +80,9 @@ class Utils
             "data-minimum-count-columns" => "2",
             "data-show-pagination-switch" => "true",
 
+            "data-filter-control" => "true",
+            "data-show-search-clear-button" => "true",
+
             "data-id-field" => "id",
 
             "data-pagination" => "true",

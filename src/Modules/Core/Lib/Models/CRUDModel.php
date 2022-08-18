@@ -30,6 +30,22 @@ abstract class CRUDModel extends BaseModel
         return join(" OR ", $aSQL);
     }
 
+    function fnGenerateFilterRulesForFilter($sFilter)
+    {
+        $aSQL = [];
+
+        $aFilter = json_decode($sFilter);
+
+        foreach ($aFilter as $sColumnName => $sFilter) {
+            if (isset(static::COLUMNS[$sColumnName])) {
+                $aSQL[] = "{$sColumnName} LIKE '%{$sFilter}%'";
+            }
+        }
+
+        return join(" OR ", $aSQL);
+    }
+    
+
     function fnPagination($iPage, $iRows, $bUseOffset=false)
     {
         if ($bUseOffset) return " LIMIT {$iPage}, {$iRows}";
@@ -44,13 +60,17 @@ abstract class CRUDModel extends BaseModel
         $sSort = " ORDER BY id DESC";
         $sOffset = "";
 
-        if (isset($aParams['filterRules'])) {
+        if (isset($aParams['filterRules']) && $aParams['filterRules']) {
             $aParams['filterRules'] = json_decode($aParams['filterRules']);
             $sFilterRules = $this->fnGenerateFilterRules($aParams['filterRules']);
         }
 
-        if (isset($aParams['search'])) {
+        if (isset($aParams['search']) && $aParams['search']) {
             $sFilterRules = $this->fnGenerateFilterRulesForSearch($aParams['search']);
+        }
+
+        if (isset($aParams['filter']) && $aParams['filter']) {
+            $sFilterRules = $this->fnGenerateFilterRulesForFilter($aParams['filter']);
         }
 
         if (isset($aParams['offset'])) {
