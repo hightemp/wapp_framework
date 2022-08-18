@@ -67,12 +67,16 @@ class BaseController
         }
 
         // NOTE: предзагруза из модулей
+        $aViewsList = array_merge($aViewsList, (Request::$sCurrentModuleClass)::$aPreloadViews);
+        
+        /*
         foreach ($aControllers as $sModuleClass => $aControllers) {
             $aPreloadViews = (array) $sModuleClass::$aPreloadViews;
             foreach ($aPreloadViews as $sViewClass) {
                 $aViewsList[] = $sViewClass;
             }
         }
+        */
 
         $aViewsList = array_unique($aViewsList);
 
