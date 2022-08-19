@@ -10,10 +10,8 @@ use \Hightemp\WappTestSnotes\Modules\TestTables\Controllers\API;
 class Aliases extends BaseAliases
 {
     public static $aMethods = [
-        "testtables/(\\d+)/test" => [Index::class, 'fnIndexHTML'],
-        // "testtables/test" => [BaseController::CP_FORWARD, "testtables/index"],
-        // "testtables" => [BaseController::CC_FORWARD_302, "testtables/index"],
-        // "testtables/" => [BaseController::CC_FORWARD_302, "testtables/index"],
+        "testtables" => [BaseController::CC_FORWARD_302, "testtables/index"],
+        "testtables/" => [BaseController::CC_FORWARD_302, "testtables/index"],
         "testtables/index" => [Index::class, 'fnIndexHTML'],
         "testtables/tables/ajax_table" => [Index::class, 'fnAjaxTableHTML', 'tables/ajax_table.php'],
         "testtables/tables/crud_table" => [Index::class, 'fnCrudTableHTML', 'tables/crud_table.php'],

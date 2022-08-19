@@ -200,12 +200,16 @@ class BaseController
         return $aResult;
     }
 
-    public static function fnGetAllAliasesLinks($sModuleClass=null)
+    public static function fnGetAllAliasesLinks($sModuleClass=null, $bExcludeForwards=true)
     {
         $aResult = [];
         $aProjectAliases = static::fnGetAllAliases($sModuleClass);
 
         foreach ($aProjectAliases as $sAlias => $aMethod) {
+            if (!class_exists($aMethod[0]) && $bExcludeForwards) {
+                continue;
+            }
+
             $sURL = Utils::fnGetBaseURL($sAlias);
             $aResult[] = [$sURL, $sAlias, ...$aMethod];
         }
