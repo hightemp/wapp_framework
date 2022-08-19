@@ -7,6 +7,26 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
 
 class Utils 
 {
+    public static function fnFindStringInRegExpArr($sString, $aRegExpList, $bStrict=true)
+    {
+        foreach ($aRegExpList as $sKey) {
+            $sRegExp = $bStrict ? "|^".$sKey."$|" : "|".$sKey."|";
+            if (preg_match($sRegExp, $sString)) {
+                return $sKey;
+            }
+        }
+    }
+
+    public static function fnFindKeyByRegExp($sKeyRegExp, $aList, $bStrict=true)
+    {
+        foreach ($aList as $sKey => $mValue) {
+            $sKeyRegExp = $bStrict ? "|^".$sKeyRegExp."$|" : "|".$sKeyRegExp."|";
+            if (preg_match($sKeyRegExp, $sKey)) {
+                return $sKey;
+            }
+        }
+    }
+
     public static function fnGetBaseURL($sPath="")
     {
         $aS = BaseController::$oGlobalRequest->aServer;

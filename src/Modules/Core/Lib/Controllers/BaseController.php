@@ -164,6 +164,11 @@ class BaseController
 
                 if (isset($aMethods[$sPath])) {
                     return $aMethods[$sPath];
+                } else {
+                    $sRegExpKey = Utils::fnFindStringInRegExpArr($sPath, array_keys($aMethods));
+                    if ($sRegExpKey) {
+                        return $aMethods[$sRegExpKey];
+                    }
                 }
             }
         }
@@ -227,15 +232,15 @@ class BaseController
             $aAlias = static::fnFindMethodByPathAlias($sCurrentAlias, $aControllers);
             if ($aAlias) {
                 if (!class_exists($aAlias[0])) {
-                    if ($aAlias[0] != BaseController::CP_FORWARD) {
+                    if ($aAlias[0] == BaseController::CP_FORWARD) {
                         $sCurrentAlias = $aAlias[1];
                         $aAlias = static::fnFindMethodByPathAlias($sCurrentAlias, $aControllers);
                     }
-                    if ($aAlias[0] != BaseController::CC_FORWARD_301) {
-                        return (new Forward301($aAlias[1]));
+                    if ($aAlias[0] == BaseController::CC_FORWARD_301) {
+                        return (new Forward301("/".$aAlias[1]));
                     }
-                    if ($aAlias[0] != BaseController::CC_FORWARD_302) {
-                        return (new Forward302($aAlias[1]));
+                    if ($aAlias[0] == BaseController::CC_FORWARD_302) {
+                        return (new Forward302("/".$aAlias[1]));
                     }
                 }
 

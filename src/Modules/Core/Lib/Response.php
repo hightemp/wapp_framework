@@ -21,13 +21,17 @@ class Response
 
     public function fnPrintOutputAndExit()
     {
+        if ($this->iCode) {
+            http_response_code($this->iCode);
+        }
+
         header("Content-Type: {$this->sContentType}");
+        
         if ($this->aHeaders) {
             foreach ($this->aHeaders as $sHeader) {
                 header($sHeader);
             }
         }
-        http_response_code($this->iCode);
         die($this->fnGetContent());
     }
 }
