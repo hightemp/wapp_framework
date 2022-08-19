@@ -17,24 +17,35 @@ use \RedBeanPHP\OODBBean;
 class CRUDController extends BaseController
 {
     public static $sModelClass = '';
+    public static $sAvailableMethodTypes = 'JSON|HTML';
 
-    public static function fnPrepareMethodNameForAlias($sMethod, $sSep="/")
+    public static function fnPrepareMethodName($sMethod, $sSep="_")
     {
-        $sReg = '/^fn(.*)(JSON|HTML)$/';
-            
-        if (!preg_match($sReg, $sMethod)) {
+        $sReg = '/^fn(.*)('.static::$sAvailableMethodTypes.')$/';
+        $aPregM = [];
+
+        if (!preg_match($sReg, $sMethod, $aPregM)) {
             return false;
         }
 
+        $sExt = strtolower($aPregM[2]);
         $sAlias = preg_replace($sReg, "$1", $sMethod);
-        $sAlias = preg_replace_callback("/[A-Z]/", function ($aM) use ($sSep) {
-            return $sSep.strtolower($aM[0]);
+        $bF = true;
+        $sAlias = preg_replace_callback("/[A-Z]/", function ($aM) use ($sSep, &$bF) {
+            return ($bF ? $bF=false : $sSep).strtolower($aM[0]);
         }, $sAlias);
+
+        return $sAlias."_".$sExt;
+    }
+
+    public static function fnPrepareMethodNameForAlias($sMethod, $sSep="_")
+    {
+        $sAlias = static::fnPrepareMethodName($sMethod, $sSep);
 
         $sModule = Utils::fnExtractModuleName(static::class);
         $sModule = strtolower($sModule);
 
-        $sAlias = $sModule.$sAlias;
+        $sAlias = $sModule."/".$sAlias;
 
         return $sAlias;
     }
@@ -55,6 +66,27 @@ class CRUDController extends BaseController
 
         return $aResult;
     }
+    
+    public static function fnGetAliasesList()
+    {
+        $aResult = [];
+
+        $aMethods = get_class_methods(static::class);
+
+        array_map(function ($sMethod) use (&$aResult) {
+            $sAlias = static::fnPrepareMethodNameForAlias($sMethod);
+
+            if (!$sAlias) return;
+
+            $sModMethod = static::fnPrepareMethodName($sMethod, "");
+
+            if (!$sModMethod) return;
+
+            $aResult[$sModMethod] = "/".$sAlias;
+        }, $aMethods);
+
+        return $aResult;
+    }
 
     public function _fnBuildModel()
     {
@@ -62,14 +94,36 @@ class CRUDController extends BaseController
         $oModel = (static::$sModelClass)::fnBuild();
         return $oModel;
     }
-
+    
+    /**
+     * fnGetTableInfoJSON - gettableinfo
+     *
+     * @return array
+     */
+    public function fnGetTableInfoJSON()
+    {
+        $oModel = $this->_fnBuildModel();
+        $aList = $oModel->fnGetTableInfo($this->oRequest->aRequest);
+        return $aList;
+    }
+    
+    /**
+     * fnListJSON - list
+     *
+     * @return array
+     */
     public function fnListJSON()
     {
         $oModel = $this->_fnBuildModel();
         $aList = $oModel->fnList($this->oRequest->aRequest);
         return $aList;
     }
-
+    
+    /**
+     * fnListWithPaginationJSON - listwithpagination
+     *
+     * @return array
+     */
     public function fnListWithPaginationJSON()
     {
         $oModel = $this->_fnBuildModel();

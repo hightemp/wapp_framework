@@ -46,6 +46,10 @@ class Utils
             ];
         }
 
+        $Result[] = [
+            "formatter" => "operateFormatter",
+        ];
+
         return $aResult;
     }
     
@@ -61,46 +65,11 @@ class Utils
     public static function fnPrepareVarsForAjaxTable($sControllerClass, $sModelClass, $oRequest=null, $aHeaders=[], $aAttrs=[])
     {
         $aTableData = [];
-        // $aAliases = $sControllerClass::fnGenerateAliases();
 
-        $sAliasWithPaginationMethod = $sControllerClass::fnPrepareMethodNameForAlias("fnListWithPaginationJSON");
+        // View::fnAddVars([ "bUseDefaultTableResponseHandler" => true ]);
 
-        $aAttrs = [
-            "data-height" => "950",
-            // "data-toolbar" => "#toolbar",
-            "data-search" => "true",
-            "data-show-refresh" => "true",
-            "data-show-toggle" => "true",
-            "data-show-fullscreen" => "true",
-            "data-show-columns" => "true",
-            "data-show-columns-toggle-all" => "true",
-            "data-detail-view" => "true",
-            "data-show-export" => "true",
-            "data-click-to-select" => "true",
-            "data-minimum-count-columns" => "2",
-            "data-show-pagination-switch" => "true",
-
-            "data-filter-control" => "true",
-            "data-show-search-clear-button" => "true",
-
-            "data-id-field" => "id",
-
-            "data-pagination" => "true",
-            "data-page-list" => "[10, 25, 50, 100, all]",
-            "data-side-pagination" => "server",
-
-            "data-show-footer" => "true",
-
-            "data-url" => "/".$sAliasWithPaginationMethod,
-
-            // "data-detail-formatter" => "detailFormatter",
-            // "data-response-handler" => "responseHandler",
-
-            ...$aAttrs
-        ];
-
-        View::fnAddVars([ "bUseDefaultTableResponseHandler" => true ]);
-
+        $aTableData["sID"] = $aAttrs['id'];
+        $aTableData["aURLs"] = $sControllerClass::fnGetAliasesList();
         $aTableData["aAttrs"] = $aAttrs;
         if ($aHeaders) {
             $aTableData["aHeaders"] = $aHeaders;

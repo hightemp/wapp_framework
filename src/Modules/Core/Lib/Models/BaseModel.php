@@ -16,14 +16,14 @@ abstract class BaseModel
     /** @var bool $bUseTags соединение к бд */
     public static $bUseTags = false;
 
-    public const C_INDEX_ID = "id";
+    public const C_INDEX_FIELD = "id";
 
     public const COLUMNS = [
-        self::C_INDEX_ID => PrimaryIndexIntColumn::class,
+        self::C_INDEX_FIELD => PrimaryIndexIntColumn::class,
     ];
 
     public const PRIMARY_INDEXES = [
-        self::C_INDEX_ID
+        self::C_INDEX_FIELD
     ];
 
     public const UNIQUE_INDEXES = [
@@ -140,7 +140,7 @@ abstract class BaseModel
 
     function findOneByID($iID, $sql = "1=1", $bindings = array())
     {
-        $sID = static::C_INDEX_ID;
+        $sID = static::C_INDEX_FIELD;
         return $this->fnExtractRowData($this->oDBCon->findOne($this->fnGetTableName(), "{$sID} = ? AND ".$sql, [$iID, ...$bindings]));
     }
 
@@ -151,7 +151,7 @@ abstract class BaseModel
 
     function findAllByID($aIDs, $sql = "1=1", $bindings = array())
     {
-        $sID = static::C_INDEX_ID;
+        $sID = static::C_INDEX_FIELD;
         $sS = str_repeat('?,', count($aIDs) - 1) . '?';
         return $this->findAll("{$sID} IN ($sS) AND ".$sql, [...$aIDs, ...$bindings]);
     }
@@ -204,7 +204,7 @@ abstract class BaseModel
 
     function update($aData=[], $oItem=null)
     {
-        $sID = static::C_INDEX_ID;
+        $sID = static::C_INDEX_FIELD;
 
         if (!$oItem) {
             $oItem = $this->findForUpdate("{$sID} = ?", [$aData[$sID]]);

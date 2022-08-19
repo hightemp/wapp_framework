@@ -17,7 +17,7 @@ class TestTable extends CRUDModel
     public const C_TEST_VARCHAR = "test_varchar";
 
     public const COLUMNS = [
-        self::C_INDEX_ID => IndexID::class,
+        self::C_INDEX_FIELD => IndexID::class,
         self::C_TEST_JSON => TestJson::class,
         self::C_TEST_INT => TestInt::class,
         self::C_TEST_VARCHAR => TestVarChar::class,

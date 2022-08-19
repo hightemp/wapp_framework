@@ -53,6 +53,28 @@ abstract class CRUDModel extends BaseModel
         return " LIMIT {$iF}, {$iRows}";
     }
 
+    function fnGetTableInfo($aParams=[])
+    {
+        $aColumns = array_map(function($sC) { return [
+            "title" => $sC::P_TITLE,
+            "field" => "",
+            "comment" => $sC::P_COMMENT,
+            "type" => $sC::TYPE,
+            "sortable" => $sC::P_SORTABLE,
+            "sort-order" => $sC::P_SORT_ORDER,
+            "filter-control" => "input",
+        ]; }, static::COLUMNS);
+
+        foreach ($aColumns as $sK => $mV) {
+            $aColumns[$sK]["field"] = $sK;
+        }
+
+        return [
+            "sIndexField" => static::C_INDEX_FIELD,
+            "aColumns" => array_values($aColumns),
+        ];
+    }
+
     // NOTE: List with pagination and filter
     function fnListWithPagination($aParams=[], $bUseTags=null)
     {
@@ -110,7 +132,7 @@ abstract class CRUDModel extends BaseModel
     // NOTE: List all
     function fnList($aParams=[])
     {
-        $sID = static::C_INDEX_ID;
+        $sID = static::C_INDEX_FIELD;
         $aItems = $this->findAll("ORDER BY {$sID} DESC", []);
         return $aItems;
     }
@@ -118,7 +140,7 @@ abstract class CRUDModel extends BaseModel
     // NOTE: List last
     function fnListLast($aParams=[])
     {
-        $sID = static::C_INDEX_ID;
+        $sID = static::C_INDEX_FIELD;
         $aItems = $this->findAll("ORDER BY {$sID} DESC LIMIT ?", [isset($aParams['limit']) ?: '10']);
         return $aItems;
     }
@@ -126,7 +148,7 @@ abstract class CRUDModel extends BaseModel
     // NOTE: Get one
     function fnGetOne($aParams=[])
     {
-        $sID = static::C_INDEX_ID;
+        $sID = static::C_INDEX_FIELD;
         return $this->findOneByID($aParams[$sID]);
     }
 

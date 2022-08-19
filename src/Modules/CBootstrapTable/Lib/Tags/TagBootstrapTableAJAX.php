@@ -10,10 +10,22 @@ class TagBootstrapTableAJAX extends BaseTag
 {
     public function __invoke($aEntity)
     {
-        return (new TagBootstrapTable())(
-            [],
-            $aEntity["aHeaders"],
-            $aEntity["aAttrs"]
-        );
+        $sID = $aEntity["sID"];
+        $sHeaders = json_encode($aEntity["aHeaders"]);
+        $sAttrs = json_encode($aEntity["aAttrs"]);
+        $aURLs = json_encode($aEntity["aURLs"]);
+
+        echo <<<HTML
+<script>
+window.oTables || (window.oTables = {});
+window.oTables['{$sID}'] = {
+    "aAttrs": $sAttrs,
+    "aHeaders": $sHeaders,
+    "aURLs": $aURLs,
+}
+BootstrapAjaxTable.fnBuild('{$sID}');
+</script>
+<table id="{$sID}"></table>
+HTML;
     }
 }

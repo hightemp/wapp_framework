@@ -26,7 +26,11 @@ class Index extends BaseController
         $aEntity = Utils::fnPrepareVarsForAjaxTable(
             API::class,
             TestTable::class,
-            $this->oRequest
+            $this->oRequest,
+            [],
+            [
+                "id" => "table-ajax-test"
+            ]
         );
 
         View::fnAddVars([
@@ -39,7 +43,11 @@ class Index extends BaseController
         $aEntity = Utils::fnPrepareVarsForAjaxTable(
             API::class,
             TestTable::class,
-            $this->oRequest
+            $this->oRequest,
+            [],
+            [
+                "id" => "table-crud-test"
+            ]
         );
 
         View::fnAddVars([

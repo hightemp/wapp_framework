@@ -12,6 +12,9 @@ class BaseColumn
     const P_CHARSET = "utf8mb4";
     const P_SIZE = 0;
 
+    const P_SORTABLE = true;
+    const P_SORT_ORDER = 'DESC';
+
     const P_TITLE = "";
     const P_COMMENT = "";
 

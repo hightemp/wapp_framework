@@ -13,7 +13,7 @@ class Sheets extends CRUDModel
     public const C_DOCUMENT_ID = "document_id";
 
     public const COLUMNS = [
-        self::C_INDEX_ID => IndexID::class,
+        self::C_INDEX_FIELD => IndexID::class,
         self::C_DOCUMENT_NAME => VarcharColumn::class,
         self::C_DOCUMENT_ID => VarcharColumn::class,
     ];
