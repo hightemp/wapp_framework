@@ -14,8 +14,28 @@ class Index extends BaseController
 
     public function fnIndexHTML()
     {
-        // $oTestTable = TestTable::fnBuild();
+        $aAliases = BaseController::fnGetAllAliasesLinks(static::class);
 
+        View::fnAddVars([
+            "aAliases" => $aAliases
+        ]);
+    }
+
+    public function fnAjaxTableHTML()
+    {
+        $aEntity = Utils::fnPrepareVarsForAjaxTable(
+            API::class,
+            TestTable::class,
+            $this->oRequest
+        );
+
+        View::fnAddVars([
+            "aTestTableEntity" => $aEntity,
+        ]);
+    }
+
+    public function fnCrudTableHTML()
+    {
         $aEntity = Utils::fnPrepareVarsForAjaxTable(
             API::class,
             TestTable::class,

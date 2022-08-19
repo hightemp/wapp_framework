@@ -12,6 +12,8 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\NotFound as NotFoundRespo
 use Hightemp\WappTestSnotes\Modules\Core\Lib\View;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Request;
 use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\Forward301;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\Forward302;
 
 class BaseController
 {
@@ -21,6 +23,10 @@ class BaseController
     const ALIAS_KEY = "alias";
 
     const DEFAULT_MODULE = "Core";
+
+    const CC_FORWARD_302 = 302;
+    const CC_FORWARD_301 = 301;
+    const CP_FORWARD = "forward";
 
     public static $oGlobalRequest = null;
     public $oRequest = null;
@@ -88,7 +94,7 @@ class BaseController
         $sViewClass = $oController->sViewClass;
         
         if ($sContentTemplate) {
-
+            $sViewClass::fnSetParams([], $sContentTemplate);
         }
 
         $sViewClass::fnPrepareContentVar();
@@ -168,26 +174,35 @@ class BaseController
         return \Hightemp\WappTestSnotes\Project::$aAliases;
     }
 
-    public static function fnGetAllAliases()
+    public static function fnGetAllAliases($sModuleClass=null)
     {
         $aResult = [];
         $aProjectAliases = static::fnGetProjectAliases();
+        $sModule = "";
+        if ($sModuleClass) $sModule = Utils::fnExtractModuleName($sModuleClass);
 
         foreach ($aProjectAliases as $sAliasClass) {
+            if ($sModule) {
+                $sAliasModule = Utils::fnExtractModuleName($sAliasClass);
+                if ($sAliasModule != $sModule) {
+                    continue;
+                }
+            }
+
             $aResult = array_merge($aResult, $sAliasClass::fnPrepareAliases());
         }
 
         return $aResult;
     }
 
-    public static function fnGetAllAliasesLinks()
+    public static function fnGetAllAliasesLinks($sModuleClass=null)
     {
         $aResult = [];
-        $aProjectAliases = static::fnGetAllAliases();
+        $aProjectAliases = static::fnGetAllAliases($sModuleClass);
 
-        foreach ($aProjectAliases as $sAliasClass => $aMethod) {
-            $sURL = Utils::fnGetBaseURL($sAliasClass);
-            $aResult[] = [$sURL, $sAliasClass, ...$aMethod];
+        foreach ($aProjectAliases as $sAlias => $aMethod) {
+            $sURL = Utils::fnGetBaseURL($sAlias);
+            $aResult[] = [$sURL, $sAlias, ...$aMethod];
         }
 
         return $aResult;
@@ -211,6 +226,19 @@ class BaseController
         if ($sCurrentAlias) {
             $aAlias = static::fnFindMethodByPathAlias($sCurrentAlias, $aControllers);
             if ($aAlias) {
+                if (!class_exists($aAlias[0])) {
+                    if ($aAlias[0] != BaseController::CP_FORWARD) {
+                        $sCurrentAlias = $aAlias[1];
+                        $aAlias = static::fnFindMethodByPathAlias($sCurrentAlias, $aControllers);
+                    }
+                    if ($aAlias[0] != BaseController::CC_FORWARD_301) {
+                        return (new Forward301($aAlias[1]));
+                    }
+                    if ($aAlias[0] != BaseController::CC_FORWARD_302) {
+                        return (new Forward302($aAlias[1]));
+                    }
+                }
+
                 if (method_exists($aAlias[0], $aAlias[1])) {
                     Request::$sCurrentModuleClass = Utils::fnGetModulesClassNamespace(Utils::fnExtractModuleName($aAlias[0]));
                     Request::$sCurrentMethod = $aAlias[1];
