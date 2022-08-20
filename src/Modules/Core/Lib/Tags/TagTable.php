@@ -15,7 +15,7 @@ class TagTable extends BaseTag
             $sHTML .= "<tr>\n";
             foreach ($aHeaders as $mHeader) {
                 $sCell = is_string($mHeader) ? $mHeader : $mHeader[0];
-                $sAttr = is_string($mHeader) ? '' : static::fnPrepareAttr($mHeader[1]);
+                $sAttr = is_string($mHeader) ? '' : static::fnPrepareAttrString($mHeader[1]);
                 $sHTML .= "<th {$sAttr}>\n";
                 $sHTML .= $sCell;
                 $sHTML .= "\n</th>\n";
@@ -37,10 +37,10 @@ class TagTable extends BaseTag
         }
         $sHTML .= "</tbody>\n";
 
-        $sAttr = static::fnPrepareAttr($aAttr);
+        $sAttr = static::fnPrepareAttrString($aAttr);
 
         $sHTML = "<table {$sAttr}>\n{$sHTML}</table>\n";
         
-        echo $sHTML;
+        static::fnPrint($sHTML);
     }
 }

@@ -9,6 +9,6 @@ class TagScript extends BaseTag
 {
     public function __invoke($sRelPath)
     {
-        echo (View::$sCurrentViewClass)::fnRenderScript($sRelPath);
+        static::fnPrint((View::$sCurrentViewClass)::fnRenderScript($sRelPath));
     }
 }

@@ -5,10 +5,10 @@ namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Tags;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\View;
 
-class TagFavicon extends BaseTag
+class TagFormBegin extends BaseTag
 {
-    public function __invoke($sRelPath, $sType="png")
+    public function __invoke()
     {
-        static::fnPrint((View::$sCurrentViewClass)::fnRenderLinkFavicon($sRelPath, $sType));
+        ob_start();
     }
 }

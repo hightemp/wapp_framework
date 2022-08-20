@@ -6,19 +6,21 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
 
 class TagSelect extends BaseTag
 {
-    public function __invoke($aList, $aAttr=[])
+    public function __invoke($aList, $aAttrs=[])
     {
         $sHTML = "";
-        $sAttr = static::fnPrepareAttr($aAttr);
+        $aAttrs = static::fnPrepareAttrs($aAttrs);
+
         foreach ($aList as $sK => $mV) {
             if (is_array($mV)) {
-                $sHTML = "<option value=\"{$mV[0]}\">{$mV[1]}</option>";
+                // NOTE: $mV = [ '1001', 'Подпись для значения' ]
+                $sHTML .= static::fnRenderTag('option', false, [ "value" => $mV[0] ], $mV[1]);
             } else {
-                $sHTML = "<option value=\"{$sK}\">{$mV}</option>";
+                // NOTE: $mV = 'Подпись для значения'
+                $sHTML .= static::fnRenderTag('option', false, [ "value" => $sK ], $mV);
             }
         }
 
-        $sHTML = "<select {$sAttr}>{$sHTML}</select>";
-        echo $sHTML;
+        static::fnPrint(static::fnRenderTag('select', false, $aAttrs, $sHTML));
     }
 }

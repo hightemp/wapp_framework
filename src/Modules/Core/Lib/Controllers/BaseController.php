@@ -33,6 +33,7 @@ class BaseController
     public $sViewClass = null;
     public static $sDefaultViewClass = View::class;
 
+    /** @var string[] $aPreloadViews список View для предварительной загрузки head html и переменных */
     public static $aPreloadViews = [];
     public static $aMiddlewaresBefore = [];
     public static $aMiddlewaresAfter = [];
@@ -62,7 +63,7 @@ class BaseController
         return $aControllers;
     }
 
-    public static function fnPrepareAllViewsForController($oController, $sContentTemplate=null, $aControllers=null)
+    public static function fnPrepareAllViewsForController($oController, $sMethod, $aControllers=null)
     {
         if (is_null($aControllers)) {
             $aControllers = static::fnGetControllersByModules();
@@ -84,15 +85,28 @@ class BaseController
 
         $aViewsList = array_unique($aViewsList);
 
+        // NOTE: Подключаем переменные
         foreach ($aViewsList as $sViewClass) {
-            $sViewClass::fnPrepareHTMLHeader();
             $sViewClass::fnPrepareVars();
         }
         
+        // NOTE: Рендрим все header.php шаблоны
+        foreach ($aViewsList as $sViewClass) {
+            $sViewClass::fnPrepareHTMLHeader();
+        }
+
         $sViewClass = $oController->sViewClass;
         
-        if ($sContentTemplate) {
-            $sViewClass::fnSetParams([], $sContentTemplate);
+        if ($sViewClass && $sViewClass::$aTemplates) {
+            if (isset($sViewClass::$aTemplates[$sControllerClass])) {
+                $aRefMethods = &$sViewClass::$aTemplates[$sControllerClass];
+                if (isset($aRefMethods[$sMethod])) {
+                    $aTemplates = $sViewClass::$aTemplates[$sControllerClass][$sMethod];
+                    isset($aTemplates[0]) ?: $aTemplates[0] = null;
+                    isset($aTemplates[1]) ?: $aTemplates[1] = null;
+                    $sViewClass::fnSetParams([], $aTemplates[0], $aTemplates[1]);
+                }
+            }
         }
 
         $sViewClass::fnPrepareContentVar();
@@ -106,7 +120,7 @@ class BaseController
         isset($aAlias[1]) ?: $aAlias[1]='';
         isset($aAlias[2]) ?: $aAlias[2]='';
 
-        list($sController, $sMethod, $sContentTemplate) = $aAlias;
+        list($sController, $sMethod) = $aAlias;
         
         $oResponse = null;
         $sController = "\\".$sController;
@@ -114,9 +128,9 @@ class BaseController
 
         $mResult = $oController->$sMethod();
 
-        if (preg_match('/html$/i', $sMethod)) {
+        if (preg_match('/HTML$/i', $sMethod)) {
             // NOTE: Подготовка $sContent и переменных для текущего контроллера
-            static::fnPrepareAllViewsForController($oController, $sContentTemplate);
+            static::fnPrepareAllViewsForController($oController, $sMethod);
 
             $sViewClass = $oController->sViewClass;
             $mResult = $sViewClass::fnRender();

@@ -5,13 +5,17 @@ namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
 use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
 use Hightemp\WappTestSnotes\Project;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagA;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagAliasA;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagTable;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagInclude;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagScript;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagSelect;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagLink;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\{
+    TagA,
+    TagAliasA,
+    TagTable,
+    TagInclude,
+    TagSelect,
+    TagFormBegin,
+    TagFormEnd,
+    TagScript,
+    TagLink,
+};
 
 class View
 {
@@ -21,6 +25,8 @@ class View
     const STATIC_JS_PATH = "static/js";
 
     const TEMPLATES_PATH = "views";
+
+    const THEME = "";
 
     public static $sCurrentViewClass = null;
 
@@ -71,6 +77,8 @@ class View
         self::$aVars['oTagAliasA'] = new TagAliasA();
         self::$aVars['oTagTable'] = new TagTable();
         self::$aVars['oTagSelect'] = new TagSelect();
+        self::$aVars['oTagFormBegin'] = new TagFormBegin();
+        self::$aVars['oTagFormEnd'] = new TagFormEnd();
 
         self::$aVars['oTagScript'] = new TagScript();
         self::$aVars['oTagLink'] = new TagLink();
@@ -101,11 +109,11 @@ class View
         self::$sHTMLHeader += $sHTML;
     }
 
-    public static function fnSetParams($aVars=[], $sContentTemplate=null, $sLayoutTemplate=null)
+    public static function fnSetParams($aVarsToAdd=[], $sContentTemplate=null, $sLayoutTemplate=null)
     {
-        static::fnAddVars($aVars);
-        if ($sLayoutTemplate) static::$sLayoutTemplate = $sLayoutTemplate;
+        if ($aVarsToAdd) static::fnAddVars($aVarsToAdd);
         if ($sContentTemplate) static::$sContentTemplate = $sContentTemplate;
+        if ($sLayoutTemplate) static::$sLayoutTemplate = $sLayoutTemplate;
     }
 
     public static function fnAddHeaderFavicon($sRelFilePath="favicon.png", $sType="png")

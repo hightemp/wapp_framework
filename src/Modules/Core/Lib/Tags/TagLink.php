@@ -9,6 +9,6 @@ class TagLink extends BaseTag
 {
     public function __invoke($sRelPath)
     {
-        echo (View::$sCurrentViewClass)::fnRenderLinkStylesheet($sRelPath);
+        static::fnPrint((View::$sCurrentViewClass)::fnRenderLinkStylesheet($sRelPath));
     }
 }

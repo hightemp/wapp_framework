@@ -25,6 +25,6 @@ class TagInclude extends BaseTag
         $sViewClass = Utils::fnGetModulesClassNamespace(Utils::fnExtractModuleName($sModuleClass), "View");
 
         /** @var View */
-        echo $sViewClass::fnRenderTemplate($sPath, $aVars);
+        static::fnPrint($sViewClass::fnRenderTemplate($sPath, $aVars));
     }
 }
