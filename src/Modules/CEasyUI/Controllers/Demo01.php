@@ -3,7 +3,7 @@
 namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers;
 
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
-use Hightemp\WappTestSnotes\Modules\Core\View;
+use Hightemp\WappTestSnotes\Modules\CEasyUI\View;
 
 class Demo01 extends BaseController
 {

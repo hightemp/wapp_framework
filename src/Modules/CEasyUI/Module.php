@@ -6,7 +6,7 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Module as LibModule;
 
 class Module extends LibModule
 {
-    const NAME = "CEasyUi";
+    const NAME = "CEasyUI";
 
     public static $sDefaultController = \Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers\Index::class;
     public static $sDefaultMethod = "fnIndexHTML";
@@ -17,5 +17,9 @@ class Module extends LibModule
 
     public static $aModels = [
         
+    ];
+
+    public static $aPreloadViews = [
+        \Hightemp\WappTestSnotes\Modules\CEasyUI\View::class,
     ];
 }

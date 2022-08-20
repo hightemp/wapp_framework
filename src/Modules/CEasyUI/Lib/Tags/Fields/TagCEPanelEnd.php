@@ -4,19 +4,18 @@ namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields;
 
 use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
 
-class TagCETextBox extends BaseTag
+class TagCEPanelEnd extends BaseTag
 {
     public static $aDefaultAttrs = [
-        "class" => "easyui-textbox",
-        "label" => "TextBox:",
-        "labelPosition" => "top",
-        "style" => "width:100%"
+        "class" => "easyui-panel",
+        "title" => "Panel",
+        "style" => "width:100%; padding: 10px;"
     ];
 
     public function __invoke($aAttr=[])
     {
         $aAttrs = static::fnPrepareAttrs($aAttr, static::$aDefaultAttrs);
-        
-        static::fnPrint(static::fnRenderTag('input', true, $aAttrs));
+        $sHTML = ob_get_clean();
+        static::fnPrint(static::fnRenderTag('div', false, $aAttrs, $sHTML));
     }
 }
