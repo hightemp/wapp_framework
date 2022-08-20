@@ -3,20 +3,21 @@
 namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields;
 
 use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagSelect;
 
-class TagCETextBox extends BaseTag
+class TagCESelect extends BaseTag
 {
     public static $aDefaultAttrs = [
-        "class" => "easyui-textbox",
-        "label" => "TextBox:",
+        "class" => "easyui-combobox",
+        "label" => "Select:",
         "labelPosition" => "top",
         "style" => "width:100%"
     ];
 
-    public function __invoke($aAttr=[])
+    public function __invoke($aList, $aAttr=[])
     {
         $aAttrs = static::fnPrepareAttrs($aAttr, static::$aDefaultAttrs);
-        
-        static::fnPrint(static::fnRenderTag(static::T_INPUT, true, $aAttrs));
+
+        (new TagSelect())($aList, $aAttrs);
     }
 }

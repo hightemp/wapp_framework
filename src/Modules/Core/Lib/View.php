@@ -11,6 +11,7 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\{
     TagTable,
     TagInclude,
     TagSelect,
+    TagForm,
     TagFormBegin,
     TagFormEnd,
     TagScript,
@@ -77,6 +78,7 @@ class View
         self::$aVars['oTagAliasA'] = new TagAliasA();
         self::$aVars['oTagTable'] = new TagTable();
         self::$aVars['oTagSelect'] = new TagSelect();
+        self::$aVars['oTagForm'] = new TagForm();
         self::$aVars['oTagFormBegin'] = new TagFormBegin();
         self::$aVars['oTagFormEnd'] = new TagFormEnd();
 

@@ -17,6 +17,6 @@ class TagFormEnd extends BaseTag
     {
         $aAttrs = static::fnPrepareAttrs($aAttrs, static::$aDefaultAttrs);
         $sHTML = ob_get_clean();
-        static::fnPrint(static::fnRenderTag('form', false, $aAttrs, $sHTML));
+        static::fnPrint(static::fnRenderTag(static::T_FORM, false, $aAttrs, $sHTML));
     }
 }

@@ -4,6 +4,42 @@ namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
 
 class BaseTag
 {
+    const T_A = 'a';
+    const T_DIV = 'div';
+    const T_INPUT = 'input';
+    const T_SELECT = 'select';
+    const T_FORM = 'from';
+    const T_SCRIPT = 'script';
+    const T_LINK = 'link';
+
+    /** @var bool $bBufferOutput влиет на работу метода fnPrint */
+    public static $bBufferOutput = false;
+    public static $aBuffer = [];
+    public static $sCurrentName = "";
+
+    public static function fnCleanBuffer()
+    {
+        static::$aBuffer = [];
+    }
+
+    public static function fnBeginBuffer($sName)
+    {
+        static::$bBufferOutput = true;
+        static::$aBuffer[$sName] = [];
+        static::$sCurrentName = $sName;
+    }
+
+    public static function fnEndBuffer($sName)
+    {
+        $aOutput = static::$aBuffer[$sName];
+        unset(static::$aBuffer[$sName]);
+        static::$sCurrentName = "";
+        if (!count(static::$aBuffer)) {
+            static::$bBufferOutput = false;
+        }
+        return $aOutput;
+    }
+
     public static function &fnPrepareAttrs(&$aAttr, $aDefault=[])
     {
         foreach ($aDefault as $sK => $sV) {
@@ -44,6 +80,10 @@ class BaseTag
 
     public static function fnPrint($sHTML)
     {
-        echo $sHTML;
+        if (static::$bBufferOutput) {
+            static::$aBuffer[static::$sCurrentName][] = $sHTML;
+        } else {
+            echo $sHTML;
+        }
     }
 }

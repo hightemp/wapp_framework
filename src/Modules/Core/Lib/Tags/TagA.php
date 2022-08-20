@@ -10,6 +10,6 @@ class TagA extends BaseTag
     {
         $aAttrs = static::fnPrepareAttrs($aAttrs);
         $aAttrs['href'] = $sHref;
-        static::fnPrint(fnRenderTag('a', false, $aAttrs, $sContent));
+        static::fnPrint(static::fnRenderTag(static::T_A, false, $aAttrs, $sContent));
     }
 }

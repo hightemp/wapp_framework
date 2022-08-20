@@ -9,6 +9,9 @@ use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\{
     TagCEPanelEnd,
     TagCETextBox,
     TagCETextarea,
+    TagCECheckbox,
+    TagCEDatebox,
+    TagCESelect,
 };
 use Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers\Demo01;
 
@@ -35,7 +38,10 @@ class View extends LibView
 
         self::$aVars['oTagCETextBox'] = new TagCETextBox();
         self::$aVars['oTagCETextarea'] = new TagCETextarea();
+        self::$aVars['oTagCECheckbox'] = new TagCECheckbox();
+        self::$aVars['oTagCEDatebox'] = new TagCEDatebox();
         self::$aVars['oTagCEPanelBegin'] = new TagCEPanelBegin();
         self::$aVars['oTagCEPanelEnd'] = new TagCEPanelEnd();
+        self::$aVars['oTagCESelect'] = new TagCESelect();
     }
 }

@@ -16,6 +16,6 @@ class TagCEPanelEnd extends BaseTag
     {
         $aAttrs = static::fnPrepareAttrs($aAttr, static::$aDefaultAttrs);
         $sHTML = ob_get_clean();
-        static::fnPrint(static::fnRenderTag('div', false, $aAttrs, $sHTML));
+        static::fnPrint(static::fnRenderTag(static::T_DIV, false, $aAttrs, $sHTML));
     }
 }
