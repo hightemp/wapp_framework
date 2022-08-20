@@ -21,7 +21,6 @@ class Module extends LibModule
     ];
 
     public static $aPreloadViews = [
-        \Hightemp\WappTestSnotes\Modules\Notes\View::class,
         \Hightemp\WappTestSnotes\Modules\CBootstrapTable\View::class,
         \Hightemp\WappTestSnotes\Modules\TestTables\View::class,
     ];

@@ -28,8 +28,23 @@ class View
     public static $sContentTemplate = "index.php";
     public static $sHeaderTemplate = "header.php";
 
+    /** @var string[] $aVars Список переменных. Ключ - значение */
     public static $aVars = [];
+    /** @var string $sHTMLHeader Это код html->head блока */
     public static $sHTMLHeader = '';
+
+    /** 
+     * @var string[][] $aTemplates список классов соотнесенных с шаблонами 
+     *  
+     * ```php
+     * [
+     *      Controller::class => [
+     *          "fnIndexHTML" => ['content_page.php', 'layout.php']
+     *      ]
+     * ]
+     * ``` 
+     **/
+    public static $aTemplates = [];
 
     public static function fnGetModuleRelPath($sExtPath="")
     {

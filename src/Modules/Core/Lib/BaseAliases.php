@@ -4,11 +4,27 @@ namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
 
 class BaseAliases
 {
-    public static $aMethods = [
-    ];
+    /** 
+     * @var string[] $aMethods методы для которые соотнесены с альясами 
+     *
+     * ```php
+     * [
+     *      "module/index" => [\Hightemp\WappTestSnotes\Modules\Module\Controllers\Index::class, 'fnIndexHTML'],
+     * ]
+     * ```
+     **/
+    public static $aMethods = [];
 
-    public static $aAutoloadMethods = [
-    ];
+    /** 
+     * @var string[] $aAutoloadMethods массив для автоматической загрузки методов (используется для API) 
+     *
+     * ```php
+     * [
+     *      "module/index" => [\Hightemp\WappTestSnotes\Modules\Module\Controllers\Index::class, 'fnIndexHTML'],
+     * ]
+     * ``` 
+     **/
+    public static $aAutoloadMethods = [];
 
     public static function fnPrepareAliases()
     {

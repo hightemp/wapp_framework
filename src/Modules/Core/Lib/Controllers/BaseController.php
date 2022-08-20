@@ -33,6 +33,10 @@ class BaseController
     public $sViewClass = null;
     public static $sDefaultViewClass = View::class;
 
+    public static $aPreloadViews = [];
+    public static $aMiddlewaresBefore = [];
+    public static $aMiddlewaresAfter = [];
+
     public function __construct($oRequest=new LibRequest(), $sViewClass=null)
     {
         $this->oRequest = $oRequest;
@@ -66,23 +70,17 @@ class BaseController
 
         $aViewsList = [];
 
-        // NOTE: предзагруза из Project
+        // NOTE: предзагруза View из Project
         $aPreloadViews = (array) Project::$aPreloadViews;
-        foreach ($aPreloadViews as $sViewClass) {
-            $aViewsList[] = $sViewClass;
-        }
+        $aViewsList = $aPreloadViews;
 
-        // NOTE: предзагруза из модулей
+        // NOTE: предзагруза View из модулей
         $aViewsList = array_merge($aViewsList, (Request::$sCurrentModuleClass)::$aPreloadViews);
         
-        /*
-        foreach ($aControllers as $sModuleClass => $aControllers) {
-            $aPreloadViews = (array) $sModuleClass::$aPreloadViews;
-            foreach ($aPreloadViews as $sViewClass) {
-                $aViewsList[] = $sViewClass;
-            }
-        }
-        */
+        // NOTE: предзагруза View из контроллеров
+        $sControllerClass = get_class($oController);
+        $aPreloadViews = (array) $sControllerClass::$aPreloadViews;
+        $aViewsList = array_merge($aViewsList, $aPreloadViews);
 
         $aViewsList = array_unique($aViewsList);
 
