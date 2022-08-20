@@ -11,7 +11,14 @@ use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\{
     TagCETextarea,
     TagCECheckbox,
     TagCEDatebox,
+    TagCEButton,
+    TagCESearchBox,
     TagCESelect,
+    TagCEComboTree,
+    TagCEMaskedBox,
+};
+use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\MaskedBox\{
+    TagCEMaskedBoxPhone,
 };
 use Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers\Demo01;
 
@@ -36,6 +43,10 @@ class View extends LibView
 
         parent::fnPrepareVars();
 
+        self::$aVars['oTagCEMaskedBoxPhone'] = new TagCEMaskedBoxPhone();
+        self::$aVars['oTagCEMaskedBox'] = new TagCEMaskedBox();
+        self::$aVars['oTagCESearchBox'] = new TagCESearchBox();
+        self::$aVars['oTagCEButton'] = new TagCEButton();
         self::$aVars['oTagCETextBox'] = new TagCETextBox();
         self::$aVars['oTagCETextarea'] = new TagCETextarea();
         self::$aVars['oTagCECheckbox'] = new TagCECheckbox();
@@ -43,5 +54,6 @@ class View extends LibView
         self::$aVars['oTagCEPanelBegin'] = new TagCEPanelBegin();
         self::$aVars['oTagCEPanelEnd'] = new TagCEPanelEnd();
         self::$aVars['oTagCESelect'] = new TagCESelect();
+        self::$aVars['oTagCEComboTree'] = new TagCEComboTree();
     }
 }

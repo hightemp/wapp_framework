@@ -1,0 +1,13 @@
+<?php
+
+namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\MaskedBox;
+
+use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\TagCEMaskedBox;
+
+class TagCEMaskedBoxPhone extends TagCEMaskedBox
+{
+    public static $aDefaultAttrs = [
+        "label" => "Phone box:",
+        "mask" => "(999) 999-9999",
+    ];
+}

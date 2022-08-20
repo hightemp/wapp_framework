@@ -5,14 +5,14 @@ namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagSelect;
 
-class TagCECheckbox extends BaseTag
+class TagCEComboTree extends BaseTag
 {
     public static $aDefaultAttrs = [
-        "class" => "easyui-checkbox",
-        "label" => "Checkbox:",
+        "class" => "easyui-combotree",
+        "label" => "Combo tree:",
         "labelPosition" => "top",
-        "style" => "",
-        "value" => "1"
+        "style" => "width:100%",
+        // "data-options" => "url:'about:blank',method:'get'",
     ];
 
     public function __invoke($aAttr=[])

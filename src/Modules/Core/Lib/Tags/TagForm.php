@@ -15,7 +15,7 @@ class TagForm extends BaseTag
 
     public static $aDefaultItemWrapperAttrs = [
         "class" => "",
-        "style" => "",
+        "style" => "margin-top: 20px;",
     ];
     
     /**

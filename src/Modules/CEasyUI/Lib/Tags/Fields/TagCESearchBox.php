@@ -3,16 +3,15 @@
 namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields;
 
 use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagSelect;
 
-class TagCECheckbox extends BaseTag
+class TagCESearchBox extends BaseTag
 {
     public static $aDefaultAttrs = [
-        "class" => "easyui-checkbox",
-        "label" => "Checkbox:",
+        "class" => "easyui-searchbox",
+        "label" => "Search box:",
         "labelPosition" => "top",
-        "style" => "",
-        "value" => "1"
+        "style" => "width:100%",
+        // "data-options" => "prompt:'Please Input Value',searcher:fnSearch"
     ];
 
     public function __invoke($aAttr=[])

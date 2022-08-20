@@ -5,6 +5,11 @@
         [],
         [],
         [
+            [ $oTagCEMaskedBoxPhone ],
+            [ $oTagCESearchBox ],
+            [ $oTagCEButton, 'test button' ],
+            [ $oTagCEComboTree ],
+            [ $oTagCECheckbox ],
             [ $oTagCEDatebox ],
             [ $oTagCESelect, [
                 '1' => 'test 1',
