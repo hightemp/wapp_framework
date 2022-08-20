@@ -16,6 +16,8 @@ class TagCETextarea extends BaseTag
 
     public function __invoke($aAttr=[])
     {
-        (new TagCETextBox())($aAttr, static::$aDefaultAttrs);
+        $aAttrs = static::fnPrepareAttrs($aAttr, static::$aDefaultAttrs);
+
+        (new TagCETextBox())($aAttrs);
     }
 }

@@ -13,6 +13,7 @@ class Project
         \Hightemp\WappTestSnotes\Modules\Core\Module::class,
         \Hightemp\WappTestSnotes\Modules\Notes\Module::class,
 
+        \Hightemp\WappTestSnotes\Modules\CEasyUI\Module::class,
         \Hightemp\WappTestSnotes\Modules\CBootstrapTable\Module::class,
 
         \Hightemp\WappTestSnotes\Modules\TestTables\Module::class,
@@ -25,6 +26,9 @@ class Project
     public static $aAliases = [
         \Hightemp\WappTestSnotes\Modules\Core\Aliases::class,
         \Hightemp\WappTestSnotes\Modules\Notes\Aliases::class,
+
+        \Hightemp\WappTestSnotes\Modules\CEasyUI\Aliases::class,
+
         \Hightemp\WappTestSnotes\Modules\TestTables\Aliases::class,
         \Hightemp\WappTestSnotes\Modules\GoogleSheetsImporter\Aliases::class,
     ];
