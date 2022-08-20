@@ -9,8 +9,6 @@ use Hightemp\WappTestSnotes\Modules\CBootstrapTable\Lib\Tags\TagBootstrapTableAJ
 
 class View extends LibView
 {
-    public static $sDefaultLayoutTemplate = "layout.php";
-
     public static function fnPrepareVars()
     {
         parent::fnPrepareVars();
