@@ -5,6 +5,7 @@
         [],
         [],
         [
+            [ $oTagCENumberBox ],
             [ $oTagCEFileBox ],
             [ $oTagCETree, [
                 '1' => 'test 1',

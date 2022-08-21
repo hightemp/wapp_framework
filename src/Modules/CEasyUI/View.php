@@ -28,6 +28,7 @@ use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\{
     TagCEPropertygrid,
     TagCETree,
     TagCEFileBox,
+    TagCENumberBox,
 };
 use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\MaskedBox\{
     TagCEMaskedBoxPhone,
@@ -62,6 +63,7 @@ class View extends LibView
 
         parent::fnPrepareVars();
 
+        self::$aVars['oTagCENumberBox'] = new TagCENumberBox();
         self::$aVars['oTagCEFileBox'] = new TagCEFileBox();
         self::$aVars['oTagCETree'] = new TagCETree();
         self::$aVars['oTagCEPropertygrid'] = new TagCEPropertygrid();
