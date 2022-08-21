@@ -29,8 +29,12 @@ use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\{
 };
 use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\MaskedBox\{
     TagCEMaskedBoxPhone,
+
 };
-use Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers\Demo01;
+use Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers\{
+    Index,
+    Demo01,
+};
 
 class View extends LibView
 {
@@ -42,9 +46,12 @@ class View extends LibView
     const THEME = 'metro-blue';
 
     public static $aTemplates = [
+        Index::class => [
+            "fnIndexHTML" => ['pages/index.php']
+        ],
         Demo01::class => [
             "fnIndexHTML" => ['pages/demo1.php']
-        ]
+        ],
     ];
 
     public static function fnPrepareVars()
