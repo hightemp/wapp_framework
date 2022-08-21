@@ -5,6 +5,20 @@
         [],
         [],
         [
+            [ $oTagCEFileBox ],
+            [ $oTagCETree, [
+                '1' => 'test 1',
+                '2' => 'test 2',
+                '3' => 'test 3',
+                '4' => [
+                    'test 4', 
+                    [
+                        '1' => 'test 1',
+                        '2' => 'test 2',
+                        '3' => 'test 3',    
+                    ],
+                ],
+            ] ],
             [ $oTagCESwitchButton ],
             [ $oTagCEPasswordBox ],
             [ $oTagCEMaskedBoxPhone ],
@@ -13,7 +27,7 @@
             [ $oTagCEComboTree ],
             [ $oTagCECheckbox ],
             [ $oTagCEDatebox ],
-            [ $oTagCESelect, [
+            [ $oTagCECombobox, [
                 '1' => 'test 1',
                 '2' => 'test 2',
                 '3' => 'test 3',

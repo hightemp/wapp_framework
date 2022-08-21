@@ -14,7 +14,7 @@ use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\{
     TagCEDatebox,
     TagCEButton,
     TagCESearchBox,
-    TagCESelect,
+    TagCECombobox,
     TagCEComboTree,
     TagCEMaskedBox,
     TagCETimePicker,
@@ -26,6 +26,8 @@ use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\{
     TagCEProgressBar,
     TagCESwitchButton,
     TagCEPropertygrid,
+    TagCETree,
+    TagCEFileBox,
 };
 use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\MaskedBox\{
     TagCEMaskedBoxPhone,
@@ -60,7 +62,9 @@ class View extends LibView
 
         parent::fnPrepareVars();
 
-        self::$aVars['oTagCEPropertygrid'] = new TagCEPropertygrid();        
+        self::$aVars['oTagCEFileBox'] = new TagCEFileBox();
+        self::$aVars['oTagCETree'] = new TagCETree();
+        self::$aVars['oTagCEPropertygrid'] = new TagCEPropertygrid();
         self::$aVars['oTagCESwitchButton'] = new TagCESwitchButton();
         self::$aVars['oTagCEDatagrid'] = new TagCEDatagrid();
         self::$aVars['oTagCEDatalist'] = new TagCEDatalist();
@@ -80,7 +84,7 @@ class View extends LibView
         self::$aVars['oTagCEDatebox'] = new TagCEDatebox();
         self::$aVars['oTagCEPanelBegin'] = new TagCEPanelBegin();
         self::$aVars['oTagCEPanelEnd'] = new TagCEPanelEnd();
-        self::$aVars['oTagCESelect'] = new TagCESelect();
+        self::$aVars['oTagCECombobox'] = new TagCECombobox();
         self::$aVars['oTagCEComboTree'] = new TagCEComboTree();
     }
 }
