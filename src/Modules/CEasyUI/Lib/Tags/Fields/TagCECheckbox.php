@@ -15,6 +15,16 @@ class TagCECheckbox extends BaseTag
         "value" => "1"
     ];
 
+    function fnSetValue($mValue)
+    {
+        if ($mValue) $this->aAttrs["checked"] = "true";
+    }
+
+    function fnGetValue($mValue)
+    {
+        return isset($this->aAttrs["checked"]);
+    }
+
     public function __invoke($aAttr=[])
     {
         $aAttrs = static::fnPrepareAttrs($aAttr, static::$aDefaultAttrs);
