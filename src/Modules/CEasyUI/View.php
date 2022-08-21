@@ -29,6 +29,8 @@ use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\{
     TagCETree,
     TagCEFileBox,
     TagCENumberBox,
+    TagCERadioButton,
+    TagCETabs,
 };
 use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\MaskedBox\{
     TagCEMaskedBoxPhone,
@@ -63,6 +65,8 @@ class View extends LibView
 
         parent::fnPrepareVars();
 
+        self::$aVars['oTagCETabs'] = new TagCETabs();
+        self::$aVars['oTagCERadioButton'] = new TagCERadioButton();
         self::$aVars['oTagCENumberBox'] = new TagCENumberBox();
         self::$aVars['oTagCEFileBox'] = new TagCEFileBox();
         self::$aVars['oTagCETree'] = new TagCETree();

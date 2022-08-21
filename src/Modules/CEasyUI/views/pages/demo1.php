@@ -5,6 +5,14 @@
         [],
         [],
         [
+            [ $oTagCETabs, 
+                [],
+                [],
+                [
+                    ['test 1', '<h2>Test header 1</h2>'],
+                    ['test 2', '<h2>Test header 2</h2>'],
+                ] 
+            ],
             [ $oTagCENumberBox ],
             [ $oTagCEFileBox ],
             [ $oTagCETree, [

@@ -20,6 +20,7 @@ class BaseTag
     /** @var bool $bBufferOutput влиет на работу метода fnPrint */
     public static $bBufferOutput = false;
     public static $aBuffer = [];
+    public static $aNames = [];
     public static $sCurrentName = "";
 
     function fnSetValue($mValue)
@@ -37,21 +38,37 @@ class BaseTag
         static::$aBuffer = [];
     }
 
-    public static function fnBeginBuffer($sName)
+    public static function fnAddToBuffer($mValue)
     {
-        static::$bBufferOutput = true;
-        static::$aBuffer[$sName] = [];
-        static::$sCurrentName = $sName;
+        static::$aBuffer[static::$sCurrentName][] = $mValue;
     }
 
-    public static function fnEndBuffer($sName)
+    public static function fnBeginBuffer()
     {
+        static::$bBufferOutput = true;
+        $sName = static::$sCurrentName = microtime();
+        static::$aBuffer[$sName] = [];
+        static::$aNames[] = $sName;
+    }
+
+    public static function fnEndBuffer()
+    {
+        $sName = static::$sCurrentName;
+
         $aOutput = static::$aBuffer[$sName];
         unset(static::$aBuffer[$sName]);
-        static::$sCurrentName = "";
+
+        array_pop(static::$aNames);
+        if (static::$aNames) {
+            static::$sCurrentName = static::$aNames[count(static::$aNames)-1];
+        } else {
+            static::$sCurrentName = "";
+        }
+
         if (!count(static::$aBuffer)) {
             static::$bBufferOutput = false;
         }
+
         return $aOutput;
     }
 
@@ -96,7 +113,7 @@ class BaseTag
     public static function fnPrint($sHTML)
     {
         if (static::$bBufferOutput) {
-            static::$aBuffer[static::$sCurrentName][] = $sHTML;
+            static::fnAddToBuffer($sHTML);
         } else {
             echo $sHTML;
         }

@@ -33,13 +33,12 @@ class TagForm extends BaseTag
 
         $aResult = [];
 
-        $sID = time();
-        BaseTag::fnBeginBuffer($sID);
+        BaseTag::fnBeginBuffer();
         foreach ($aItems as $aItem) {
             $oTag = array_shift($aItem);
             $oTag(...$aItem);
         }
-        $aResult = BaseTag::fnEndBuffer($sID);
+        $aResult = BaseTag::fnEndBuffer();
 
         $aResult = array_map(function($sI) use ($aItemAttrs) {
             return static::fnRenderTag(static::T_DIV, false, $aItemAttrs, $sI);
