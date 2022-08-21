@@ -5,6 +5,8 @@
         [],
         [],
         [
+            [ $oTagCESwitchButton ],
+            [ $oTagCEPasswordBox ],
             [ $oTagCEMaskedBoxPhone ],
             [ $oTagCESearchBox ],
             [ $oTagCEButton, 'test button' ],

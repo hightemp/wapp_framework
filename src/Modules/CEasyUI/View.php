@@ -7,6 +7,7 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\View as LibView;
 use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\{
     TagCEPanelBegin,
     TagCEPanelEnd,
+    TagCEPasswordBox,
     TagCETextBox,
     TagCETextarea,
     TagCECheckbox,
@@ -16,6 +17,15 @@ use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\{
     TagCESelect,
     TagCEComboTree,
     TagCEMaskedBox,
+    TagCETimePicker,
+    TagCECalendar,
+    TagCESlider,
+    TagCETimespinner,
+    TagCEDatagrid,
+    TagCEDatalist,
+    TagCEProgressBar,
+    TagCESwitchButton,
+    TagCEPropertygrid,
 };
 use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\MaskedBox\{
     TagCEMaskedBoxPhone,
@@ -43,6 +53,16 @@ class View extends LibView
 
         parent::fnPrepareVars();
 
+        self::$aVars['oTagCEPropertygrid'] = new TagCEPropertygrid();        
+        self::$aVars['oTagCESwitchButton'] = new TagCESwitchButton();
+        self::$aVars['oTagCEDatagrid'] = new TagCEDatagrid();
+        self::$aVars['oTagCEDatalist'] = new TagCEDatalist();
+        self::$aVars['oTagCEProgressBar'] = new TagCEProgressBar();
+        self::$aVars['oTagCETimespinner'] = new TagCETimespinner();
+        self::$aVars['oTagCETimePicker'] = new TagCETimePicker();
+        self::$aVars['oTagCECalendar'] = new TagCECalendar();
+        self::$aVars['oTagCESlider'] = new TagCESlider();
+        self::$aVars['oTagCEPasswordBox'] = new TagCEPasswordBox();
         self::$aVars['oTagCEMaskedBoxPhone'] = new TagCEMaskedBoxPhone();
         self::$aVars['oTagCEMaskedBox'] = new TagCEMaskedBox();
         self::$aVars['oTagCESearchBox'] = new TagCESearchBox();
