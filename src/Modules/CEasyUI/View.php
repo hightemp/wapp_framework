@@ -38,7 +38,7 @@ use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\MaskedBox\{
 };
 use Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers\{
     Index,
-    Demo01,
+    Demo,
 };
 
 class View extends LibView
@@ -52,10 +52,11 @@ class View extends LibView
 
     public static $aTemplates = [
         Index::class => [
-            "fnIndexHTML" => ['pages/index.php']
+            "fnIndexHTML" => ['pages/index.php', null, 'Начальная страница - Заголовок']
         ],
-        Demo01::class => [
-            "fnIndexHTML" => ['pages/demo1.php']
+        Demo::class => [
+            "fnDemo1HTML" => ['pages/demo1.php', null, 'Демо 1 - список компонентов формы'],
+            "fnDemo2HTML" => ['pages/demo2.php', null, 'Демо 2 - таблица - datagrid']
         ],
     ];
 

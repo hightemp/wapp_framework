@@ -5,7 +5,7 @@ namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
 use Hightemp\WappTestSnotes\Modules\CEasyUI\View;
 
-class Demo01 extends BaseController
+class Demo extends BaseController
 {
     public static $sDefaultViewClass = View::class;
 
@@ -13,4 +13,15 @@ class Demo01 extends BaseController
     {
         
     }
+
+    public function fnDemo1HTML()
+    {
+        
+    }
+
+    public function fnDemo2HTML()
+    {
+        
+    }
+
 }
