@@ -104,7 +104,11 @@ class BaseController
                     $aTemplates = $sViewClass::$aTemplates[$sControllerClass][$sMethod];
                     isset($aTemplates[0]) ?: $aTemplates[0] = null;
                     isset($aTemplates[1]) ?: $aTemplates[1] = null;
-                    $sViewClass::fnSetParams([], $aTemplates[0], $aTemplates[1]);
+                    // NOTE: sTitle - подстановка заголовока из aTemplates
+                    isset($aTemplates[2]) ?: $aTemplates[2] = '';
+                    $sViewClass::fnSetParams([
+                        "sTitle" => $aTemplates[2]
+                    ], $aTemplates[0], $aTemplates[1]);
                 }
             }
         }
