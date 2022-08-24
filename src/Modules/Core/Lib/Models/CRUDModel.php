@@ -69,6 +69,16 @@ abstract class CRUDModel extends BaseModel
             $aColumns[$sK]["field"] = $sK;
         }
 
+        foreach (static::RELATIONS as $aR) {
+            $sK = $aR[1]::TABLE_NAME;
+            $aColumns[$sK] = [
+                "title" => $sK,
+                "field" => "",
+                "comment" => '',
+                "filter-control" => "input",
+            ];
+        }
+
         return [
             "sIndexField" => static::C_INDEX_FIELD,
             "aColumns" => array_values($aColumns),
@@ -114,7 +124,7 @@ abstract class CRUDModel extends BaseModel
 
         $aResult = [];
 
-        $aItems = $this->findAll("{$sFilterRules} {$sSort} {$sOffset}", []);
+        $aItems = $this->findAllExt("{$sFilterRules} {$sSort} {$sOffset}", []);
         $aResult['total'] = $this->count("{$sFilterRules}");
         $aResult['totalNotFiltered'] = $this->count("1 = 1");
 
@@ -133,7 +143,7 @@ abstract class CRUDModel extends BaseModel
     function fnList($aParams=[])
     {
         $sID = static::C_INDEX_FIELD;
-        $aItems = $this->findAll("ORDER BY {$sID} DESC", []);
+        $aItems = $this->findAllExt("ORDER BY {$sID} DESC", []);
         return $aItems;
     }
 
@@ -141,7 +151,7 @@ abstract class CRUDModel extends BaseModel
     function fnListLast($aParams=[])
     {
         $sID = static::C_INDEX_FIELD;
-        $aItems = $this->findAll("ORDER BY {$sID} DESC LIMIT ?", [isset($aParams['limit']) ?: '10']);
+        $aItems = $this->findAllExt("ORDER BY {$sID} DESC LIMIT ?", [isset($aParams['limit']) ?: '10']);
         return $aItems;
     }
 
@@ -149,7 +159,7 @@ abstract class CRUDModel extends BaseModel
     function fnGetOne($aParams=[])
     {
         $sID = static::C_INDEX_FIELD;
-        return $this->findOneByID($aParams[$sID]);
+        return $this->findOneByIDExt($aParams[$sID]);
     }
 
     // NOTE: Delete list
@@ -162,6 +172,11 @@ abstract class CRUDModel extends BaseModel
     function fnCreate($aParams)
     {
         return $this->create($aParams);
+    }
+
+    function fnCreateOrUpdate($aParams)
+    {
+        return $this->createOrUpdate($aParams);
     }
 
     // NOTE: Update

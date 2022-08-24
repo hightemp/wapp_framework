@@ -30,8 +30,8 @@ abstract class HierarchicalBaseModel extends BaseModel
     {
         $sParentKey = $this->sParentKey;
 
-        $aResult = $this->oDBCon->findAll(
-            static::$sTableName,
+        $aResult = $this->oAdapter->findAll(
+            static::TABLE_NAME,
             "{$sParentKey} = ?" . $sql,
             [$iParentID, ...$bindings]
         );
@@ -41,7 +41,7 @@ abstract class HierarchicalBaseModel extends BaseModel
 
     function findOneByRelation($sql = NULL, $bindings = array())
     {
-        return $this->oDBCon->findOne($this->sParentTableName, $sql, $bindings);
+        return $this->oAdapter->findOne($this->sParentTableName, $sql, $bindings);
     }
 
     function fnDeleteRecursiveByIDs($aIDs)
