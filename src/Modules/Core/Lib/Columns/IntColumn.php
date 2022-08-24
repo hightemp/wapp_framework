@@ -20,4 +20,14 @@ class IntColumn extends BaseColumn
     {
         return 0;
     }
+
+    public static function fnPrepareValue($mValue)
+    {
+        return (int) $mValue;
+    }
+
+    public static function fnExtractValue($mValue)
+    {
+        return (int) $mValue;
+    }
 }

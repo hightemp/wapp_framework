@@ -63,6 +63,23 @@ class BaseController
         return $aControllers;
     }
 
+    public static function fnPrepareViewsRelations($aViewsList)
+    {
+        $aResult = [];
+
+        foreach ($aViewsList as $sViewClass) {
+            $sModule = Utils::fnExtractModuleName($sViewClass);
+            $sModuleClass = Utils::fnGetModulesClassNamespace($sModule);
+
+            $aResult[] = $sViewClass;
+
+            $aPreloadViews = (array) $sModuleClass::$aPreloadViews;
+            $aResult = array_merge($aResult, $aPreloadViews);
+        }
+
+        return $aResult;
+    }
+
     public static function fnPrepareAllViewsForController($oController, $sMethod, $aControllers=null)
     {
         if (is_null($aControllers)) {

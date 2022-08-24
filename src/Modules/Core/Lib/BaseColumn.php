@@ -28,7 +28,7 @@ class BaseColumn
 
     public static function fnValidate($mValue)
     {
-        return true;
+        return is_string($mValue);
     }
 
     public static function fnPrepareValue($mValue)

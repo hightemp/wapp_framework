@@ -18,4 +18,14 @@ class VarcharColumn extends BaseColumn
     {
         return '';
     }
+
+    public static function fnPrepareValue($mValue)
+    {
+        return (string) $mValue;
+    }
+
+    public static function fnExtractValue($mValue)
+    {
+        return (string) $mValue;
+    }
 }

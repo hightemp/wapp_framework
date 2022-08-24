@@ -13,7 +13,6 @@ abstract class BaseModel
 
     /** @var string TABLE_NAME таблица бд класса */
     public const TABLE_NAME = "";
-    public const TABLE_NAME_ID = self::TABLE_NAME."_id";
 
     /** @var bool $bUseTags соединение к бд */
     public static $bUseTags = false;
@@ -51,6 +50,62 @@ abstract class BaseModel
         return new static($oDBCon);
     }
 
+    public static function fnGetTableID()
+    {
+        return static::TABLE_NAME."_id";
+    }
+
+    public function fnGetColumnInfo($sField, &$mOutputValue)
+    {
+        if (isset(static::COLUMNS[$sField])) {
+            $mOutputValue = static::COLUMNS[$sField];
+            return true;
+        }
+        return false;
+    }
+
+    public function fnPrepareColumnDefaultValue($sField, &$mOutputValue)
+    {
+        if (isset(static::COLUMNS[$sField]) && !static::COLUMNS[$sField]::P_AUTOICREMENT) {
+            $mOutputValue = static::COLUMNS[$sField];
+            return true;
+        }
+        return false;
+    }
+
+    public function fnPrepareColumnValue($sField, $mInputValue, &$mOutputValue)
+    {
+        if (isset(static::COLUMNS[$sField])) {
+            $mOutputValue = static::COLUMNS[$sField]::fnPrepareValue($mInputValue);
+            return true;
+        }
+        return false;
+    }
+
+    public function fnExtractColumnValue($sField, $mInputValue, &$mOutputValue)
+    {
+        if (isset(static::COLUMNS[$sField])) {
+            $mOutputValue = static::COLUMNS[$sField]::fnExtractValue($mInputValue);
+            return true;
+        }
+        return false;
+    }
+
+    public function fnHasRelation($sClass)
+    {
+        
+    }
+
+    public function fnGetRelation($sClass)
+    {
+        
+    }
+
+    public function fnGetRelations()
+    {
+        
+    }
+
     public function fnFilterDataByColumns($aData)
     {
         $aResult = [];
@@ -69,18 +124,16 @@ abstract class BaseModel
         $aResult = [];
 
         foreach ($aData as $sKey => $mValue) {
-            if (isset(static::COLUMNS[$sKey])) {
-                $aResult[$sKey] = static::COLUMNS[$sKey]::fnPrepareValue($mValue);
-            } else if (is_object($mValue)) {
-                $aResult[$sKey] = $mValue;
+            if (!$this->fnPrepareColumnValue($sKey, $mValue, $aResult[$sKey])) {
+                if (is_object($mValue)) {
+                    $aResult[$sKey] = $mValue;
+                }
             }
         }
 
         $aDiff = array_diff(array_keys(static::COLUMNS), array_keys($aResult));
         foreach ($aDiff as $sKey) {
-            if (isset(static::COLUMNS[$sKey])) {
-                $aResult[$sKey] = static::COLUMNS[$sKey]::fnDefaultValue();
-            }
+            $this->fnPrepareColumnDefaultValue($sKey, $aResult[$sKey]);
         }
 
         return $aResult;
@@ -106,19 +159,23 @@ abstract class BaseModel
         $aResult = [];
 
         foreach ($aData as $sKey => $mValue) {
-            if (isset(static::COLUMNS[$sKey])) {
-                $aResult[$sKey] = static::COLUMNS[$sKey]::fnExtractValue($mValue);
+            if (!$this->fnExtractColumnValue($sKey, $mValue, $aResult[$sKey])) {
+                //
             }
         }
 
         $aDiff = array_diff(array_keys(static::COLUMNS), array_keys($aResult));
         foreach ($aDiff as $sKey) {
-            $aResult[$sKey] = static::COLUMNS[$sKey]::fnDefaultValue();
+            $this->fnPrepareColumnDefaultValue($sKey, $aResult[$sKey]);
+            if (!$this->fnExtractColumnValue($sKey, $mValue, $aResult[$sKey])) {
+                //
+            }
         }
 
         return $aResult;
-    }   
+    }
 
+    // NOTE: конструктор
     function __construct(DatabaseConnection $oDBCon)
     {
         $this->oDBCon = $oDBCon;
@@ -242,10 +299,8 @@ abstract class BaseModel
     // NOTE: Дополнительные методы - CRUD
     function create($aData=[])
     {
-        die(var_export($aData));
         $oItem = $this->dispense();
 
-        die(var_export($aData));
         $this->update($aData, $oItem);
 
         return $oItem;
@@ -253,14 +308,17 @@ abstract class BaseModel
 
     function createOrUpdate($aData=[])
     {
-        die(var_export($aData));
         $aData = $this->fnPrepareRowData((array) $aData);
         
         $aList = $this->findLikeExt($aData);
-        // $oItem = $this->findOrCreate($aData, '', $bHasBeenCreated);
-        die(var_export($aList));
+        $oItem = null;
 
-        $oItem = $aList[0];
+        if ($aList) {
+            $oItem = $aList[0];
+        } else {
+            $oItem = $this->dispense();
+        }
+
         $oItem->import($aData);
         $this->store($oItem);
 
