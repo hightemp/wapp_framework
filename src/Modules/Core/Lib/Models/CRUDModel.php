@@ -73,7 +73,7 @@ abstract class CRUDModel extends BaseModel
             $sK = $aR[1]::TABLE_NAME;
             $aColumns[$sK] = [
                 "title" => $sK,
-                "field" => "",
+                "field" => $aR[1]::fnGetTableID(),
                 "comment" => '',
                 "filter-control" => "input",
             ];

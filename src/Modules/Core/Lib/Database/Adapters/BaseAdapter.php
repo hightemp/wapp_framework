@@ -70,6 +70,11 @@ class BaseAdapter
         throw new MethodNotDefinedException();
     }
 
+    public function nuke()
+    {
+        throw new MethodNotDefinedException();
+    }
+
     public function wipe($beanType)
     {
         throw new MethodNotDefinedException();

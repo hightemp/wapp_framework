@@ -87,6 +87,11 @@ class RedBeans extends BaseAdapter
         return R::getAll($sql, $bindings);
     }
 
+    public function nuke()
+    {
+        return R::nuke();
+    }
+
     public function wipe($beanType)
     {
         return R::wipe($beanType);

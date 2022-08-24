@@ -3,6 +3,7 @@
 namespace Hightemp\WappTestSnotes\Modules\TestTables\Models;
 
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Models\CRUDModel;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Relations\OneToOne;
 use Hightemp\WappTestSnotes\Modules\TestTables\Models\TestTable\IndexID;
 use Hightemp\WappTestSnotes\Modules\TestTables\Models\TestTable\TestInt;
 use Hightemp\WappTestSnotes\Modules\TestTables\Models\TestTable\TestJson;
@@ -21,5 +22,9 @@ class TestTable extends CRUDModel
         self::C_TEST_JSON => TestJson::class,
         self::C_TEST_INT => TestInt::class,
         self::C_TEST_VARCHAR => TestVarChar::class,
+    ];
+
+    public const RELATIONS = [
+        [OneToOne::class, TestTable2::class]
     ];
 }

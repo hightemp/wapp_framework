@@ -46,9 +46,23 @@ class Utils
             ];
         }
 
-        $Result[] = [
-            "formatter" => "operateFormatter",
-        ];
+        return $aResult;
+    }
+
+    public static function fnPrepareHeadersByRelations($aRelations)
+    {
+        $aResult = [];
+
+        foreach ($aRelations as $iI => $aInfo) {
+            $aResult[] = [
+                $aInfo[1]::TABLE_NAME,
+                [ 
+                    "data-field" => $aInfo[1]::fnGetTableID(),
+                    "data-sortable" => "true",
+                    "data-filter-control" => "input",
+                ],
+            ];
+        }
 
         return $aResult;
     }
@@ -75,6 +89,10 @@ class Utils
             $aTableData["aHeaders"] = $aHeaders;
         } else {
             $aTableData["aHeaders"] = static::fnPrepareHeadersByColumns($sModelClass::COLUMNS);
+            $aTableData["aHeaders"] = array_merge($aTableData["aHeaders"], static::fnPrepareHeadersByRelations($sModelClass::RELATIONS));
+            $aTableData["aHeaders"][] = [
+                "formatter" => "operateFormatter",
+            ];
         }
 
         return $aTableData;

@@ -55,8 +55,9 @@ class View extends LibView
             "fnIndexHTML" => ['pages/index.php', null, 'Начальная страница - Заголовок']
         ],
         Demo::class => [
-            "fnDemo1HTML" => ['pages/demo1.php', null, 'Демо 1 - список компонентов формы'],
-            "fnDemo2HTML" => ['pages/demo2.php', null, 'Демо 2 - таблица - datagrid']
+            "fnDemo1HTML" => ['pages/demo1.php', null, 'Демо 1 - Формы и элементы ввода'],
+            "fnDemo2HTML" => ['pages/demo2.php', null, 'Демо 2 - Таблица - datagrid'],
+            "fnDemo3HTML" => ['pages/demo3.php', null, 'Демо 3 - Таблица - crud функционалом'],
         ],
     ];
 

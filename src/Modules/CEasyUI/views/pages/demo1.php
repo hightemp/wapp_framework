@@ -1,5 +1,5 @@
 <?php $oTagCEPanelBegin() ?>
-    <h1>Формы и элементы ввода</h1>
+    <h1><?php echo $sTitle ?></h1>
 
     <?php $oTagForm(
         [],

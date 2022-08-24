@@ -1,5 +1,4 @@
 <h1><?php echo $sTitle ?></h1>
-<h2>demo 2</h2>
 
 <?php $oTagCEDatagrid(
     [

@@ -4,6 +4,7 @@ namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Models;
 
 use \Hightemp\WappTestSnotes\Modules\Core\Lib\ModelExtensions\TraitExportToCSV;
 use \Hightemp\WappTestSnotes\Modules\Core\Lib\Database;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Database\Adapters\BaseAdapter;
 use \Hightemp\WappTestSnotes\Modules\Core\Lib\DatabaseConnection;
 use \Hightemp\WappTestSnotes\Modules\Core\Lib\Columns\PrimaryIndexIntColumn;
 
@@ -75,7 +76,7 @@ abstract class BaseModel
 
     public function fnPrepareColumnValue($sField, $mInputValue, &$mOutputValue)
     {
-        if (isset(static::COLUMNS[$sField])) {
+        if (isset(static::COLUMNS[$sField]) && !static::COLUMNS[$sField]::P_AUTOICREMENT) {
             $mOutputValue = static::COLUMNS[$sField]::fnPrepareValue($mInputValue);
             return true;
         }
@@ -91,9 +92,32 @@ abstract class BaseModel
         return false;
     }
 
+    public function fnIsRelationKey($sField)
+    {
+        foreach (static::RELATIONS as $aR) {
+            if ($aR[1]::TABLE_NAME."_id"==$sField) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function fnHasRelation($sClass)
     {
         
+    }
+
+    public function fnGetRelationIfExists($sField, $iID)
+    {
+        foreach (static::RELATIONS as $aR) {
+            if ($aR[1]::TABLE_NAME."_id"==$sField) {
+                // TODO: исправить
+                return $aR[1]::fnBuild()->findOneByID($iID);
+            }
+        }
+
+        return false;
     }
 
     public function fnGetRelation($sClass)
@@ -124,7 +148,9 @@ abstract class BaseModel
         $aResult = [];
 
         foreach ($aData as $sKey => $mValue) {
-            if (!$this->fnPrepareColumnValue($sKey, $mValue, $aResult[$sKey])) {
+            if ($this->fnPrepareColumnValue($sKey, $mValue, $mOutputValue)) {
+                $aResult[$sKey] = $mOutputValue;
+            } else {
                 if (is_object($mValue)) {
                     $aResult[$sKey] = $mValue;
                 }
@@ -133,7 +159,9 @@ abstract class BaseModel
 
         $aDiff = array_diff(array_keys(static::COLUMNS), array_keys($aResult));
         foreach ($aDiff as $sKey) {
-            $this->fnPrepareColumnDefaultValue($sKey, $aResult[$sKey]);
+            if ($this->fnPrepareColumnDefaultValue($sKey, $aDiff[$sKey])) {
+                $aResult[$sKey] = $mValue;
+            }
         }
 
         return $aResult;
@@ -155,27 +183,37 @@ abstract class BaseModel
     public function fnExtractRowData($aData)
     {
         if (!$aData) return $aData;
+        if (is_object($aData)) $aData = $aData->export();
 
         $aResult = [];
-
+        
         foreach ($aData as $sKey => $mValue) {
-            if (!$this->fnExtractColumnValue($sKey, $mValue, $aResult[$sKey])) {
-                //
+            if ($this->fnExtractColumnValue($sKey, $mValue, $mOutputValue)) {
+                $aResult[$sKey] = $mOutputValue;
+            } else {
+                if (strpos($sKey, "_id") !== false) {
+                    $mNewValue = $this->fnGetRelationIfExists($sKey, $mValue);
+                    if ($mNewValue) {
+                        $aResult[$sKey] = $mNewValue;
+                    }
+                }
             }
         }
 
         $aDiff = array_diff(array_keys(static::COLUMNS), array_keys($aResult));
         foreach ($aDiff as $sKey) {
-            $this->fnPrepareColumnDefaultValue($sKey, $aResult[$sKey]);
-            if (!$this->fnExtractColumnValue($sKey, $mValue, $aResult[$sKey])) {
-                //
+            if ($this->fnPrepareColumnDefaultValue($sKey, $mOutputValue)) {
+                $aResult[$sKey] = $mOutputValue;
+            }
+            if ($this->fnExtractColumnValue($sKey, $aResult[$sKey], $mOutputValue)) {
+                $aResult[$sKey] = $mOutputValue;
             }
         }
 
         return $aResult;
     }
 
-    // NOTE: конструктор
+    // NOTE: Конструктор
     function __construct(DatabaseConnection $oDBCon)
     {
         $this->oDBCon = $oDBCon;
@@ -286,6 +324,11 @@ abstract class BaseModel
         return $this->oAdapter->wipe($this->fnGetTableName());
     }
 
+    function nuke()
+    {
+        return $this->oAdapter->nuke();
+    }
+
     function trashBatch($aIDs)
     {
         return $this->oAdapter->trashBatch($this->fnGetTableName(), $aIDs);
@@ -334,6 +377,7 @@ abstract class BaseModel
         }
 
         $aData = $this->fnPrepareRowData((array) $aData);
+        // die(var_export($aData));
         $oItem->import($aData);
         $this->store($oItem);
 
