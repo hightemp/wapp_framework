@@ -28,6 +28,8 @@ class BaseController
     const CC_FORWARD_301 = 301;
     const CP_FORWARD = "forward";
 
+    public static $aAvailableMethodTypes = ['JSON', 'HTML'];
+
     public static $oGlobalRequest = null;
     public $oRequest = null;
     public $sViewClass = null;
@@ -38,10 +40,100 @@ class BaseController
     public static $aMiddlewaresBefore = [];
     public static $aMiddlewaresAfter = [];
 
+    public static $aDefaultTemplates = [
+        //     "fnListWithPaginationAjaxHTML" => ['tables/ajax_table.php', null, 'Тест - ajax таблица'],
+        //     "fnListWithPaginationCrudHTML" => ['tables/crud_table.php', null, 'Тест - crud таблица'],
+    ];
+
     public function __construct($oRequest=new LibRequest(), $sViewClass=null)
     {
         $this->oRequest = $oRequest;
         $this->sViewClass = is_null($sViewClass) ? static::$sDefaultViewClass : $sViewClass;
+    }
+
+    public static function fnGetMethodValidatorRegExp()
+    {
+        $sReg = '/^fn(.*)('.join('|', static::$aAvailableMethodTypes).')$/';
+        return $sReg;
+    }
+
+    public static function fnIsMethodValid($sMethod)
+    {
+        $sReg = static::fnGetMethodValidatorRegExp();
+        return preg_match($sReg, $sMethod);
+    }
+
+    public static function fnGetValidMethods()
+    {
+        $aMethods = get_class_methods(static::class);
+
+        return array_filter($aMethods, function($sI) { return static::fnIsMethodValid($sI); });
+    }
+
+    public static function fnPrepareMethodName($sMethod, $sSep="_")
+    {
+        $sReg = static::fnGetMethodValidatorRegExp();
+        $aPregM = [];
+
+        if (!preg_match($sReg, $sMethod, $aPregM)) {
+            return false;
+        }
+
+        $sExt = strtolower($aPregM[2]);
+        $sAlias = preg_replace($sReg, "$1", $sMethod);
+        $bF = true;
+        $sAlias = preg_replace_callback("/[A-Z]/", function ($aM) use ($sSep, &$bF) {
+            return ($bF ? $bF=false : $sSep).strtolower($aM[0]);
+        }, $sAlias);
+
+        // NOTE: Пример list_with_pagination_json
+        return $sAlias."_".$sExt;
+    }
+
+    public static function fnPrepareMethodNameForAlias($sMethod, $sSep="_")
+    {
+        $sAlias = static::fnPrepareMethodName($sMethod, $sSep);
+
+        $sModule = Utils::fnExtractModuleName(static::class);
+        $sModule = strtolower($sModule);
+
+        $sAlias = $sModule."/".$sAlias;
+
+        return $sAlias;
+    }
+
+    public static function fnGenerateAliases()
+    {
+        $aResult = [];
+
+        $aMethods = get_class_methods(static::class);
+
+        array_map(function ($sMethod) use (&$aResult) {
+            $sAlias = static::fnPrepareMethodNameForAlias($sMethod);
+
+            if (!$sAlias) return;
+
+            $aResult[$sAlias] = [static::class, $sMethod];
+        }, $aMethods);
+
+        return $aResult;
+    }
+
+    public static function fnGenerateMethodsAliasesList()
+    {
+        $aResult = [];
+
+        $aMethods = get_class_methods(static::class);
+
+        array_map(function ($sMethod) use (&$aResult) {
+            $sAlias = static::fnPrepareMethodNameForAlias($sMethod);
+
+            if (!$sAlias) return;
+
+            $aResult[$sMethod] = [$sAlias, static::class, $sMethod];
+        }, $aMethods);
+
+        return $aResult;
     }
 
     public static function fnGetControllersByModules()
@@ -114,20 +206,34 @@ class BaseController
 
         $sViewClass = $oController->sViewClass;
         
+        $aTemplates = null;
+
         if ($sViewClass && $sViewClass::$aTemplates) {
+            // NOTE: Используем шаблоны из View модуля, если они есть
             if (isset($sViewClass::$aTemplates[$sControllerClass])) {
                 $aRefMethods = &$sViewClass::$aTemplates[$sControllerClass];
                 if (isset($aRefMethods[$sMethod])) {
-                    $aTemplates = $sViewClass::$aTemplates[$sControllerClass][$sMethod];
-                    isset($aTemplates[0]) ?: $aTemplates[0] = null;
-                    isset($aTemplates[1]) ?: $aTemplates[1] = null;
-                    // NOTE: sTitle - подстановка заголовока из aTemplates
-                    isset($aTemplates[2]) ?: $aTemplates[2] = '';
-                    $sViewClass::fnSetParams([
-                        "sTitle" => $aTemplates[2]
-                    ], $aTemplates[0], $aTemplates[1]);
+                    $aTemplates = &$sViewClass::$aTemplates[$sControllerClass][$sMethod];
                 }
             }
+        }
+
+        if (is_null($aTemplates)) {
+            // NOTE: Иначе используем шабоны по умолчанию из контроллера
+            if (isset($sControllerClass::$aDefaultTemplates[$sMethod])) {
+                $aTemplates = &$sControllerClass::$aDefaultTemplates[$sMethod];
+            }
+        }
+
+        if (!is_null($aTemplates)) {
+            isset($aTemplates[0]) ?: $aTemplates[0] = null;
+            isset($aTemplates[1]) ?: $aTemplates[1] = null;
+            // NOTE: sTitle - подстановка заголовока из aTemplates
+            isset($aTemplates[2]) ?: $aTemplates[2] = '';
+
+            $sViewClass::fnSetParams([
+                "sTitle" => $aTemplates[2]
+            ], $aTemplates[0], $aTemplates[1]);
         }
 
         $sViewClass::fnPrepareContentVar();
