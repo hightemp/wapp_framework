@@ -6,10 +6,26 @@ namespace Composer\Autoload;
 
 class ComposerStaticInita9f5c16b56a64182433a7180100cfe65
 {
+    public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'T' => 
+        array (
+            'TrueBV\\' => 7,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+        ),
         'R' => 
         array (
             'RedBeanPHP\\' => 11,
+        ),
+        'L' => 
+        array (
+            'League\\Url\\' => 11,
         ),
         'H' => 
         array (
@@ -18,9 +34,21 @@ class ComposerStaticInita9f5c16b56a64182433a7180100cfe65
     );
 
     public static $prefixDirsPsr4 = array (
+        'TrueBV\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/true/punycode/src',
+        ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
         'RedBeanPHP\\' => 
         array (
             0 => __DIR__ . '/..' . '/gabordemooij/redbean/RedBeanPHP',
+        ),
+        'League\\Url\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/url/src',
         ),
         'Hightemp\\WappTestSnotes\\' => 
         array (
