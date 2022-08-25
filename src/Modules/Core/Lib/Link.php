@@ -2,6 +2,8 @@
 
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
 
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
+
 class Link 
 {
     public static function fnGetAliasLink($sAlias, $aParams=[])

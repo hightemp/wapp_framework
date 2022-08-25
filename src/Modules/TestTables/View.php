@@ -10,8 +10,6 @@ class View extends LibView
     public static $aTemplates = [
         Index::class => [
             "fnIndexHTML" => ['index.php', null, 'Начальная страница - Заголовок'],
-            "fnAjaxTableHTML" => ['tables/ajax_table.php', null, 'Тест - ajax таблица'],
-            "fnCrudTableHTML" => ['tables/crud_table.php', null, 'Тест - crud таблица'],
         ],
     ];
 }

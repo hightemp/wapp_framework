@@ -13,7 +13,8 @@ class Module extends LibModule
     ];
 
     public static $aControllers = [
-        \Hightemp\WappTestSnotes\Modules\TestTables\Controllers\Index::class
+        \Hightemp\WappTestSnotes\Modules\TestTables\Controllers\Index::class,
+        \Hightemp\WappTestSnotes\Modules\TestTables\Controllers\API::class,
     ];
 
     public static $aModules = [

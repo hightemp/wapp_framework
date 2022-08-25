@@ -22,40 +22,6 @@ class Index extends BaseController
         ]);
     }
 
-    public function fnAjaxTableHTML()
-    {
-        $aEntity = Utils::fnPrepareVarsForAjaxTable(
-            API::class,
-            TestTable::class,
-            $this->oRequest,
-            [],
-            [
-                "id" => "table-ajax-test"
-            ]
-        );
-
-        View::fnAddVars([
-            "aTestTableEntity" => $aEntity,
-        ]);
-    }
-
-    public function fnCrudTableHTML()
-    {
-        $aEntity = Utils::fnPrepareVarsForCRUDTable(
-            API::class,
-            TestTable::class,
-            $this->oRequest,
-            [],
-            [
-                "id" => "table-crud-test"
-            ]
-        );
-
-        View::fnAddVars([
-            "aTestTableEntity" => $aEntity,
-        ]);
-    }
-
     public function fnGenerateRandomRecord1JSON()
     {
         $oTestTable = TestTable::fnBuild();

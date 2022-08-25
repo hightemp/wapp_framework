@@ -17,11 +17,21 @@ class ListControllersMethods extends Command
         $aData = [];
 
         foreach ($aControllersByModules as $sModulesClass => $aControllers) {
+            $sModuleName = Utils::fnExtractModuleName($sModulesClass);
+            $sModuleViewClass = Utils::fnGetModulesClassNamespace($sModuleName, "View");
+            if (!class_exists($sModuleViewClass)) {
+                $sModuleViewClass = null;
+            }
+
             foreach ($aControllers as $sControllerClass) {
                 /** @var BaseController $sControllerClass */
                 $aMethods = $sControllerClass::fnGetValidMethods();
                 foreach ($aMethods as $sMethod) {
-                    $aData[] = [$sModulesClass, $sControllerClass, $sMethod];
+                    
+                    $aTemplates = (array) $sControllerClass::fnGetTemplate($sModuleViewClass, $sControllerClass, $sMethod);
+                    $aTemplates = array_replace_recursive(['', '', ''], $aTemplates);
+
+                    $aData[] = [$sModulesClass, $sControllerClass, $sMethod, ...$aTemplates];
                 }
             }
         }

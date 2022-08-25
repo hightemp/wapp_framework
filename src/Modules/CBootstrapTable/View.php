@@ -8,8 +8,10 @@ use Hightemp\WappTestSnotes\Modules\CBootstrapTable\Lib\Tags\TagBootstrapTableFr
 use Hightemp\WappTestSnotes\Modules\CBootstrapTable\Lib\Tags\TagBootstrapTableAJAX;
 use Hightemp\WappTestSnotes\Modules\CBootstrapTable\Lib\Tags\TagBootstrapTableCRUD;
 
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\CRUDController;
+
 class View extends LibView
-{
+{    
     public static function fnPrepareVars()
     {
         parent::fnPrepareVars();

@@ -6,6 +6,7 @@ use Hightemp\WappTestSnotes\Project;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Models\BaseModel;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\View;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Request;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\CRUDController;
 
 class Utils 
 {
@@ -89,70 +90,5 @@ class Utils
         }
 
         return $aResult;
-    }
-    
-    /**
-     * Подготовка опций для AJAX таблицы
-     *
-     * @param  string|BaseController $sControllerClass
-     * @param  Request $oRequest
-     * @param  array $aAttrs
-     * 
-     * @return array
-     */
-    public static function fnPrepareVarsForAjaxTable($sControllerClass, $sModelClass, $oRequest=null, $aHeaders=[], $aAttrs=[])
-    {
-        $aTableData = [];
-
-        // View::fnAddVars([ "bUseDefaultTableResponseHandler" => true ]);
-
-        $aTableData["sID"] = $aAttrs['id'];
-
-        // NOTE: Получение списка ссылок-методов для работы с таблицей
-        $aTableData["aURLs"] = $sControllerClass::fnGetAliasesList();
-        $aTableData["aAttrs"] = $aAttrs;
-
-        if ($aHeaders) {
-            $aTableData["aHeaders"] = $aHeaders;
-        } else {
-            $aTableData["aHeaders"] = static::fnPrepareHeadersByColumns($sModelClass::COLUMNS);
-            $aTableData["aHeaders"] = array_merge($aTableData["aHeaders"], static::fnPrepareHeadersByRelations($sModelClass::RELATIONS));
-            $aTableData["aHeaders"][] = [
-                "formatter" => "operateFormatter",
-            ];
-        }
-
-        return $aTableData;
-    }
-    
-    /**
-     * fnPrepareVarsForCRUDTable
-     *
-     * @param  string $sControllerClass
-     * @param  string $sModelClass
-     * @param  Request $oRequest
-     * @param  string[] $aHeaders
-     * @param  string[] $aAttrs
-     * @return array
-     */
-    public static function fnPrepareVarsForCRUDTable($sControllerClass, $sModelClass, $oRequest=null, $aHeaders=[], $aAttrs=[])
-    {
-        $aTableData = [];
-
-        $aTableData["aData"] = $sModelClass::fnBuild()->fnListWithPagination($oRequest->aPost);
-
-        // NOTE: Получение списка ссылок-методов для работы с таблицей
-        $aTableData["aURLs"] = $sControllerClass::fnGetAliasesList();
-        $aTableData["aAttrs"] = $aAttrs;
-
-        if ($aHeaders) {
-            $aTableData["aHeaders"] = $aHeaders;
-        } else {
-            $aTableData["aHeaders"] = static::fnPrepareHeadersByColumnsShort($sModelClass::COLUMNS);
-            $aTableData["aHeaders"] = array_merge($aTableData["aHeaders"], static::fnPrepareHeadersByRelationsShort($sModelClass::RELATIONS));
-            $aTableData["aHeaders"][] = [];
-        }
-
-        return $aTableData;
     }
 }

@@ -171,6 +171,45 @@ class BaseController
 
         return $aResult;
     }
+    
+    /**
+     * Получить текущие шаблоны для метода контроллера
+     *
+     * @param  string $sViewClass
+     * @param  string $sControllerClass
+     * @param  string $sMethod
+     * @return string[] `['content.php','layout.php','title']`
+     */
+    public static function fnGetTemplate($sViewClass, $sControllerClass, $sMethod)
+    {
+        $aTemplates = null;
+
+        if ($sViewClass && $sViewClass::$aTemplates) {
+            // NOTE: Используем шаблоны из View модуля, если они есть
+            if (isset($sViewClass::$aTemplates[$sControllerClass])) {
+                $aRefMethods = &$sViewClass::$aTemplates[$sControllerClass];
+                if (isset($aRefMethods[$sMethod])) {
+                    $aTemplates = &$sViewClass::$aTemplates[$sControllerClass][$sMethod];
+                }
+            }
+        }
+
+        if (is_null($aTemplates)) {
+            // NOTE: Иначе используем шабоны по умолчанию из контроллера
+            if (isset($sControllerClass::$aDefaultTemplates[$sMethod])) {
+                $aTemplates = &$sControllerClass::$aDefaultTemplates[$sMethod];
+            }
+        }
+
+        if (!is_null($aTemplates)) {
+            isset($aTemplates[0]) ?: $aTemplates[0] = null;
+            isset($aTemplates[1]) ?: $aTemplates[1] = null;
+            // NOTE: sTitle - подстановка заголовока из aTemplates
+            isset($aTemplates[2]) ?: $aTemplates[2] = '';
+        }
+
+        return $aTemplates;
+    }
 
     public static function fnPrepareAllViewsForController($oController, $sMethod, $aControllers=null)
     {
@@ -206,34 +245,16 @@ class BaseController
 
         $sViewClass = $oController->sViewClass;
         
-        $aTemplates = null;
-
-        if ($sViewClass && $sViewClass::$aTemplates) {
-            // NOTE: Используем шаблоны из View модуля, если они есть
-            if (isset($sViewClass::$aTemplates[$sControllerClass])) {
-                $aRefMethods = &$sViewClass::$aTemplates[$sControllerClass];
-                if (isset($aRefMethods[$sMethod])) {
-                    $aTemplates = &$sViewClass::$aTemplates[$sControllerClass][$sMethod];
-                }
-            }
-        }
-
-        if (is_null($aTemplates)) {
-            // NOTE: Иначе используем шабоны по умолчанию из контроллера
-            if (isset($sControllerClass::$aDefaultTemplates[$sMethod])) {
-                $aTemplates = &$sControllerClass::$aDefaultTemplates[$sMethod];
-            }
-        }
+        $aTemplates = static::fnGetTemplate($sViewClass, $sControllerClass, $sMethod);
 
         if (!is_null($aTemplates)) {
-            isset($aTemplates[0]) ?: $aTemplates[0] = null;
-            isset($aTemplates[1]) ?: $aTemplates[1] = null;
-            // NOTE: sTitle - подстановка заголовока из aTemplates
-            isset($aTemplates[2]) ?: $aTemplates[2] = '';
-
-            $sViewClass::fnSetParams([
-                "sTitle" => $aTemplates[2]
-            ], $aTemplates[0], $aTemplates[1]);
+            $sViewClass::fnSetParams(
+                [
+                    "sTitle" => $aTemplates[2]
+                ], 
+                $aTemplates[0], 
+                $aTemplates[1]
+            );
         }
 
         $sViewClass::fnPrepareContentVar();
