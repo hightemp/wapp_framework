@@ -16,6 +16,7 @@ class ListAliases extends Command
 
         $aData = [];
         foreach ($aAliases as $sAlias => $aMethod) {
+            $aMethod = array_replace_recursive(['', '', ''], $aMethod);
             $aData[] = [$sAlias, ...$aMethod];
         }
 
