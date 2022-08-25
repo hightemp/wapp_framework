@@ -41,7 +41,7 @@ class Index extends BaseController
 
     public function fnCrudTableHTML()
     {
-        $aEntity = Utils::fnPrepareVarsForAjaxTable(
+        $aEntity = Utils::fnPrepareVarsForCRUDTable(
             API::class,
             TestTable::class,
             $this->oRequest,

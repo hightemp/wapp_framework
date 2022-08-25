@@ -14,8 +14,19 @@ class TagTable extends BaseTag
             $sHTML .= "<thead>\n";
             $sHTML .= "<tr>\n";
             foreach ($aHeaders as $mHeader) {
-                $sCell = is_string($mHeader) ? $mHeader : $mHeader[0];
-                $sAttr = is_string($mHeader) ? '' : static::fnPrepareAttrString($mHeader[1]);
+                $sCell = '';
+                $sAttr = '';
+
+                if (is_string($mHeader)) {
+                    $sCell = $mHeader;
+                    $sAttr = '';
+                }
+
+                if (is_array($mHeader) && isset($mHeader[0]) && isset($mHeader[1])) {
+                    $sCell = $mHeader[0];
+                    $sAttr = static::fnPrepareAttrString($mHeader[1]);
+                }
+
                 $sHTML .= "<th {$sAttr}>\n";
                 $sHTML .= $sCell;
                 $sHTML .= "\n</th>\n";
@@ -28,7 +39,18 @@ class TagTable extends BaseTag
         foreach ($aData as $aRow) {
             $sHTML .= "<tr>\n";
             foreach ($aHeaders as $iI => $mHeader) {
-                $sCell = isset($aRow[$iI]) ? $aRow[$iI] : '';
+                $sCell = '';
+
+                if (is_string($mHeader)) {
+                    $sCell = isset($aRow[$mHeader]) ? $aRow[$mHeader] : '';
+                } else {
+                    $sCell = isset($aRow[$iI]) ? $aRow[$iI] : '';
+                }
+
+                if (!is_string($sCell)) {
+                    $sCell = json_encode($sCell);
+                }
+
                 $sHTML .= "<td>\n";
                 $sHTML .= $sCell;
                 $sHTML .= "\n</td\n>";

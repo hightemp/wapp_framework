@@ -66,7 +66,12 @@ class CRUDController extends BaseController
 
         return $aResult;
     }
-    
+        
+    /**
+     * Получаем список ссылок альясов для текущего контроллера
+     *
+     * @return string[]
+     */
     public static function fnGetAliasesList()
     {
         $aResult = [];

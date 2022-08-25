@@ -85,7 +85,14 @@ abstract class CRUDModel extends BaseModel
         ];
     }
 
-    // NOTE: List with pagination and filter
+    /**
+     * NOTE: Постраничный вывод данных взависимости от параметров
+     * TODO: вынести в отдельный метод привод параметров к общему виду
+     *
+     * @param  array $aParams
+     * @param  bool $bUseTags
+     * @return array
+     */
     function fnListWithPagination($aParams=[], $bUseTags=null)
     {
         $sFilterRules = " 1 = 1";
@@ -110,7 +117,9 @@ abstract class CRUDModel extends BaseModel
                 $sOffset = $this->fnPagination($aParams['offset'], $aParams['limit'], true);
             }
         } else {
-            $sOffset = $this->fnPagination($aParams['page'], $aParams['rows'], false);
+            if (isset($aParams['page'])) {
+                $sOffset = $this->fnPagination($aParams['page'], $aParams['rows'], false);
+            }
         }
 
         if (isset($aParams['sort'])) {
