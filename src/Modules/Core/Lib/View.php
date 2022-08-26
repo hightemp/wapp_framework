@@ -202,12 +202,12 @@ EOF;
 
     public static function fnGetTemplatesPath($sExtPath="")
     {
-        return static::fnGetModuleGlobalPath(static::TEMPLATES_PATH.$sExtPath);
+        return static::fnGetModuleGlobalPath(static::TEMPLATES_PATH."/".ltrim($sExtPath, "/"));
     }
 
     public static function fnIsTemplate($sTemplatePath)
     {
-        return is_file(static::fnGetTemplatesPath("/".$sTemplatePath));
+        return is_file(static::fnGetTemplatesPath($sTemplatePath));
     }
 
     public static function fnRenderTemplate($sTemplatePath, $aVars=[])
@@ -219,7 +219,7 @@ EOF;
         ob_start();
         {
             extract(self::$aVars);
-            require_once(static::fnGetTemplatesPath("/".$sTemplatePath));
+            require_once(static::fnGetTemplatesPath($sTemplatePath));
         }
         return ob_get_clean();
     }

@@ -13,6 +13,7 @@ class ListControllersMethods extends Command
 
     public function fnExecute($aArgs)
     {
+        $bUseFull = in_array("--use-full", $aArgs);
         $aControllersByModules = BaseController::fnGetControllersByModules();
         $aData = [];
 
@@ -28,7 +29,7 @@ class ListControllersMethods extends Command
                 $aMethods = $sControllerClass::fnGetValidMethods();
                 foreach ($aMethods as $sMethod) {
                     
-                    $aTemplates = (array) $sControllerClass::fnGetTemplate($sModuleViewClass, $sControllerClass, $sMethod);
+                    $aTemplates = (array) $sControllerClass::fnGetTemplate($sModuleViewClass, $sControllerClass, $sMethod, $bUseFull);
                     $aTemplates = array_replace_recursive(['', '', ''], $aTemplates);
 
                     $aData[] = [$sModulesClass, $sControllerClass, $sMethod, ...$aTemplates];

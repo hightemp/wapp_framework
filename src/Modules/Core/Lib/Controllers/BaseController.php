@@ -180,7 +180,7 @@ class BaseController
      * @param  string $sMethod
      * @return string[] `['content.php','layout.php','title']`
      */
-    public static function fnGetTemplate($sViewClass, $sControllerClass, $sMethod)
+    public static function fnGetTemplate($sViewClass, $sControllerClass, $sMethod, $bFullPath=false)
     {
         $aTemplates = null;
 
@@ -189,7 +189,7 @@ class BaseController
             if (isset($sViewClass::$aTemplates[$sControllerClass])) {
                 $aRefMethods = &$sViewClass::$aTemplates[$sControllerClass];
                 if (isset($aRefMethods[$sMethod])) {
-                    $aTemplates = &$sViewClass::$aTemplates[$sControllerClass][$sMethod];
+                    $aTemplates = $sViewClass::$aTemplates[$sControllerClass][$sMethod];
                 }
             }
         }
@@ -197,7 +197,7 @@ class BaseController
         if (is_null($aTemplates)) {
             // NOTE: Иначе используем шабоны по умолчанию из контроллера
             if (isset($sControllerClass::$aDefaultTemplates[$sMethod])) {
-                $aTemplates = &$sControllerClass::$aDefaultTemplates[$sMethod];
+                $aTemplates = $sControllerClass::$aDefaultTemplates[$sMethod];
             }
         }
 
@@ -206,6 +206,19 @@ class BaseController
             isset($aTemplates[1]) ?: $aTemplates[1] = null;
             // NOTE: sTitle - подстановка заголовока из aTemplates
             isset($aTemplates[2]) ?: $aTemplates[2] = '';
+
+            if (!$sViewClass) {
+                $sViewClass = View::class;
+            }
+
+            if ($bFullPath && $sViewClass) {
+                if ($aTemplates[0]) {
+                    $aTemplates[0] = $sViewClass::fnGetTemplatesPath($aTemplates[0]);
+                }
+                if ($aTemplates[1]) {
+                    $aTemplates[1] = $sViewClass::fnGetTemplatesPath($aTemplates[1]);
+                }
+            }
         }
 
         return $aTemplates;
