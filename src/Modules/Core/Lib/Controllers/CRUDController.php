@@ -13,6 +13,7 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\JSON as JSONResponse;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\NotFound as NotFoundResponse;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\View;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagA;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagDiv;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
 use Request;
 use \RedBeanPHP\OODBBean;
@@ -39,6 +40,8 @@ use \RedBeanPHP\OODBBean;
  * #### Дополнительные
  * 
  * * `fnGetAliasesList` - получить список ссылок
+ * 
+ * 
  */
 class CRUDController extends BaseController
 {
@@ -49,6 +52,7 @@ class CRUDController extends BaseController
 
     public $aAliasesToMethods = [];
     public $aMethodsToAliases = [];
+    public $aMethodsToURLs = [];
 
     public static $sTableID = "";
     public static $aTableAttrs = [];
@@ -58,32 +62,6 @@ class CRUDController extends BaseController
         "fnListWithPaginationAjaxHTML" => ['tables/ajax_table.php', null, 'Тест - ajax таблица'],
         "fnListWithPaginationCrudHTML" => ['tables/crud_table.php', null, 'Тест - crud таблица'],
     ];
-        
-    /**
-     * Получаем список ссылок альясов для текущего контроллера
-     *
-     * @return string[]
-     */
-    public static function fnGetAliasesList()
-    {
-        $aResult = [];
-
-        $aMethods = get_class_methods(static::class);
-
-        array_map(function ($sMethod) use (&$aResult) {
-            $sAlias = static::fnPrepareMethodNameForAlias($sMethod);
-
-            if (!$sAlias) return;
-
-            $sModMethod = static::fnPrepareMethodName($sMethod, "");
-
-            if (!$sModMethod) return;
-
-            $aResult[$sModMethod] = "/".$sAlias;
-        }, $aMethods);
-
-        return $aResult;
-    }
 
     public function _fnBuildModel()
     {
@@ -99,6 +77,7 @@ class CRUDController extends BaseController
         $this->oModel = $this->_fnBuildModel();
         $this->aAliasesToMethods = $this->fnGenerateAliases();
         $this->aMethodsToAliases = $this->fnGenerateMethodsAliasesList();
+        $this->aMethodsToURLs = $this->fnGenerateMethodsURLsList();
     }
 
     // NOTE: Дополнительные методы
@@ -127,11 +106,12 @@ class CRUDController extends BaseController
         if (static::$aTableHeaders) {
             $aTableData["aHeaders"] = static::$aTableHeaders;
         } else {
-            // $aTableData["aHeaders"] = static::fnPrepareHeadersByColumns($sModelClass::COLUMNS);
-            // $aTableData["aHeaders"] = array_merge($aTableData["aHeaders"], static::fnPrepareHeadersByRelations($sModelClass::RELATIONS));
-            // $aTableData["aHeaders"][] = [
-            //     "formatter" => "operateFormatter",
-            // ];
+            $sModelClass = $this->oModel::class;
+            $aTableData["aHeaders"] = HelpersUtils::fnPrepareHeadersByColumns($sModelClass::COLUMNS);
+            $aTableData["aHeaders"] = array_merge($aTableData["aHeaders"], HelpersUtils::fnPrepareHeadersByRelations($sModelClass::RELATIONS));
+            $aTableData["aHeaders"][] = [
+                "formatter" => "operateFormatter",
+            ];
         }
 
         return $aTableData;
@@ -151,7 +131,7 @@ class CRUDController extends BaseController
     {
         $aTableData = [];
 
-        $aTableData["aData"] = $this->oModel->fnListWithPagination($this->oRequest->aPost);
+        $aTableData["aData"] = $this->oModel->fnListWithPagination($this->oRequest->aRequest);
 
         // NOTE: Получение списка ссылок-методов для работы с таблицей
         $aTableData["aURLs"] = static::fnGetAliasesList();
@@ -160,24 +140,63 @@ class CRUDController extends BaseController
         if (static::$aTableHeaders) {
             $aTableData["aHeaders"] = static::$aTableHeaders;
         } else {
-            // $aTableData["aHeaders"] = static::fnPrepareHeadersByColumnsShort($sModelClass::COLUMNS);
-            // $aTableData["aHeaders"] = array_merge($aTableData["aHeaders"], static::fnPrepareHeadersByRelationsShort($sModelClass::RELATIONS));
+            $sModelClass = $this->oModel::class;
+            $aTableData["aHeaders"] = HelpersUtils::fnPrepareHeadersByColumnsShort($sModelClass::COLUMNS);
+            $aTableData["aHeaders"] = array_merge($aTableData["aHeaders"], HelpersUtils::fnPrepareHeadersByRelationsShort($sModelClass::RELATIONS));
         }
 
         $this->fnAddToDataCRUDActionsColumn($aTableData["aData"]['rows'], $aTableData["aHeaders"], $aTableData["aAttrs"]);
+        $this->fnAddPagination($aTableData["aData"]);
 
         return $aTableData;
+    }
+
+    public function fnPrepareURLForAction($sMethod, $aRow)
+    {
+        $sURL = $this->aMethodsToURLs[$sMethod];
+        $oURL = $this->oRequest->fnPrepareURL($sURL, [ "id" => $aRow["id"] ]);
+        return (string) $oURL;
+    }
+
+    public function fnAddPagination(&$aData)
+    {
+        $aData["pagination"]["page_first"] = (string) $this->oRequest->fnPrepareURLFromCurrent([ "page" => "1" ]);
+        if ($aData['current_page']-1>=1) {
+            $aData["pagination"]["page_prev"] = (string) $this->oRequest->fnPrepareURLFromCurrent([ "page" => $aData['current_page']-1 ]);
+        } else {
+            $aData["pagination"]["page_prev"] = "#";
+        }
+        if ($aData['current_page']+1<=$aData['total_pages']) {
+            $aData["pagination"]["page_next"] = (string) $this->oRequest->fnPrepareURLFromCurrent([ "page" => $aData['current_page']+1 ]);
+        } else {
+            $aData["pagination"]["page_next"] = "#";
+        }
+        $aData["pagination"]["page_last"] = (string) $this->oRequest->fnPrepareURLFromCurrent([ "page" => $aData['total_pages'] ]);
+
+        $aData["pagination"]["current_page"] = $aData['current_page'];
+        $aData["pagination"]["total_pages"] = $aData['total_pages'];
     }
 
     public function fnAddToDataCRUDActionsColumn(&$aData, &$aHeaders=[], &$aAttrs=[])
     {
         $oTagA = new TagA();
+        $oTagDiv = new TagDiv();
 
         foreach ($aData as &$aRow) {
             BaseTag::fnBeginBuffer();
-            $oTagA('edit', $this->aMethodsToAliases['fnUpdateHTML'][0]);
-            $oTagA('delete', $this->aMethodsToAliases['fnDeleteHTML'][0]);
+
+            $sEditIcon = '<i class="bi bi-pencil-square"></i>';
+            $sDeleteIcon = '<i class="bi bi-trash"></i>';
+
+            $oTagA($sEditIcon, $this->fnPrepareURLForAction('fnUpdateHTML', $aRow));
+            $oTagA($sDeleteIcon, $this->fnPrepareURLForAction('fnDeleteHTML', $aRow));
+
             $aHTML = BaseTag::fnEndBuffer();
+
+            BaseTag::fnBeginBuffer();
+            $oTagDiv(join('', $aHTML), [ "class" => "table-actions" ]);
+            $aHTML = BaseTag::fnEndBuffer();
+
             $aRow["actions"] = join('', $aHTML);
         }
 
@@ -274,12 +293,14 @@ class CRUDController extends BaseController
 
     public function fnDeleteHTML()
     {
-
+        $this->fnDeleteJSON();
+        $this->fnRedirectToRefer();
     }
 
     public function fnDeleteListHTML()
     {
-
+        $this->fnDeleteListJSON();
+        $this->fnRedirectToRefer();
     }
 
     public function fnCreateJSON()
@@ -296,11 +317,11 @@ class CRUDController extends BaseController
 
     public function fnCreateHTML()
     {
-
+        $this->fnRedirectToRefer();
     }
 
     public function fnUpdateHTML()
     {
-
+        $this->fnRedirectToRefer();
     }
 }

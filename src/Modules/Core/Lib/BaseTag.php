@@ -5,7 +5,9 @@ namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
 class BaseTag
 {
     const T_A = 'a';
+    const T_SPAN = 'span';
     const T_DIV = 'div';
+    const T_NAV = 'nav';
     const T_UL = 'ul';
     const T_LI = 'li';
     const T_INPUT = 'input';
@@ -74,10 +76,7 @@ class BaseTag
 
     public static function &fnPrepareAttrs(&$aAttr, $aDefault=[])
     {
-        foreach ($aDefault as $sK => $sV) {
-            isset($aAttr[$sK]) ?: $aAttr[$sK] = $sV;
-        }
-
+        $aAttr = array_replace_recursive($aDefault, $aAttr);
         return $aAttr;
     }
 

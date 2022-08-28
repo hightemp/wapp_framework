@@ -4,6 +4,7 @@ namespace Hightemp\WappTestSnotes\Modules\Core\Helpers;
 
 use Hightemp\WappTestSnotes\Project;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Config;
 
 class Utils 
 {
@@ -154,5 +155,10 @@ class Utils
         }
 
         echo $sLine;
+    }
+
+    public static function fnPrepareURL($sURL)
+    {
+        return rtrim(Config::$aConfig["sBasePath"], "/")."/".ltrim($sURL, "/");
     }
 }

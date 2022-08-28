@@ -1,3 +1,3 @@
 <?php 
-    $oTagBootstrapTableAJAX($aTestTableEntity); 
+    $oTagBootstrapTableAJAX($aEntity); 
 ?>

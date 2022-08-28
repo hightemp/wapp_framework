@@ -2,8 +2,12 @@
 
 namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
 
+use \League\Url\Url;
+
 class Request
 {
+    const INPUT = "php://input";
+
     public $aRequest = [];
     public $aGet = [];
     public $aPost = [];
@@ -12,6 +16,11 @@ class Request
     public $aServer = [];
     public $aSession = [];
     public $sInput = "";
+
+    /** @var Url $oCurrentURL */
+    public $oCurrentURL = null;
+    /** @var Url $oBaseURL */
+    public $oBaseURL = null;
 
     public static $sCurrentAlias = "";
     public static $sCurrentModuleClass = "";
@@ -36,6 +45,41 @@ class Request
         $this->aServer = &$aServer;
         $this->aSession = &$aSession;
         $this->fnGetInput();
+
+        $this->oURL = Url::createFromUrl($this->fnGetCurrentURL());
+        $this->oCurrentURL = Url::createFromServer($this->aServer);
+        $this->oBaseURL = $this->fnCopyURL($this->oCurrentURL);
+        $this->oBaseURL->setPath(Config::$aConfig["sBasePath"]); 
+        $this->oBaseURL->setQuery("");
+    }
+
+    public function fnCopyURL($oURL)
+    {
+        return Url::createFromUrl((string) $oURL);
+    }
+
+    public function fnPrepareURL($sPath, $aArgs=[])
+    {
+        $oURL = $this->fnCopyURL($this->oBaseURL);
+        $oURL->setPath($sPath);
+        $oURL->setQuery($aArgs);
+        return $oURL;
+    }
+
+    public function fnPrepareURLFromCurrent($aArgs=[])
+    {
+        $oURL = $this->fnCopyURL($this->oCurrentURL);
+        $oQuery = $oURL->getQuery();
+        // $aQueryArgs = array_replace_recursive($aQueryArgs, $aArgs);
+        $oQuery->modify($aArgs);
+        return $oURL;
+    }
+
+    public function fnGetCurrentURL()
+    {
+        $sURL = (isset($this->aServer['HTTPS']) && $this->aServer['HTTPS'] === 'on' ? "https" : "http");
+        $sURL .= "://".$this->aServer['HTTP_HOST'].$this->aServer['REQUEST_URI'];
+        return $sURL;
     }
 
     public static function fnBuild()
@@ -53,10 +97,10 @@ class Request
 
     public function fnGetInput()
     {
-        return $this->sInput = ($this->sInput ?: file_get_contents("php://input"));
+        return $this->sInput = ($this->sInput ?: file_get_contents(static::INPUT));
     }
 
-    public function fnGetJSON()
+    public function fnGetInputAsJSON()
     {
         return json_decode($this->sInput, true);
     }

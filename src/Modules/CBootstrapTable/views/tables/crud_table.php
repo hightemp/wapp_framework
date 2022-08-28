@@ -1,3 +1,3 @@
 <?php 
-    $oTagBootstrapTableCRUD($aTestTableEntity); 
+    $oTagBootstrapTableCRUD($aEntity); 
 ?>

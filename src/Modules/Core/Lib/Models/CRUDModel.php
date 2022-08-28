@@ -4,6 +4,9 @@ namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Models;
 
 abstract class CRUDModel extends BaseModel
 {
+    const D_PAGE = 0;
+    const D_PAGE_SIZE = 10;
+
     // NOTE: [!] Additional
     function fnGenerateFilterRules($aFilterRules)
     {
@@ -112,15 +115,28 @@ abstract class CRUDModel extends BaseModel
             $sFilterRules = $this->fnGenerateFilterRulesForFilter($aParams['filter']);
         }
 
+        $iPage = static::D_PAGE;
+        $iLimit = static::D_PAGE_SIZE;
+        $iOffset = ($iPage-1)*$iLimit;
+
         if (isset($aParams['offset'])) {
+            $iOffset = (int) $aParams['offset'];
             if (isset($aParams['limit']) && $aParams['limit'] > 0) {
-                $sOffset = $this->fnPagination($aParams['offset'], $aParams['limit'], true);
+                $iLimit = (int) $aParams['limit'];
             }
-        } else {
-            if (isset($aParams['page'])) {
-                $sOffset = $this->fnPagination($aParams['page'], $aParams['rows'], false);
-            }
+            $iPage = ceil($iOffset/$iLimit);
+            // $sOffset = $this->fnPagination($aParams['offset'], $aParams['limit'], true);
         }
+        if (isset($aParams['page'])) {
+            $iPage = (int) $aParams['page'];
+            if (isset($aParams['rows']) && $aParams['rows'] > 0) {
+                $iLimit = (int) $aParams['rows'];
+            }
+            $iOffset = ($iPage-1)*$iLimit;
+            // $sOffset = $this->fnPagination($aParams['page'], $aParams['rows'], false);
+        }
+
+        $sOffset = " LIMIT {$iOffset}, {$iLimit}";
 
         if (isset($aParams['sort'])) {
             $sSort = " ORDER BY ".$aParams['sort'];
@@ -134,8 +150,14 @@ abstract class CRUDModel extends BaseModel
         $aResult = [];
 
         $aItems = $this->findAllExt("{$sFilterRules} {$sSort} {$sOffset}", []);
+
         $aResult['total'] = $this->count("{$sFilterRules}");
         $aResult['totalNotFiltered'] = $this->count("1 = 1");
+
+        $aResult['current_page'] = $iPage;
+        $aResult['total_pages'] = ceil($aResult['total'] / $iLimit);
+
+        $aResult['urls'] = [];
 
         // if ((is_null($bUseTags) && $this->$bUseTags) || $bUseTags === true) {
         //     foreach ($aItems as $oItem) {

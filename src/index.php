@@ -7,11 +7,6 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Request;
 
 use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
 
-if (defined('DEBUG')) {
-    ini_set('display_errors', 1);
-    error_reporting(E_ALL);
-}
-
 Config::fnInit();
 
 if (Utils::fnIsCli()) {

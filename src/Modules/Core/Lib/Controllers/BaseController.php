@@ -14,6 +14,7 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Request;
 use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\Forward301;
 use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\Forward302;
+use Hightemp\WappTestSnotes\Modules\Core\Lib\Exceptions\RedirectException;
 
 class BaseController
 {
@@ -68,6 +69,32 @@ class BaseController
         $aMethods = get_class_methods(static::class);
 
         return array_filter($aMethods, function($sI) { return static::fnIsMethodValid($sI); });
+    }
+
+    /**
+     * Получаем список ссылок альясов для текущего контроллера
+     *
+     * @return string[]
+     */
+    public static function fnGetAliasesList()
+    {
+        $aResult = [];
+
+        $aMethods = get_class_methods(static::class);
+
+        array_map(function ($sMethod) use (&$aResult) {
+            $sAlias = static::fnPrepareMethodNameForAlias($sMethod);
+
+            if (!$sAlias) return;
+
+            $sModMethod = static::fnPrepareMethodName($sMethod, "");
+
+            if (!$sModMethod) return;
+
+            $aResult[$sModMethod] = "/".$sAlias;
+        }, $aMethods);
+
+        return $aResult;
     }
 
     public static function fnPrepareMethodName($sMethod, $sSep="_")
@@ -131,6 +158,23 @@ class BaseController
             if (!$sAlias) return;
 
             $aResult[$sMethod] = [$sAlias, static::class, $sMethod];
+        }, $aMethods);
+
+        return $aResult;
+    }
+
+    public static function fnGenerateMethodsURLsList()
+    {
+        $aResult = [];
+
+        $aMethods = get_class_methods(static::class);
+
+        array_map(function ($sMethod) use (&$aResult) {
+            $sAlias = static::fnPrepareMethodNameForAlias($sMethod);
+
+            if (!$sAlias) return;
+
+            $aResult[$sMethod] = Utils::fnPrepareURL($sAlias);
         }, $aMethods);
 
         return $aResult;
@@ -287,21 +331,26 @@ class BaseController
         $sController = "\\".$sController;
         $oController = new $sController($oRequest);
 
-        $mResult = $oController->$sMethod();
+        try {
+            $mResult = $oController->$sMethod();
 
-        if (preg_match('/HTML$/i', $sMethod)) {
-            // NOTE: Подготовка $sContent и переменных для текущего контроллера
-            static::fnPrepareAllViewsForController($oController, $sMethod);
+            if (preg_match('/HTML$/i', $sMethod)) {
+                // NOTE: Подготовка $sContent и переменных для текущего контроллера
+                static::fnPrepareAllViewsForController($oController, $sMethod);
 
-            $sViewClass = $oController->sViewClass;
-            $mResult = $sViewClass::fnRender();
+                $sViewClass = $oController->sViewClass;
+                $mResult = $sViewClass::fnRender();
 
-            $oResponse = new HTMLResponse();
-        } else if (preg_match('/json$/i', $sMethod)) {
-            $oResponse = new JSONResponse();
+                $oResponse = new HTMLResponse();
+            } else if (preg_match('/json$/i', $sMethod)) {
+                $oResponse = new JSONResponse();
+            }
+
+            $oResponse->fnSetContent($mResult);
+        } catch (RedirectException $oRedirectException) {
+            return $oRedirectException->fnGetResponse();
         }
 
-        $oResponse->fnSetContent($mResult);
 
         return $oResponse;
     }
@@ -472,5 +521,11 @@ class BaseController
         }
 
         return $oResponse;
+    }
+
+    function fnRedirectToRefer()
+    {
+        $sURL = $this->oRequest->aServer['HTTP_REFERER'];
+        throw new RedirectException($sURL, 301);
     }
 }

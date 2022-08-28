@@ -194,7 +194,7 @@ abstract class BaseModel
                 if (strpos($sKey, "_id") !== false) {
                     $mNewValue = $this->fnGetRelationIfExists($sKey, $mValue);
                     if ($mNewValue) {
-                        $aResult[$sKey] = $mNewValue;
+                        $aResult[$sKey] = $mNewValue->export();
                     }
                 }
             }
@@ -377,7 +377,6 @@ abstract class BaseModel
         }
 
         $aData = $this->fnPrepareRowData((array) $aData);
-        // die(var_export($aData));
         $oItem->import($aData);
         $this->store($oItem);
 
