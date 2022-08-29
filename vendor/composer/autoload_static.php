@@ -27,6 +27,10 @@ class ComposerStaticInita9f5c16b56a64182433a7180100cfe65
         array (
             'League\\Url\\' => 11,
         ),
+        'I' => 
+        array (
+            'Ifsnop\\' => 7,
+        ),
         'H' => 
         array (
             'Hightemp\\WappTestSnotes\\' => 24,
@@ -49,6 +53,10 @@ class ComposerStaticInita9f5c16b56a64182433a7180100cfe65
         'League\\Url\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/url/src',
+        ),
+        'Ifsnop\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ifsnop/mysqldump-php/src/Ifsnop',
         ),
         'Hightemp\\WappTestSnotes\\' => 
         array (
