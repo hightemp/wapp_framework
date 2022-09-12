@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields;
+namespace Hightemp\WappFramework\Modules\CEasyUI\Lib\Tags\Fields;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseHTMLHelper;
 
-class TagCEPanelBegin extends BaseTag
+class TagCEPanelBegin extends BaseHTMLHelper
 {
     public function __invoke()
     {

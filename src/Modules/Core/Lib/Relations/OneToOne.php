@@ -1,6 +1,6 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Relations;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Relations;
 
 class OneToOne extends BaseRelation
 {

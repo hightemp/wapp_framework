@@ -1,6 +1,6 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Helpers;
+namespace Hightemp\WappFramework\Modules\Core\Helpers;
 
 /**
  * ClassFinder

@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Tags;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Tags;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseHTMLHelper;
 
-class TagA extends BaseTag
+class TagA extends BaseHTMLHelper
 {
     public function __invoke($sContent, $sHref, $aAttrs=[])
     {

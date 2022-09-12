@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CBootstrapTable;
+namespace Hightemp\WappFramework\Modules\CBootstrapTable;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Module as LibModule;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseModule;
 
-class Module extends LibModule
+class Module extends BaseModule
 {
     const NAME = "CBootstrapTable";
 }

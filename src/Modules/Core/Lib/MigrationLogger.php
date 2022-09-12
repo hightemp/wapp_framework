@@ -1,6 +1,6 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
+namespace Hightemp\WappFramework\Modules\Core\Lib;
 
 use RedBeanPHP\Logger as Logger;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\MaskedBox;
+namespace Hightemp\WappFramework\Modules\CEasyUI\Lib\Tags\Fields\MaskedBox;
 
-use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\TagCEMaskedBox;
+use Hightemp\WappFramework\Modules\CEasyUI\Lib\Tags\Fields\TagCEMaskedBox;
 
 class TagCEMaskedBoxPhone extends TagCEMaskedBox
 {

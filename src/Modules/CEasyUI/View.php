@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CEasyUI;
+namespace Hightemp\WappFramework\Modules\CEasyUI;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\View as LibView;
+use Hightemp\WappFramework\Modules\Core\Lib\View as LibView;
 
-use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\{
+use Hightemp\WappFramework\Modules\CEasyUI\Lib\Tags\Fields\{
     TagCEPanelBegin,
     TagCEPanelEnd,
     TagCEPasswordBox,
@@ -32,11 +32,11 @@ use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\{
     TagCERadioButton,
     TagCETabs,
 };
-use Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields\MaskedBox\{
+use Hightemp\WappFramework\Modules\CEasyUI\Lib\Tags\Fields\MaskedBox\{
     TagCEMaskedBoxPhone,
 
 };
-use Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers\{
+use Hightemp\WappFramework\Modules\CEasyUI\Controllers\{
     Index,
     Demo,
 };

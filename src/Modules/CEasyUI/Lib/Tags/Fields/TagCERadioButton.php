@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields;
+namespace Hightemp\WappFramework\Modules\CEasyUI\Lib\Tags\Fields;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseHTMLHelper;
 
-class TagCERadioButton extends BaseTag
+class TagCERadioButton extends BaseHTMLHelper
 {
     public static $aDefaultAttrs = [
         "class" => "easyui-radiobutton",

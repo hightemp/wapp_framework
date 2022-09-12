@@ -1,8 +1,8 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
+namespace Hightemp\WappFramework\Modules\Core\Lib;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
+use Hightemp\WappFramework\Modules\Core\Lib\Controllers\BaseController;
 
 class Link 
 {

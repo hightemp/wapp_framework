@@ -1,8 +1,8 @@
 {
-    "name": "hightemp/wapp_test_snotes",
+    "name": "hightemp/wapp_framework",
     "autoload": {
         "psr-4": {
-            "Hightemp\\WappTestSnotes\\": "src/"
+            "Hightemp\\WappFramework\\": "src/"
         }
     },
     "authors": [
@@ -13,6 +13,7 @@
     ],
     "require": {
         "gabordemooij/redbean": "^5.7",
-        "league/url": "^3.3"
+        "league/url": "^3.3",
+        "ifsnop/mysqldump-php": "^2.9"
     }
 }

@@ -1,13 +1,19 @@
 <?php
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Command;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Config;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Request;
+use Hightemp\WappFramework\Modules\Core\Lib\Controllers\BaseController;
+use Hightemp\WappFramework\Modules\Core\Lib\Command;
+use Hightemp\WappFramework\Modules\Core\Lib\Config;
+use Hightemp\WappFramework\Modules\Core\Lib\Request;
+use Hightemp\WappFramework\Modules\Core\Lib\Logger;
+use Hightemp\WappFramework\Project;
 
-use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
+use Hightemp\WappFramework\Modules\Core\Helpers\Utils;
+
+Project::fnPreload();
 
 Config::fnInit();
+
+Logger::fnWrite("index.php");
 
 if (Utils::fnIsCli()) {
     $iExitCode = (int) Command::fnParseCliArgs($argv);

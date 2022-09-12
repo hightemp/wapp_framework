@@ -1,6 +1,6 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
+namespace Hightemp\WappFramework\Modules\Core\Lib;
 
 use \League\Url\Url;
 
@@ -8,6 +8,8 @@ class Request
 {
     const INPUT = "php://input";
 
+    public $iTimestamp = 0;
+    
     public $aRequest = [];
     public $aGet = [];
     public $aPost = [];
@@ -37,6 +39,8 @@ class Request
         &$aSession=[]
     )
     {
+        $this->iTimestamp = time();
+
         $this->aRequest = &$aRequest;
         $this->aGet = &$aGet;
         $this->aPost = &$aPost;
@@ -58,19 +62,25 @@ class Request
         return Url::createFromUrl((string) $oURL);
     }
 
-    public function fnPrepareURL($sPath, $aArgs=[])
+    public function fnPrepareURL($sPath, $aArgs=[], $bAddCurrentURL=false)
     {
         $oURL = $this->fnCopyURL($this->oBaseURL);
         $oURL->setPath($sPath);
+        if ($bAddCurrentURL) {
+            $aArgs['redirect_url'] = $this->oCurrentURL->__toString();
+        }
         $oURL->setQuery($aArgs);
         return $oURL;
     }
 
-    public function fnPrepareURLFromCurrent($aArgs=[])
+    public function fnPrepareURLFromCurrent($aArgs=[], $bAddCurrentURL=false)
     {
         $oURL = $this->fnCopyURL($this->oCurrentURL);
         $oQuery = $oURL->getQuery();
         // $aQueryArgs = array_replace_recursive($aQueryArgs, $aArgs);
+        if ($bAddCurrentURL) {
+            $aArgs['redirect_url'] = $this->oCurrentURL->__toString();
+        }
         $oQuery->modify($aArgs);
         return $oURL;
     }

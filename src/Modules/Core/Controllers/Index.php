@@ -1,9 +1,9 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Controllers;
+namespace Hightemp\WappFramework\Modules\Core\Controllers;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
-use Hightemp\WappTestSnotes\Modules\Core\View;
+use Hightemp\WappFramework\Modules\Core\Lib\Controllers\BaseController;
+use Hightemp\WappFramework\Modules\Core\View;
 
 class Index extends BaseController
 {

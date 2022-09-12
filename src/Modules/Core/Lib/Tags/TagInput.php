@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Tags;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Tags;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseHTMLHelper;
 
-class TagInput extends BaseTag
+class TagInput extends BaseHTMLHelper
 {
     public function __invoke($aAttrs=[])
     {

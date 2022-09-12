@@ -1,18 +1,6 @@
-# 1. wapp_framework
+# wapp_framework
 
 Фреймфорк для создания простых проектов на php.
-
-<!-- TOC -->
-- [1. wapp_framework](#1-wapp_framework)
-  - [1.1. Скриншоты](#11-скриншоты)
-    - [1.1.1. Пример работы с bootstrap-tables](#111-пример-работы-с-bootstrap-tables)
-  - [1.2. Зависимости](#12-зависимости)
-  - [1.3. Стуктура проекта](#13-стуктура-проекта)
-  - [1.4. Параметры env](#14-параметры-env)
-  - [1.5. Что нужно прописывать в массивах](#15-что-нужно-прописывать-в-массивах)
-  - [1.6. Подключение к БД](#16-подключение-к-бд)
-  - [1.7.](#17)
-<!-- /TOC -->
 
 ## 1.1. Скриншоты
 
@@ -23,7 +11,9 @@
 ## 1.2. Зависимости
 
 - Основное
-    - библиотека RedBeansPHP
+    - библиотека RedBeansPHP - ORM - https://github.com/gabordemooij/redbean
+    - библиотека league/url - работа с url - https://github.com/thephpleague/url
+    - библиотека ifsnop/mysqldump-php - mysqldump - https://github.com/ifsnop/mysqldump-php
 - Дополнительное
     - bootstrap
     - bootstrap-tables

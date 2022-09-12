@@ -1,11 +1,12 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\TestTables;
+namespace Hightemp\WappFramework\Modules\TestTables;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseAliases;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
-use \Hightemp\WappTestSnotes\Modules\TestTables\Controllers\Index;
-use \Hightemp\WappTestSnotes\Modules\TestTables\Controllers\API;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseAliases;
+use Hightemp\WappFramework\Modules\Core\Lib\Controllers\BaseController;
+use \Hightemp\WappFramework\Modules\TestTables\Controllers\Index;
+use \Hightemp\WappFramework\Modules\TestTables\Controllers\CRUD\StaticController;
+use \Hightemp\WappFramework\Modules\TestTables\Controllers\CRUD\AjaxController;
 
 class Aliases extends BaseAliases
 {
@@ -23,6 +24,7 @@ class Aliases extends BaseAliases
     ];
 
     public static $aAutoloadMethods = [
-        API::class,
+        StaticController::class,
+        AjaxController::class,
     ];
 }

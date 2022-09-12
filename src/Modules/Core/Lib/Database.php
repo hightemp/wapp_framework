@@ -1,10 +1,11 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
+namespace Hightemp\WappFramework\Modules\Core\Lib;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\MigrationLogger;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\DatabaseConnection;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\DatabaseConnectionOptions;
+use Hightemp\WappFramework\Modules\Core\Lib\MigrationLogger;
+use Hightemp\WappFramework\Modules\Core\Lib\DatabaseConnection;
+use Hightemp\WappFramework\Modules\Core\Lib\DatabaseConnectionOptions;
+use Hightemp\WappFramework\Modules\Core\Lib\Config;
 
 class Database
 {
@@ -17,20 +18,16 @@ class Database
     public static function fnInit()
     {
         // NOTE: Создаем БД соделинение из env
-        $oO = new DatabaseConnectionOptions();
-
-        $oO->sProtocol = getenv("DATABASE_PROTOCOL") ?: "";
-        $oO->sDB = getenv("DATABASE_DB") ?: "";
-        $oO->sHost = getenv("DATABASE_HOST") ?: "";
-        $oO->sPort = getenv("DATABASE_PORT") ?: "";
-        $oO->sSocket = getenv("DATABASE_SOCKET") ?: "";
-        $oO->sCharset = getenv("DATABASE_CHARSET") ?: "";
-        $oO->sUser = getenv("DATABASE_USER") ?: "";
-        $oO->sPassword = getenv("DATABASE_PASSWORD") ?: "";
-
-        Database::fnCreateDefaultConnection($oO);    
         
+        static::fnCreateConnectionFromConfig();
         static::$bInitialized = true;
+    }
+
+    public static function fnCreateConnectionFromConfig($sKey=null)
+    {
+        $sKey = is_null($sKey) ? static::$sDefaultConnectionKey : $sKey;
+        $oDBOptions = DatabaseConnectionOptions::fnBuildFromConfig($sKey);
+        return static::fnCreateConnection($sKey, $oDBOptions);
     }
 
     public static function fnCreateConnection($sKey, DatabaseConnectionOptions $oDBOptions)

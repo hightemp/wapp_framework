@@ -1,13 +1,13 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Commands;
+namespace Hightemp\WappFramework\Modules\Core\Commands;
 
-use Hightemp\WappTestSnotes\Modules\Core\Generators;
-use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Command;
-use Hightemp\WappTestSnotes\Project;
-use Hightemp\WappTestSnotes\Modules\Core\Helpers\ClassFinder;
+use Hightemp\WappFramework\Modules\Core\Generators;
+use Hightemp\WappFramework\Modules\Core\Helpers\Utils;
+use Hightemp\WappFramework\Modules\Core\Lib\Controllers\BaseController;
+use Hightemp\WappFramework\Modules\Core\Lib\Command;
+use Hightemp\WappFramework\Project;
+use Hightemp\WappFramework\Modules\Core\Helpers\ClassFinder;
 
 class ListModels extends Command
 {

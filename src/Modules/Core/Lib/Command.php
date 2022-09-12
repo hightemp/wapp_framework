@@ -1,8 +1,9 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
+namespace Hightemp\WappFramework\Modules\Core\Lib;
 
-use Hightemp\WappTestSnotes\Project;
+use Hightemp\WappFramework\Project;
+use Hightemp\WappFramework\Modules\Core\Helpers\Utils;
 
 class Command
 {
@@ -46,6 +47,7 @@ class Command
 
         try {
             $oCommand->fnExecute($aArgs);
+            Utils::fnFlush();
         } catch (\Exception $oException) {
             $iExitCode = $oException->getCode() ?: 200;
             echo $oException->getTraceAsString();

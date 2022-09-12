@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Tags;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Tags;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseHTMLHelper;
 
-class TagForm extends BaseTag
+class TagForm extends BaseHTMLHelper
 {
     public static $aDefaultAttrs = [
         "class" => "",
@@ -33,12 +33,12 @@ class TagForm extends BaseTag
 
         $aResult = [];
 
-        BaseTag::fnBeginBuffer();
+        BaseHTMLHelper::fnBeginBuffer();
         foreach ($aItems as $aItem) {
             $oTag = array_shift($aItem);
             $oTag(...$aItem);
         }
-        $aResult = BaseTag::fnEndBuffer();
+        $aResult = BaseHTMLHelper::fnEndBuffer();
 
         $aResult = array_map(function($sI) use ($aItemAttrs) {
             return static::fnRenderTag(static::T_DIV, false, $aItemAttrs, $sI);

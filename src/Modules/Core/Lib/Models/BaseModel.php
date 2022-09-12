@@ -1,12 +1,12 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Models;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Models;
 
-use \Hightemp\WappTestSnotes\Modules\Core\Lib\ModelExtensions\TraitExportToCSV;
-use \Hightemp\WappTestSnotes\Modules\Core\Lib\Database;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Database\Adapters\BaseAdapter;
-use \Hightemp\WappTestSnotes\Modules\Core\Lib\DatabaseConnection;
-use \Hightemp\WappTestSnotes\Modules\Core\Lib\Columns\PrimaryIndexIntColumn;
+use \Hightemp\WappFramework\Modules\Core\Lib\ModelExtensions\TraitExportToCSV;
+use \Hightemp\WappFramework\Modules\Core\Lib\Database;
+use Hightemp\WappFramework\Modules\Core\Lib\Database\Adapters\BaseAdapter;
+use \Hightemp\WappFramework\Modules\Core\Lib\DatabaseConnection;
+use \Hightemp\WappFramework\Modules\Core\Lib\Columns\PrimaryIndexIntColumn;
 
 abstract class BaseModel
 {

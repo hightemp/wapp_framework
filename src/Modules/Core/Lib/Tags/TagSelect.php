@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Tags;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Tags;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseHTMLHelper;
 
-class TagSelect extends BaseTag
+class TagSelect extends BaseHTMLHelper
 {
     public static $aDefaultAttrs = [
 

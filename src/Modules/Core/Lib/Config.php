@@ -1,11 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
+namespace Hightemp\WappFramework\Modules\Core\Lib;
 
-use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
-use Hightemp\WappTestSnotes\Project;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Database;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\DatabaseConnectionOptions;
+use Hightemp\WappFramework\Modules\Core\Helpers\Utils;
+use Hightemp\WappFramework\Project;
+
 class Config 
 {
     const CONFIG_DIR_PATH = ROOT_PATH."/config/";

@@ -1,8 +1,8 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Columns;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Columns;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseColumn;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseColumn;
 use \DateTime;
 
 class TimestampColumn extends BaseColumn

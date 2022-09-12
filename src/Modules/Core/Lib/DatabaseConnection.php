@@ -1,9 +1,9 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
+namespace Hightemp\WappFramework\Modules\Core\Lib;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Database\Adapters\BaseAdapter;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Database\Adapters\RedBeans;
+use Hightemp\WappFramework\Modules\Core\Lib\Database\Adapters\BaseAdapter;
+use Hightemp\WappFramework\Modules\Core\Lib\Database\Adapters\RedBeans;
 
 class DatabaseConnection
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Database\Adapters;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Database\Adapters;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\DatabaseConnectionOptions;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Exceptions\MethodNotDefinedException;
+use Hightemp\WappFramework\Modules\Core\Lib\DatabaseConnectionOptions;
+use Hightemp\WappFramework\Modules\Core\Lib\Exceptions\MethodNotDefinedException;
 
 class BaseAdapter 
 {

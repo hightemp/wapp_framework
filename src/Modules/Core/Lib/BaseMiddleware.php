@@ -1,10 +1,15 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
+namespace Hightemp\WappFramework\Modules\Core\Lib;
 
 class BaseMiddleware
 {
     function fnExecuteBefore($oRequest)
+    {
+        return null;
+    }
+
+    function fnExecute($oRequest)
     {
         return null;
     }

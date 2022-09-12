@@ -11,5 +11,5 @@ return array(
     'RedBeanPHP\\' => array($vendorDir . '/gabordemooij/redbean/RedBeanPHP'),
     'League\\Url\\' => array($vendorDir . '/league/url/src'),
     'Ifsnop\\' => array($vendorDir . '/ifsnop/mysqldump-php/src/Ifsnop'),
-    'Hightemp\\WappTestSnotes\\' => array($baseDir . '/src'),
+    'Hightemp\\WappFramework\\' => array($baseDir . '/src'),
 );

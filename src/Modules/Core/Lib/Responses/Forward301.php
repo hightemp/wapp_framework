@@ -1,8 +1,8 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Responses;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Responses;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Response;
+use Hightemp\WappFramework\Modules\Core\Lib\Response;
 
 class Forward301 extends Response
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Bootstrap;
+namespace Hightemp\WappFramework\Modules\Bootstrap;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Module as LibModule;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseModule;
 
-class Module extends LibModule
+class Module extends BaseModule
 {
     const NAME = "Bootstrap";
 }

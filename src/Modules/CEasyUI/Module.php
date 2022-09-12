@@ -1,18 +1,18 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CEasyUI;
+namespace Hightemp\WappFramework\Modules\CEasyUI;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Module as LibModule;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseModule;
 
-class Module extends LibModule
+class Module extends BaseModule
 {
     const NAME = "CEasyUI";
 
-    public static $sDefaultController = \Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers\Index::class;
+    public static $sDefaultController = \Hightemp\WappFramework\Modules\CEasyUI\Controllers\Index::class;
     public static $sDefaultMethod = "fnIndexHTML";
 
     public static $aControllers = [
-        \Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers\Index::class
+        \Hightemp\WappFramework\Modules\CEasyUI\Controllers\Index::class
     ];
 
     public static $aModels = [
@@ -20,6 +20,6 @@ class Module extends LibModule
     ];
 
     public static $aPreloadViews = [
-        \Hightemp\WappTestSnotes\Modules\CEasyUI\View::class,
+        \Hightemp\WappFramework\Modules\CEasyUI\View::class,
     ];
 }

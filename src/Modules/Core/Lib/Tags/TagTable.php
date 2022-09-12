@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Tags;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Tags;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseHTMLHelper;
 
-class TagTable extends BaseTag
+class TagTable extends BaseHTMLHelper
 {
     public function __invoke($aData, $aHeaders=[], $aAttr=[])
     {
@@ -38,22 +38,34 @@ class TagTable extends BaseTag
         $sHTML .= "<tbody>\n";
         foreach ($aData as $aRow) {
             $sHTML .= "<tr>\n";
-            foreach ($aHeaders as $iI => $mHeader) {
-                $sCell = '';
+            if ($aHeaders) {
+                foreach ($aHeaders as $iI => $mHeader) {
+                    $sCell = '';
 
-                if (is_string($mHeader)) {
-                    $sCell = isset($aRow[$mHeader]) ? $aRow[$mHeader] : '';
-                } else {
-                    $sCell = isset($aRow[$iI]) ? $aRow[$iI] : '';
+                    if (is_string($mHeader)) {
+                        $sCell = isset($aRow[$mHeader]) ? $aRow[$mHeader] : '';
+                    } else {
+                        $sCell = isset($aRow[$iI]) ? $aRow[$iI] : '';
+                    }
+
+                    if (!is_string($sCell)) {
+                        $sCell = json_encode($sCell);
+                    }
+
+                    $sHTML .= "<td>\n";
+                    $sHTML .= $sCell;
+                    $sHTML .= "\n</td\n>";
                 }
+            } else {
+                foreach ($aRow as $iI => $mValue) {
+                    if (!is_string($mValue)) {
+                        $mValue = json_encode($mValue);
+                    }
 
-                if (!is_string($sCell)) {
-                    $sCell = json_encode($sCell);
+                    $sHTML .= "<td>\n";
+                    $sHTML .= $mValue;
+                    $sHTML .= "\n</td\n>";
                 }
-
-                $sHTML .= "<td>\n";
-                $sHTML .= $sCell;
-                $sHTML .= "\n</td\n>";
             }
             $sHTML .= "</tr>\n";
         }

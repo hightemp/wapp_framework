@@ -1,9 +1,9 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers;
+namespace Hightemp\WappFramework\Modules\CEasyUI\Controllers;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
-use Hightemp\WappTestSnotes\Modules\CEasyUI\View;
+use Hightemp\WappFramework\Modules\Core\Lib\Controllers\BaseController;
+use Hightemp\WappFramework\Modules\CEasyUI\View;
 
 class Index extends BaseController
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\TestTables\Models;
+namespace Hightemp\WappFramework\Modules\TestTables\Models;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Models\CRUDModel;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Relations\OneToOne;
-use Hightemp\WappTestSnotes\Modules\TestTables\Models\TestTable\IndexID;
-use Hightemp\WappTestSnotes\Modules\TestTables\Models\TestTable\TestInt;
-use Hightemp\WappTestSnotes\Modules\TestTables\Models\TestTable\TestJson;
-use Hightemp\WappTestSnotes\Modules\TestTables\Models\TestTable\TestVarChar;
+use Hightemp\WappFramework\Modules\Core\Lib\Models\CRUDModel;
+use Hightemp\WappFramework\Modules\Core\Lib\Relations\OneToOne;
+use Hightemp\WappFramework\Modules\TestTables\Models\TestTable\IndexID;
+use Hightemp\WappFramework\Modules\TestTables\Models\TestTable\TestInt;
+use Hightemp\WappFramework\Modules\TestTables\Models\TestTable\TestJson;
+use Hightemp\WappFramework\Modules\TestTables\Models\TestTable\TestVarChar;
 
 class TestTable extends CRUDModel
 {

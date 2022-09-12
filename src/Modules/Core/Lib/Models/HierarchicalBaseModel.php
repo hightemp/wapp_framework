@@ -1,6 +1,6 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Models;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Models;
 
 /**
  * Модеь для работы с иерархическими данными

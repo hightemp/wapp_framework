@@ -1,8 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\TestTables;
+namespace Hightemp\WappFramework\Modules\TestTables;
 
-class Commands 
+use Hightemp\WappFramework\Modules\Core\Lib\BaseCommands;
+
+class Commands extends BaseCommands 
 {
     public static $aCommands = [
         

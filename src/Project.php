@@ -1,57 +1,43 @@
 <?php
 
-namespace Hightemp\WappTestSnotes;
+namespace Hightemp\WappFramework;
 
-class Project 
+use Hightemp\WappFramework\Modules\Core\Lib\BaseProject;
+
+class Project extends BaseProject
 {
     public static $sProjectClassPath = __NAMESPACE__;
     public static $sProjectRootPath = __DIR__;
 
-    public static $sDefaultCommand = \Hightemp\WappTestSnotes\Modules\Core\Commands\ListCommands::class;
+    /** @var string|BaseLogger $sLoggerClass */
+    public static $sLoggerClass = \Hightemp\WappFramework\Modules\Debug\Loggers\SimpleJSONLLogger::class;
 
-    public static $aModules = [
-        \Hightemp\WappTestSnotes\Modules\Core\Module::class,
-        \Hightemp\WappTestSnotes\Modules\Notes\Module::class,
+    public static $sDefaultCommand = \Hightemp\WappFramework\Modules\Core\Commands\ListCommands::class;
 
-        \Hightemp\WappTestSnotes\Modules\CEasyUI\Module::class,
-        \Hightemp\WappTestSnotes\Modules\CBootstrapTable\Module::class,
-
-        \Hightemp\WappTestSnotes\Modules\TestTables\Module::class,
+    public static $aPreload = [
+        \Hightemp\WappFramework\Modules\Core\Module::class,
+        \Hightemp\WappFramework\Modules\Debug\Module::class,
+        \Hightemp\WappFramework\Modules\CEasyUI\Module::class,
+        \Hightemp\WappFramework\Modules\CBootstrapTable\Module::class,
+        \Hightemp\WappFramework\Modules\TestTables\Module::class,
     ];
 
-    public static $aPreloadModules = [
-
+    public static $aModules = [
     ];
 
     public static $aAliases = [
-        \Hightemp\WappTestSnotes\Modules\Core\Aliases::class,
-        \Hightemp\WappTestSnotes\Modules\Notes\Aliases::class,
-
-        \Hightemp\WappTestSnotes\Modules\CEasyUI\Aliases::class,
-
-        \Hightemp\WappTestSnotes\Modules\TestTables\Aliases::class,
-        \Hightemp\WappTestSnotes\Modules\GoogleSheetsImporter\Aliases::class,
     ];
 
     public static $aCommands = [
-        \Hightemp\WappTestSnotes\Modules\Core\Commands::class,
-        \Hightemp\WappTestSnotes\Modules\Notes\Commands::class,
-        \Hightemp\WappTestSnotes\Modules\TestTables\Commands::class,
     ];
 
     public static $aGenerators = [
-        \Hightemp\WappTestSnotes\Modules\Core\Generators\Compgen::class,
-        \Hightemp\WappTestSnotes\Modules\Core\Generators\Command::class,
-        \Hightemp\WappTestSnotes\Modules\Core\Generators\OpenAPI::class,
     ];
 
     public static $aControllers = [
-        \Hightemp\WappTestSnotes\Modules\Core\Controllers\Index::class,
-        \Hightemp\WappTestSnotes\Modules\Notes\Controllers\Index::class,
-        \Hightemp\WappTestSnotes\Modules\TestTables\Controllers\Index::class,
     ];
 
     public static $aPreloadViews = [
-        \Hightemp\WappTestSnotes\Modules\Core\View::class,
+        \Hightemp\WappFramework\Modules\Core\View::class,
     ];
 }

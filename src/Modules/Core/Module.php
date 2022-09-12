@@ -1,18 +1,18 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core;
+namespace Hightemp\WappFramework\Modules\Core;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Module as LibModule;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseModule;
 
-class Module extends LibModule
+class Module extends BaseModule
 {
     const NAME = "Core";
 
-    public static $sDefaultController = \Hightemp\WappTestSnotes\Modules\Core\Controllers\Index::class;
+    public static $sDefaultController = \Hightemp\WappFramework\Modules\Core\Controllers\Index::class;
     public static $sDefaultMethod = "fnIndexHTML";
 
     public static $aControllers = [
-        \Hightemp\WappTestSnotes\Modules\Core\Controllers\Index::class
+        \Hightemp\WappFramework\Modules\Core\Controllers\Index::class
     ];
 
     public static $aModels = [

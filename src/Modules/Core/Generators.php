@@ -1,10 +1,12 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core;
+namespace Hightemp\WappFramework\Modules\Core;
 
-class Generators 
+use Hightemp\WappFramework\Modules\Core\Lib\BaseGenerators;
+
+class Generators extends BaseGenerators
 {
     public static $aGenerators = [
-        \Hightemp\WappTestSnotes\Modules\Core\Generators\Command::class,
+        \Hightemp\WappFramework\Modules\Core\Generators\Command::class,
     ];
 }

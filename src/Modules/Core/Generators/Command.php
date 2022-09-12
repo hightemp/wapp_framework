@@ -1,8 +1,8 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Generators;
+namespace Hightemp\WappFramework\Modules\Core\Generators;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseGenerator;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseGenerator;
 
 class Command extends BaseGenerator
 {

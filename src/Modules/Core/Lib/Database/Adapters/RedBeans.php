@@ -1,9 +1,9 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Database\Adapters;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Database\Adapters;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\DatabaseConnectionOptions;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\MigrationLogger;
+use Hightemp\WappFramework\Modules\Core\Lib\DatabaseConnectionOptions;
+use Hightemp\WappFramework\Modules\Core\Lib\MigrationLogger;
 use RedBeanPHP\Facade as R;
 
 class RedBeans extends BaseAdapter

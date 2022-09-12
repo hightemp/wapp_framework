@@ -1,12 +1,12 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Tags;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Tags;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Request;
-use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseHTMLHelper;
+use Hightemp\WappFramework\Modules\Core\Lib\Request;
+use Hightemp\WappFramework\Modules\Core\Helpers\Utils;
 
-class TagInclude extends BaseTag
+class TagInclude extends BaseHTMLHelper
 {
     function __construct()
     {

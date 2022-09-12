@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\TestTables\Models;
+namespace Hightemp\WappFramework\Modules\TestTables\Models;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Models\CRUDModel;
-use Hightemp\WappTestSnotes\Modules\TestTables\Models\TestTable\IndexID;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Columns\JSONColumn;
+use Hightemp\WappFramework\Modules\Core\Lib\Models\CRUDModel;
+use Hightemp\WappFramework\Modules\TestTables\Models\TestTable\IndexID;
+use Hightemp\WappFramework\Modules\Core\Lib\Columns\JSONColumn;
 
 class TestTable2 extends CRUDModel
 {

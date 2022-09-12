@@ -1,10 +1,12 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CBootstrapTable;
+namespace Hightemp\WappFramework\Modules\CBootstrapTable;
 
-class Commands 
+use Hightemp\WappFramework\Modules\Core\Lib\BaseCommands;
+
+class Commands extends BaseCommands 
 {
     public static $aCommands = [
-        \Hightemp\WappTestSnotes\Modules\CBootstrapTable\Commands\GenerateTableTemplate::class,
+        \Hightemp\WappFramework\Modules\CBootstrapTable\Commands\GenerateTableTemplate::class,
     ];
 }

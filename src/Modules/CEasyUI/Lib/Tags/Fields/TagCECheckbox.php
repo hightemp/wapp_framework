@@ -1,11 +1,11 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields;
+namespace Hightemp\WappFramework\Modules\CEasyUI\Lib\Tags\Fields;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\TagSelect;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseHTMLHelper;
+use Hightemp\WappFramework\Modules\Core\Lib\Tags\TagSelect;
 
-class TagCECheckbox extends BaseTag
+class TagCECheckbox extends BaseHTMLHelper
 {
     public static $aDefaultAttrs = [
         "class" => "easyui-checkbox",

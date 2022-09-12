@@ -1,9 +1,9 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CEasyUI;
+namespace Hightemp\WappFramework\Modules\CEasyUI;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseAliases;
-use \Hightemp\WappTestSnotes\Modules\CEasyUI\Controllers\{
+use Hightemp\WappFramework\Modules\Core\Lib\BaseAliases;
+use \Hightemp\WappFramework\Modules\CEasyUI\Controllers\{
     Index,
     Demo,
 };

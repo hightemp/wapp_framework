@@ -1,6 +1,6 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\ModelExtensions;
+namespace Hightemp\WappFramework\Modules\Core\Lib\ModelExtensions;
 
 trait TraitExportToCSV 
 {

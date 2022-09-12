@@ -1,12 +1,12 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CBootstrapTable\Helpers;
+namespace Hightemp\WappFramework\Modules\CBootstrapTable\Helpers;
 
-use Hightemp\WappTestSnotes\Project;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Models\BaseModel;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\View;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Request;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\CRUDController;
+use Hightemp\WappFramework\Project;
+use Hightemp\WappFramework\Modules\Core\Lib\Models\BaseModel;
+use Hightemp\WappFramework\Modules\Core\Lib\View;
+use Hightemp\WappFramework\Modules\Core\Lib\Request;
+use Hightemp\WappFramework\Modules\Core\Lib\Controllers\CRUDController;
 
 class Utils 
 {

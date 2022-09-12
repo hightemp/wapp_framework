@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CEasyUI\Lib\Tags\Fields;
+namespace Hightemp\WappFramework\Modules\CEasyUI\Lib\Tags\Fields;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\BaseTag;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseHTMLHelper;
 
-class TagCETabs extends BaseTag
+class TagCETabs extends BaseHTMLHelper
 {
     public static $aDefaultAttrs = [
         "class" => "easyui-tabs",
@@ -32,15 +32,15 @@ class TagCETabs extends BaseTag
         $aResult = [];
         $aTitles = [];
 
-        BaseTag::fnBeginBuffer();
+        BaseHTMLHelper::fnBeginBuffer();
         foreach ($aItems as $iI => $mItem) {
             if (is_string($mItem)) {
-                BaseTag::fnAddToBuffer($mItem);
+                BaseHTMLHelper::fnAddToBuffer($mItem);
             } else {
                 if (is_array($mItem)) {
                     $aTitles[$iI] = $mItem[0];
                     if (is_string($mItem[1])) { 
-                        BaseTag::fnAddToBuffer($mItem[1]);
+                        BaseHTMLHelper::fnAddToBuffer($mItem[1]);
                     } else {
                         $oTag = array_shift($mItem[1]);
                         $oTag(...$mItem[1]);
@@ -48,7 +48,7 @@ class TagCETabs extends BaseTag
                 }
             }
         }
-        $aResult = BaseTag::fnEndBuffer();
+        $aResult = BaseHTMLHelper::fnEndBuffer();
 
         $iI = 0;
         $aResult = array_map(function($sI) use ($aItemAttrs, $aTitles, &$iI) {

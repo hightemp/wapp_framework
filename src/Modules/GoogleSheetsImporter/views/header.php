@@ -1,1 +1,0 @@
-<?php $oTagLink("styles.css"); ?>

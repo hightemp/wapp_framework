@@ -6,3 +6,7 @@ table td.actions {
 table td.actions a {
     text-decoration: none;
 }
+
+ul.pagination {
+    margin: 0px;
+}

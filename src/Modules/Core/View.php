@@ -1,8 +1,8 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core;
+namespace Hightemp\WappFramework\Modules\Core;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\View as LibView;
+use Hightemp\WappFramework\Modules\Core\Lib\View as LibView;
 
 class View extends LibView
 {

@@ -1,11 +1,12 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
+namespace Hightemp\WappFramework\Modules\Core\Lib;
 
-use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
-use Hightemp\WappTestSnotes\Project;
+use Hightemp\WappFramework\Modules\Core\Helpers\Utils;
+use Hightemp\WappFramework\Modules\Core\Lib\View\Helpers\Vars;
+use Hightemp\WappFramework\Project;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\{
+use Hightemp\WappFramework\Modules\Core\Lib\Tags\{
     TagA,
     TagAliasA,
     TagTable,
@@ -16,6 +17,10 @@ use Hightemp\WappTestSnotes\Modules\Core\Lib\Tags\{
     TagFormEnd,
     TagScript,
     TagLink,
+    TagDiv,
+    TagDivGrid,
+    TagUl,
+    TagInput,
 };
 
 class View
@@ -40,6 +45,8 @@ class View
     /** @var string $sHTMLHeader Это код html->head блока */
     public static $sHTMLHeader = '';
 
+    public static $aHelpers = [];
+
     /** 
      * @var string[][] $aTemplates список классов соотнесенных с шаблонами 
      *  
@@ -63,7 +70,7 @@ class View
         return Utils::fnGetGlobalPathForClassModule(static::class, "/".$sExtPath);
     }
 
-    public static function fnClearVars()
+    public static function fnCleanVars()
     {
         self::$aVars = [];
     }
@@ -77,10 +84,14 @@ class View
         self::$aVars['oTagA'] = new TagA();
         self::$aVars['oTagAliasA'] = new TagAliasA();
         self::$aVars['oTagTable'] = new TagTable();
+        self::$aVars['oTagInput'] = new TagInput();
+        self::$aVars['oTagDiv'] = new TagDiv();
+        self::$aVars['oTagDivGrid'] = new TagDivGrid();
         self::$aVars['oTagSelect'] = new TagSelect();
         self::$aVars['oTagForm'] = new TagForm();
         self::$aVars['oTagFormBegin'] = new TagFormBegin();
         self::$aVars['oTagFormEnd'] = new TagFormEnd();
+        self::$aVars['oTagUl'] = new TagUl();
 
         self::$aVars['oTagScript'] = new TagScript();
         self::$aVars['oTagLink'] = new TagLink();

@@ -1,10 +1,10 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\CBootstrapTable\Commands;
+namespace Hightemp\WappFramework\Modules\CBootstrapTable\Commands;
 
-use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Command;
+use Hightemp\WappFramework\Modules\Core\Helpers\Utils;
+use Hightemp\WappFramework\Modules\Core\Lib\Controllers\BaseController;
+use Hightemp\WappFramework\Modules\Core\Lib\Command;
 
 class GenerateTableTemplate extends Command
 {

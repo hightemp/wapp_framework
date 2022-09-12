@@ -1,6 +1,6 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Database\Adapters;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Database\Adapters;
 
 class MySQLPDO
 {

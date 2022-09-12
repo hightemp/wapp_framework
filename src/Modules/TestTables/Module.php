@@ -1,30 +1,31 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\TestTables;
+namespace Hightemp\WappFramework\Modules\TestTables;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Module as LibModule;
+use Hightemp\WappFramework\Modules\Core\Lib\BaseModule;
 
-class Module extends LibModule
+class Module extends BaseModule
 {
     const NAME = "TestTable";
 
     public static $aModulesDependencies = [
-        \Hightemp\WappTestSnotes\Modules\CBootstrapTable\Module::class
+        \Hightemp\WappFramework\Modules\CBootstrapTable\Module::class
     ];
 
     public static $aControllers = [
-        \Hightemp\WappTestSnotes\Modules\TestTables\Controllers\Index::class,
-        \Hightemp\WappTestSnotes\Modules\TestTables\Controllers\API::class,
+        \Hightemp\WappFramework\Modules\TestTables\Controllers\Index::class,
+        \Hightemp\WappFramework\Modules\TestTables\Controllers\StaticController::class,
+        \Hightemp\WappFramework\Modules\TestTables\Controllers\AjaxController::class,
     ];
 
     public static $aModules = [
-        \Hightemp\WappTestSnotes\Modules\TestTables\Models\TestTable::class,
+        \Hightemp\WappFramework\Modules\TestTables\Models\TestTable::class,
     ];
 
     public static $aPreloadViews = [
-        \Hightemp\WappTestSnotes\Modules\Core\View::class,
-        \Hightemp\WappTestSnotes\Modules\Bootstrap\View::class,
-        \Hightemp\WappTestSnotes\Modules\CBootstrapTable\View::class,
-        \Hightemp\WappTestSnotes\Modules\TestTables\View::class,
+        \Hightemp\WappFramework\Modules\Core\View::class,
+        \Hightemp\WappFramework\Modules\Bootstrap\View::class,
+        \Hightemp\WappFramework\Modules\CBootstrapTable\View::class,
+        \Hightemp\WappFramework\Modules\TestTables\View::class,
     ];
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\TestTables\Models\TestTable;
+namespace Hightemp\WappFramework\Modules\TestTables\Models\TestTable;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Columns\IntColumn;
+use Hightemp\WappFramework\Modules\Core\Lib\Columns\IntColumn;
 
 class TestInt extends IntColumn {
     const P_TITLE = "Целое число";

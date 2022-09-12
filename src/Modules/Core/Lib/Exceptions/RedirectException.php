@@ -1,9 +1,9 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Exceptions;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Exceptions;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Response;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\Forward301;
+use Hightemp\WappFramework\Modules\Core\Lib\Response;
+use Hightemp\WappFramework\Modules\Core\Lib\Responses\Forward301;
 
 class RedirectException extends \Exception {
     public $sURL = "";

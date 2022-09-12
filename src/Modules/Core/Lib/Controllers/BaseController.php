@@ -1,20 +1,20 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Controllers;
 
 use Exception;
-use Hightemp\WappTestSnotes\Project;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Request as LibRequest;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Response;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\HTML as HTMLResponse;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\JSON as JSONResponse;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\NotFound as NotFoundResponse;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\View;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Request;
-use Hightemp\WappTestSnotes\Modules\Core\Helpers\Utils;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\Forward301;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Responses\Forward302;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Exceptions\RedirectException;
+use Hightemp\WappFramework\Project;
+use Hightemp\WappFramework\Modules\Core\Lib\Request as LibRequest;
+use Hightemp\WappFramework\Modules\Core\Lib\Response;
+use Hightemp\WappFramework\Modules\Core\Lib\Responses\HTML as HTMLResponse;
+use Hightemp\WappFramework\Modules\Core\Lib\Responses\JSON as JSONResponse;
+use Hightemp\WappFramework\Modules\Core\Lib\Responses\NotFound as NotFoundResponse;
+use Hightemp\WappFramework\Modules\Core\Lib\View;
+use Hightemp\WappFramework\Modules\Core\Lib\Request;
+use Hightemp\WappFramework\Modules\Core\Helpers\Utils;
+use Hightemp\WappFramework\Modules\Core\Lib\Responses\Forward301;
+use Hightemp\WappFramework\Modules\Core\Lib\Responses\Forward302;
+use Hightemp\WappFramework\Modules\Core\Lib\Exceptions\RedirectException;
 
 class BaseController
 {
@@ -73,6 +73,8 @@ class BaseController
 
     /**
      * Получаем список ссылок альясов для текущего контроллера
+     * 
+     * Отфильтрованные методы static класса
      *
      * @return string[]
      */
@@ -398,7 +400,7 @@ class BaseController
 
     public static function fnGetProjectAliases()
     {
-        return \Hightemp\WappTestSnotes\Project::$aAliases;
+        return \Hightemp\WappFramework\Project::$aAliases;
     }
 
     public static function fnGetAllAliases($sModuleClass=null)
@@ -527,5 +529,11 @@ class BaseController
     {
         $sURL = $this->oRequest->aServer['HTTP_REFERER'];
         throw new RedirectException($sURL, 301);
+    }
+
+    function fnRedirectBack()
+    {
+        $sRedirectURL = $this->oRequest->aRequest['redirect_url'];
+        throw new RedirectException($sRedirectURL, 301);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Columns\Extended;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Columns\Extended;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Columns\DecimalColumn;
+use Hightemp\WappFramework\Modules\Core\Lib\Columns\DecimalColumn;
 
 class MoneyColumn extends DecimalColumn
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\TestTables\Controllers;
+namespace Hightemp\WappFramework\Modules\TestTables\Controllers;
 
-use Hightemp\WappTestSnotes\Modules\CBootstrapTable\Helpers\Utils;
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Controllers\BaseController;
-use Hightemp\WappTestSnotes\Modules\TestTables\View;
-use Hightemp\WappTestSnotes\Modules\TestTables\Controllers\API;
-use Hightemp\WappTestSnotes\Modules\TestTables\Models\TestTable;
-use Hightemp\WappTestSnotes\Modules\TestTables\Models\TestTable2;
+use Hightemp\WappFramework\Modules\CBootstrapTable\Helpers\Utils;
+use Hightemp\WappFramework\Modules\Core\Lib\Controllers\BaseController;
+use Hightemp\WappFramework\Modules\TestTables\View;
+use Hightemp\WappFramework\Modules\TestTables\Controllers\API;
+use Hightemp\WappFramework\Modules\TestTables\Models\TestTable;
+use Hightemp\WappFramework\Modules\TestTables\Models\TestTable2;
 
 class Index extends BaseController
 {

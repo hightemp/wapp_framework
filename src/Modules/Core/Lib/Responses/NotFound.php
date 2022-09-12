@@ -1,6 +1,6 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Responses;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Responses;
 
 class NotFound extends HTML
 {

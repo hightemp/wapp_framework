@@ -1,8 +1,8 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib\Columns\Extended;
+namespace Hightemp\WappFramework\Modules\Core\Lib\Columns\Extended;
 
-use Hightemp\WappTestSnotes\Modules\Core\Lib\Columns\VarcharColumn;
+use Hightemp\WappFramework\Modules\Core\Lib\Columns\VarcharColumn;
 
 class LinkColumn extends VarcharColumn
 {

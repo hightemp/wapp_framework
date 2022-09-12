@@ -1,6 +1,6 @@
 <?php
 
-namespace Hightemp\WappTestSnotes\Modules\Core\Lib;
+namespace Hightemp\WappFramework\Modules\Core\Lib;
 
 class BaseAliases
 {
@@ -9,7 +9,7 @@ class BaseAliases
      *
      * ```php
      * [
-     *      "module/index" => [\Hightemp\WappTestSnotes\Modules\Module\Controllers\Index::class, 'fnIndexHTML'],
+     *      "module/index" => [\Hightemp\WappFramework\Modules\Module\Controllers\Index::class, 'fnIndexHTML'],
      * ]
      * ```
      **/
@@ -20,7 +20,7 @@ class BaseAliases
      *
      * ```php
      * [
-     *      "module/index" => [\Hightemp\WappTestSnotes\Modules\Module\Controllers\Index::class, 'fnIndexHTML'],
+     *      "module/index" => [\Hightemp\WappFramework\Modules\Module\Controllers\Index::class, 'fnIndexHTML'],
      * ]
      * ``` 
      **/
