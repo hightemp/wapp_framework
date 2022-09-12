@@ -16,6 +16,6 @@ class TableBordered extends BaseHTMLHelper
     {
         $aAttrs = static::fnPrepareAttrs($aAttrs, static::$aDefaultAttrs);
         
-        HTML::TagTable($aData, $aHeaders);
+        HTML::TagTable($aData, $aHeaders, $aAttrs);
     }
 }

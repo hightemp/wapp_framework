@@ -52,7 +52,7 @@ if (isset($_GET['f'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="">
+    <div class="container-fluid">
         <div class="row" style="border-bottom: 2px solid rgba(0,0,0,0.1)">
             <div class="col">
             </div>
@@ -74,14 +74,14 @@ if (isset($_GET['f'])) {
 
             <div class="col-10">
 
-                <table class="table table-bordered">
+                <table class="table table-bordered" style="width:100%;">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Дата</th>
+                            <th scope="col" width="50">#</th>
+                            <th scope="col" width="70">Дата</th>
                             <th scope="col">Тип</th>
                             <th scope="col">Сообщение</th>
-                            <th scope="col">JSON</th>
+                            <th scope="col" width="60%">JSON</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -101,8 +101,10 @@ if (isset($_GET['f'])) {
                                 <td><?php echo $aRow[2]; ?></td>
                                 <td><?php echo $aRow[0]; ?></td>
                                 <td><?php echo $aRow[3]; ?></td>
-                                <td>
-                                    <pre><?php echo json_encode($aRow[4], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE); ?></pre>
+                                <td style="overflow:auto">
+                                    <code class="code">
+                                    <pre><?php echo htmlspecialchars(json_encode($aRow[4], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)); ?></pre>
+                                    </code>
                                 </td>
                             </tr>
                             <?php endif ?>
@@ -126,7 +128,14 @@ table td {
 pre {
     background: rgba(0,0,0,0.04);
     padding: 5px;
+    word-break: break-all;
+    font-size: 12px;
+}
+table {
+    table-layout: fixed;
+}
+.code {
+    overflow: auto;
     max-height: 300px;
-    overflow-y: auto;
 }
 </style>
