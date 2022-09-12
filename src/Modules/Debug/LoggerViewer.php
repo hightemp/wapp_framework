@@ -20,6 +20,7 @@ Project::$aModules = [Module::class];
 Config::fnInit();
 $aLogFiles = SimpleJSONLLogger::fnGetFiles();
 $aLogFiles = array_map(function ($sI) { return basename($sI); }, $aLogFiles);
+$aLogFiles = array_reverse($aLogFiles);
 
 $aLines = [];
 
@@ -79,17 +80,32 @@ if (isset($_GET['f'])) {
                             <th scope="col">#</th>
                             <th scope="col">Дата</th>
                             <th scope="col">Тип</th>
+                            <th scope="col">Сообщение</th>
                             <th scope="col">JSON</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($aLines as $iI => $aRow): ?>
-                        <tr class="table-<?php echo $aRow[0]; ?>">
-                            <th scope="row"><?php echo $iI; ?></th>
-                            <td><?php echo $aRow[2]; ?></td>
-                            <td><?php echo $aRow[0]; ?></td>
-                            <td><?php echo $aRow[3]; ?></td>
-                        </tr>
+                            <?php if ($iI===0): ?>
+                                <tr class="">
+                                    <td colspan="5">
+                                        <details>
+                                            <summary>Информация о запросе</summary>
+                                            <pre><?php echo json_encode($aRow, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE); ?></pre>
+                                        </details>
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                            <tr class="table-<?php echo $aRow[0]; ?>">
+                                <th scope="row"><?php echo $iI; ?></th>
+                                <td><?php echo $aRow[2]; ?></td>
+                                <td><?php echo $aRow[0]; ?></td>
+                                <td><?php echo $aRow[3]; ?></td>
+                                <td>
+                                    <pre><?php echo json_encode($aRow[4], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE); ?></pre>
+                                </td>
+                            </tr>
+                            <?php endif ?>
                         <?php endforeach ?>
                     </tbody>
                 </table>
@@ -102,5 +118,13 @@ if (isset($_GET['f'])) {
 </html>
 
 <style>
+body, html { font-size: 10px; }
 * { border-radius: 0px !important; }
+table td {
+    text-align: left;
+}
+pre {
+    background: rgba(0,0,0,0.04);
+    padding: 5px;
+}
 </style>
