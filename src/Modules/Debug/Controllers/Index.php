@@ -56,6 +56,8 @@ class Index extends BaseController
 
         CoreHTML::$bReturnBuffered = false;
 
+        fnWriteMessage("aTable", $aTable);
+
         View::fnSetParams([
             "aTable" => $aTable
         ]);
@@ -68,6 +70,9 @@ class Index extends BaseController
         foreach ($aList as $sItem) {
             $aTable[] = [$sItem, Utils::fnGetVSCodeLinkForClassModule($sItem)];
         }
+
+        fnWriteMessage("aTable", $aTable);
+        
         View::fnSetParams([
             "aTable" => $aTable
         ]);

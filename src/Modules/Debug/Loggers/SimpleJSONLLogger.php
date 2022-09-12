@@ -6,6 +6,7 @@ use Hightemp\WappFramework\Modules\Core\Lib\Config;
 use Hightemp\WappFramework\Modules\Core\Lib\Controllers\BaseController;
 use Hightemp\WappFramework\Modules\Core\Lib\BaseLogger;
 use Hightemp\WappFramework\Modules\Core\Lib\Request;
+use Hightemp\WappFramework\Modules\Core\Helpers\Utils;
 
 class SimpleJSONLLogger extends BaseLogger
 {
@@ -16,6 +17,7 @@ class SimpleJSONLLogger extends BaseLogger
     public $iLifeTime = 0;
     public $oRequest = null;
     public $bHeaderWritten = false;
+    public $aHeader = [];
     
     /**
      * fnBuild
@@ -38,6 +40,19 @@ class SimpleJSONLLogger extends BaseLogger
             $iLifeTime,
             null
         ));
+    }
+
+    public static function fnPrepareFilePath($sFileName)
+    {
+        $sLoggerPath = Config::$aConfig["sLoggerPath"];
+        return $sLoggerPath."/".$sFileName;
+    }
+
+    public static function fnGetFiles()
+    {
+        $sLoggerFilePathMask = static::fnPrepareFilePath("*");
+
+        return glob($sLoggerFilePathMask);
     }
     
     /**
@@ -77,9 +92,13 @@ class SimpleJSONLLogger extends BaseLogger
      */
     public function fnUpdateHeaderByRequest()
     {
+        if ($this->bHeaderWritten) return;
+
         if (!$this->oRequest && !BaseController::$oGlobalRequest) {
             // NOTE: Если запроса нет оставляем пустым заголовок в логе до его появления
-            $this->fnUpdateHeader([]);
+            $this->aHeader["iTimestamp"] = time();
+            $this->aHeader["bIsCli"] = Utils::fnIsCli();
+            $this->fnUpdateHeader();
             return;
         }
 
@@ -87,29 +106,42 @@ class SimpleJSONLLogger extends BaseLogger
             $this->oRequest = BaseController::$oGlobalRequest;
         }
         
-        $this->fnUpdateHeader([
+        $this->aHeader = [
             "iTimestamp" => $this->oRequest->iTimestamp,
+            "bIsCli" => Utils::fnIsCli(),
             "aGet" => $this->oRequest->aGet,
             "aPost" => $this->oRequest->aPost,
             "aFiles" => $this->oRequest->aFiles,
             "aCookie" => $this->oRequest->aCookie,
             "aServer" => $this->oRequest->aServer,
             "aSession" => $this->oRequest->aSession,
-        ]);
+        ];
+
+        $this->fnUpdateHeader();
+        $this->bHeaderWritten = true;
     }
 
-    public function fnUpdateHeader($aData)
+    public function fnUpdateHeader($aData=null)
     {
+        if (is_null($aData)) $aData = $this->aHeader;
         $rH = fopen($this->sLoggerFilePath, "w+");
         fseek($rH, 0);
-        $sJSON = json_encode($aData)."\n";
-        fwrite($rH, $sJSON, 1000);
+        $sJSON = json_encode($aData);
+        $sJSON = $sJSON.str_repeat(" ", 5000-strlen($sJSON))."\n";
+        fwrite($rH, $sJSON, strlen($sJSON));
         fclose($rH);
     }
 
-    public function fnWrite($sMessage, $aData=[])
+    public function fnPrepareData($sType, $sMicroTime, $sDate, $sMessage, $aData)
     {
-        $sJSON = json_encode([microtime(), date("Y-m-d H:i:s"), $sMessage, $aData])."\n";
+        $sJSON = json_encode([$sType, $sMicroTime, $sDate, $sMessage, $aData])."\n";
+        return $sJSON;
+    }
+
+    public function fnWrite($sType, $sMessage, $aData=[])
+    {
+        $this->fnUpdateHeaderByRequest();
+        $sJSON = static::fnPrepareData($sType, $this->fnGetMicrotime(), $this->fnGetCurrentDate(), $sMessage, $aData);
         file_put_contents($this->sLoggerFilePath, $sJSON, FILE_APPEND);
     }
 
@@ -117,7 +149,7 @@ class SimpleJSONLLogger extends BaseLogger
     {
         if (!$this->iLifeTime) return;
 
-        $files = glob($this->sLoggerFilePathMask);
+        $files = $this->fnGetFilesList();
         $now   = time();
 
         foreach ($files as $file) {
@@ -127,6 +159,11 @@ class SimpleJSONLLogger extends BaseLogger
                 }
             }
         }
+    }
+
+    public function fnGetFilesList()
+    {
+        return glob($this->sLoggerFilePathMask);
     }
 
     public function fnClean()

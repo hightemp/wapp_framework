@@ -9,6 +9,8 @@ class BaseProject
 
     public static $sDefaultCommand = \Hightemp\WappFramework\Modules\Core\Commands\ListCommands::class;
 
+    public static $mShutdownFunction = [self::class,'fnShutdownFunction'];
+
     /** 
      * @var array $aPreload Предварительная загрузка файлов, выполнение методов модулей
      * 
@@ -49,6 +51,27 @@ class BaseProject
 
     public static $aMiddlewares = [
     ];
+
+    public static function fnInit()
+    {
+        static::fnPreload();
+        Config::fnInit();
+        static::fnInitLogger();
+
+        Logger::fnWriteMessage("==START==");
+
+        static::fnRegisterShutdownFunction();
+    }
+
+    public static function fnInitLogger()
+    {
+        require_once(ROOT_PATH."/src/Modules/Core/Includes/logger.php");
+    }
+
+    public static function fnRegisterShutdownFunction()
+    {
+        register_shutdown_function(static::$mShutdownFunction);
+    }
     
     /**
      * Предварительная загрузка файлов, выполнение методов модулей
@@ -92,5 +115,10 @@ class BaseProject
 
         static::$aCommands = array_unique(static::$aCommands);
         static::$aAliases = array_unique(static::$aAliases);
+    }
+
+    public static function fnShutdownFunction()
+    {
+        Logger::fnWriteMessage("==SHUTDOWN==");
     }
 }

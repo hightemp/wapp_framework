@@ -9,11 +9,7 @@ use Hightemp\WappFramework\Project;
 
 use Hightemp\WappFramework\Modules\Core\Helpers\Utils;
 
-Project::fnPreload();
-
-Config::fnInit();
-
-Logger::fnWrite("index.php");
+Project::fnInit();
 
 if (Utils::fnIsCli()) {
     $iExitCode = (int) Command::fnParseCliArgs($argv);

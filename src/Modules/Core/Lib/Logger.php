@@ -39,10 +39,31 @@ class Logger
         }
     }
 
-    public static function fnWrite($sMessage, $aData=[])
+    public static function fnWriteMessage($sMessage, $aData=[])
     {
         static::fnGetInstanceIfExists(function($oLogger) use ($sMessage, $aData) {
-            $oLogger->fnWrite($sMessage, $aData);
+            $oLogger->fnWriteMessage($sMessage, $aData);
+        });
+    }
+
+    public static function fnWriteError($sMessage, $aData=[])
+    {
+        static::fnGetInstanceIfExists(function($oLogger) use ($sMessage, $aData) {
+            $oLogger->fnWriteError($sMessage, $aData);
+        });
+    }
+
+    public static function fnWriteWarning($sMessage, $aData=[])
+    {
+        static::fnGetInstanceIfExists(function($oLogger) use ($sMessage, $aData) {
+            $oLogger->fnWriteWarning($sMessage, $aData);
+        });
+    }
+
+    public static function fnWriteInfo($sMessage, $aData=[])
+    {
+        static::fnGetInstanceIfExists(function($oLogger) use ($sMessage, $aData) {
+            $oLogger->fnWriteInfo($sMessage, $aData);
         });
     }
 }

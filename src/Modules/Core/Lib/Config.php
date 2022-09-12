@@ -13,6 +13,9 @@ class Config
     public static $aLoadedConfigFiles = [];
     public static $aConfig = [];
 
+    public static $bLoadCoreConfig = true;
+    public static $bLoadModulesConfig = true;
+
     public static function fnInit()
     {
         static::fnLoad();
@@ -80,8 +83,8 @@ class Config
 
     public static function fnLoad()
     {
-        static::fnLoadBaseConfig();
-        static::fnLoadModulesConfig();
+        if (static::$bLoadCoreConfig) static::fnLoadBaseConfig();
+        if (static::$bLoadModulesConfig) static::fnLoadModulesConfig();
     }
 
     public static function fnLoadJSON()
