@@ -54,6 +54,13 @@ class SimpleJSONLLogger extends BaseLogger
 
         return glob($sLoggerFilePathMask);
     }
+
+    public static function fnCleanFiles()
+    {
+        $sLoggerFilePathMask = static::fnPrepareFilePath("*");
+
+        shell_exec("rm -f {$sLoggerFilePathMask}");
+    }
     
     /**
      * __construct

@@ -23,6 +23,10 @@ $aLogFiles = array_map(function ($sI) { return basename($sI); }, $aLogFiles);
 
 $aLines = [];
 
+if (isset($_GET['c'])) {
+    SimpleJSONLLogger::fnCleanFiles();
+    header("Location: ?");
+}
 if (isset($_GET['f'])) {
     $sFilePath = SimpleJSONLLogger::fnPrepareFilePath($_GET['f']);
     if (!is_file($sFilePath)) {
@@ -48,6 +52,13 @@ if (isset($_GET['f'])) {
 </head>
 <body>
     <div class="">
+        <div class="row" style="border-bottom: 2px solid rgba(0,0,0,0.1)">
+            <div class="col">
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-danger" href="?c=1" role="button">Очистить</a>
+            </div>
+        </div>
         <div class="row">
             <div class="col-2">
                 <div class="list-group w-100">
