@@ -70,8 +70,8 @@ class Index extends BaseController
 
         fnWriteMessage("aList", $aList);
 
-        foreach ($aList as $sItem) {
-            $aTable[] = [$sItem, Utils::fnGetVSCodeLinkForClassModule($sItem)];
+        foreach ($aList as $sClass => $sItem) {
+            $aTable[] = [$sItem, Utils::fnGetVSCodeLinkForClassModule($sClass)];
         }
 
         fnWriteMessage("aTable", $aTable);

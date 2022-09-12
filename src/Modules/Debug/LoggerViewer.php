@@ -126,5 +126,7 @@ table td {
 pre {
     background: rgba(0,0,0,0.04);
     padding: 5px;
+    max-height: 300px;
+    overflow-y: auto;
 }
 </style>
