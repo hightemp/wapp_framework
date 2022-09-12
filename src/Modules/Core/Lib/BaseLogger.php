@@ -21,4 +21,12 @@ class BaseLogger
     public function fnWrite($sMessage, $aData=[])
     {
     }
+
+    public function fnRemoveOld()
+    {
+    }
+
+    public function fnClean()
+    {
+    }
 }

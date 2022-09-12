@@ -7,13 +7,19 @@ use \Hightemp\WappFramework\Modules\Debug\Controllers\Index;
 
 class Aliases extends BaseAliases
 {
+    const BASE_ALIAS = "debugpanel";
+    const BASE_ALIAS_MODULES = self::BASE_ALIAS."/modules/index";
+    const BASE_ALIAS_CONTROLLERS = self::BASE_ALIAS."/controllers/index";
+    const BASE_ALIAS_ALIASES = self::BASE_ALIAS."/aliases/index";
+    const BASE_ALIAS_COMMANDS = self::BASE_ALIAS."/commands/index";
+    const BASE_ALIAS_GENERATORS = self::BASE_ALIAS."/generators/index";
+
     public static $aMethods = [
-        "debugpanel" => [Index::class, 'fnIndexHTML'],
-        "debugpanel/index" => [Index::class, 'fnIndexHTML'],
-        "debugpanel/modules/index" => [Index::class, 'fnModulesIndexHTML'],
-        "debugpanel/controllers/index" => [Index::class, 'fnControllersIndexHTML'],
-        "debugpanel/aliases/index" => [Index::class, 'fnAliasesIndexHTML'],
-        "debugpanel/commands/index" => [Index::class, 'fnCommandsIndexHTML'],
-        "debugpanel/generators/index" => [Index::class, 'fnGeneratorsIndexHTML'],
+        self::BASE_ALIAS => [Index::class, 'fnIndexHTML'],
+        self::BASE_ALIAS_MODULES => [Index::class, 'fnModulesIndexHTML'],
+        self::BASE_ALIAS_CONTROLLERS => [Index::class, 'fnControllersIndexHTML'],
+        self::BASE_ALIAS_ALIASES => [Index::class, 'fnAliasesIndexHTML'],
+        self::BASE_ALIAS_COMMANDS => [Index::class, 'fnCommandsIndexHTML'],
+        self::BASE_ALIAS_GENERATORS => [Index::class, 'fnGeneratorsIndexHTML'],
     ];
 }

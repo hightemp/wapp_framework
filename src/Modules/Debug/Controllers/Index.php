@@ -8,6 +8,7 @@ use Hightemp\WappFramework\Project;
 use Hightemp\WappFramework\Modules\Core\Helpers\Utils;
 use Hightemp\WappFramework\Modules\Bootstrap\Lib\View\Helpers\HTML;
 use Hightemp\WappFramework\Modules\Core\Lib\View\Helpers\HTML as CoreHTML;
+use Hightemp\WappFramework\Modules\Debug\Aliases;
 
 class Index extends BaseController
 {
@@ -23,11 +24,11 @@ class Index extends BaseController
     public function fnIndexHTML()
     {
         $aList = [
-            ["/debug/modules/index", "Модули"],
-            ["/debug/controllers/index", "Контроллеры"],
-            ["/debug/aliases/index", "Алясы|Роутинг"],
-            ["/debug/commands/index", "Команды"],
-            ["/debug/generators/index", "Генераторы"],
+            [Aliases::BASE_ALIAS_MODULES, "Модули"],
+            [Aliases::BASE_ALIAS_CONTROLLERS, "Контроллеры"],
+            [Aliases::BASE_ALIAS_ALIASES, "Алясы|Роутинг"],
+            [Aliases::BASE_ALIAS_COMMANDS, "Команды"],
+            [Aliases::BASE_ALIAS_GENERATORS, "Генераторы"],
         ];
 
         HTML::fnBeginBuffer();

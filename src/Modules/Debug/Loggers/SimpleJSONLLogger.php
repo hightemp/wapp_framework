@@ -12,13 +12,16 @@ class SimpleJSONLLogger extends BaseLogger
     public $sLoggerPath = "";
     public $sFileName = "";
     public $sLoggerFilePath = "";
+    public $sLoggerFilePathMask = "";
+    public $iLifeTime = 0;
     public $oRequest = null;
     public $bHeaderWritten = false;
     
     /**
      * fnBuild
      * 
-     * @uses Config::$aConfig
+     * @uses Config::$aConfig["sLoggerPath"]
+     * @uses Config::$aConfig["iLoggerFilesCacheTime"]
      * @uses BaseController::$oGlobalRequest
      *
      * @return void
@@ -27,7 +30,14 @@ class SimpleJSONLLogger extends BaseLogger
     {
         $sLoggerPath = Config::$aConfig["sLoggerPath"];
         $sFileName = time().".jsonl";
-        return (static::$oInstance = new SimpleJSONLLogger($sLoggerPath, $sFileName));
+        $iLifeTime = Config::$aConfig["iLoggerFilesCacheTime"];
+
+        return (static::$oInstance = new SimpleJSONLLogger(
+            $sLoggerPath, 
+            $sFileName,
+            $iLifeTime,
+            null
+        ));
     }
     
     /**
@@ -35,6 +45,7 @@ class SimpleJSONLLogger extends BaseLogger
      * 
      * @param string $sLoggerPath
      * @param string $sFileName
+     * @param int $iLifeTime
      * @param Request $oRequest
      *
      * @return void
@@ -42,14 +53,18 @@ class SimpleJSONLLogger extends BaseLogger
     public function __construct(
         $sLoggerPath,
         $sFileName,
+        $iLifeTime,
         $oRequest = null
     )
     {
         $this->sLoggerPath = $sLoggerPath;
         $this->sFileName = $sFileName;
         $this->sLoggerFilePath = $sLoggerPath."/".$sFileName;
+        $this->sLoggerFilePathMask = $sLoggerPath."/*";
+        $this->iLifeTime = $iLifeTime;
         $this->oRequest = $oRequest;
 
+        $this->fnRemoveOld();
         $this->fnUpdateHeaderByRequest();
     }
     
@@ -96,5 +111,26 @@ class SimpleJSONLLogger extends BaseLogger
     {
         $sJSON = json_encode([microtime(), date("Y-m-d H:i:s"), $sMessage, $aData])."\n";
         file_put_contents($this->sLoggerFilePath, $sJSON, FILE_APPEND);
+    }
+
+    public function fnRemoveOld()
+    {
+        if (!$this->iLifeTime) return;
+
+        $files = glob($this->sLoggerFilePathMask);
+        $now   = time();
+
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                if ($now - filemtime($file) >= $this->iLifeTime) {
+                    unlink($file);
+                }
+            }
+        }
+    }
+
+    public function fnClean()
+    {
+        shell_exec("rm -f {$this->sLoggerFilePathMask}");
     }
 }
